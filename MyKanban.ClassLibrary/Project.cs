@@ -35,10 +35,17 @@ using Newtonsoft.Json.Converters;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Represents a single MyKanban project
+    /// </summary>
     public class Project : MyKanban.BaseItem, MyKanban.IDataItem
     {
         #region Constructors
 
+        /// <summary>
+        /// Create a new empty Project instance
+        /// </summary>
+        /// <param name="credential">Credentials to use when creating this Project</param>
         public Project(Credential credential) 
         {
             if (credential != null) _credential = credential;
@@ -46,13 +53,27 @@ namespace MyKanban
             _tasks = new Tasks(_credential);
         }
 
+        /// <summary>
+        /// Create a new instance of a Project and populate it from the database using the 
+        /// provided ID#
+        /// </summary>
+        /// <param name="projectId">ID# of project to load</param>
+        /// <param name="credential">Credentials to use when creating this Project</param>
         public Project(long projectId, Credential credential)
+        {
+            ProjectIdConstructor(projectId, credential);
+        }
+
+        private void ProjectIdConstructor(long projectId, Credential credential)
         {
             if (credential != null) _credential = credential;
 
             _id = projectId;
+            _properties = null;
+            _stakeholders = null;
+            _statusCodes = null;
             _tasks = new Tasks(this, _credential);
-            LoadData();
+            LoadData(true);
         }
 
         #endregion
@@ -61,6 +82,9 @@ namespace MyKanban
 
         private double _actHours;
 
+        /// <summary>
+        /// Total actual hours for all top-level tasks in this project
+        /// </summary>
         [MyKanban.Description("Actual hours required to complete this project")]
         [MyKanban.ControlType(enumControlType.Numeric)]
         public double ActHours
@@ -75,6 +99,9 @@ namespace MyKanban
 
         private long _boardId = 0;
 
+        /// <summary>
+        /// ID# of parent Board
+        /// </summary>
         [MyKanban.Description("ID# of board this project is displayed on")]
         [MyKanban.ReadOnly(true)]
         public long BoardId
@@ -85,6 +112,9 @@ namespace MyKanban
 
         private long _boardSetId = 0;
 
+        /// <summary>
+        /// ID# of parent BoardSet
+        /// </summary>
         [MyKanban.Description("ID# of board set this project is associated with")]
         public long BoardSetId
         {
@@ -93,6 +123,9 @@ namespace MyKanban
 
         private string _boardSetName = "";
 
+        /// <summary>
+        /// Name of parent BoardSet
+        /// </summary>
         [MyKanban.Description("Display name of board set this project is associated with")]
         public string BoardSetName
         {
@@ -101,6 +134,9 @@ namespace MyKanban
 
         private string _defineDone = "";
 
+        /// <summary>
+        /// Description of expected deliverable(s) or outcomes when project is completed
+        /// </summary>
         [MyKanban.Description("Description of expected deliverable(s) or outcomes when project is completed")]
         public string DefineDone
         {
@@ -114,6 +150,9 @@ namespace MyKanban
 
         private DateTime _earliestTaskStartDate = new DateTime(1900,1,1);
 
+        /// <summary>
+        /// Earlest start date for all tasks in this project
+        /// </summary>
         [MyKanban.Description("Earlest start date for all tasks in this project")]
         [MyKanban.ReadOnly(true)]
         public DateTime EarliestTaskStartDate
@@ -124,6 +163,9 @@ namespace MyKanban
 
         private double _estHours;
 
+        /// <summary>
+        /// Estimated total hours for project
+        /// </summary>
         [MyKanban.Description("Estimated total hours for project")]
         [MyKanban.ControlType(enumControlType.Numeric)]
         public double EstHours
@@ -138,6 +180,9 @@ namespace MyKanban
 
         private DateTime _expectedEndDate = new DateTime(1900,1,1);
 
+        /// <summary>
+        /// Date project is expected to end
+        /// </summary>
         [MyKanban.Description("Date project is expected to end")]
         public DateTime ExpectedEndDate
         {
@@ -147,6 +192,9 @@ namespace MyKanban
 
         private DateTime _expectedStartDate = new DateTime(1900,1,1);
 
+        /// <summary>
+        /// Date project is expected to start
+        /// </summary>
         [MyKanban.Description("Date project is expected to start")]
         public DateTime ExpectedStartDate
         {
@@ -156,6 +204,9 @@ namespace MyKanban
 
         private DateTime _latestTaskEndDate = new DateTime(1900,1,1);
 
+        /// <summary>
+        /// Latest end date for all tasks in this project
+        /// </summary>
         [MyKanban.Description("Latest end date for all tasks in this project")]
         [MyKanban.ReadOnly(true)]
         public DateTime LatestTaskEndDate
@@ -166,8 +217,11 @@ namespace MyKanban
 
         private string _parentName;
 
+        /// <summary>
+        /// Name of board containing this sprint object
+        /// </summary>
         [MyKanban.Description("Name of board containing this sprint object")]
-        public string ParentName
+        public override string ParentName
         {
             get
             {
@@ -185,6 +239,9 @@ namespace MyKanban
 
         private string _parentType;
 
+        /// <summary>
+        /// Type of parent object
+        /// </summary>
         [MyKanban.Description("Type of parent object")]
         public string ParentType
         {
@@ -203,6 +260,10 @@ namespace MyKanban
         }
         
         private long _projectLead = 0;
+
+        /// <summary>
+        /// Individual primarily responsible for this project
+        /// </summary>
         public long ProjectLead
         {
             get { return _projectLead; }
@@ -211,6 +272,9 @@ namespace MyKanban
         
         private long _status;
 
+        /// <summary>
+        /// Current status of this project
+        /// </summary>
         [MyKanban.Description("Current status of this project")]
         [MyKanban.ControlType(enumControlType.StatusCode)]
         public long Status
@@ -221,6 +285,9 @@ namespace MyKanban
 
         private Tasks _tasks;
 
+        /// <summary>
+        /// Collection of all top-level tasks associated with this project
+        /// </summary>
         [MyKanban.Hidden(true)]
         public Tasks Tasks
         {
@@ -244,6 +311,9 @@ namespace MyKanban
 
         private Properties _properties = null;
 
+        /// <summary>
+        /// Collection of properties associated with this project
+        /// </summary>
         [MyKanban.Description("Collection of properties associated with this project")]
         public Properties Properties
         {
@@ -266,6 +336,9 @@ namespace MyKanban
 
         private People _stakeholders;
 
+        /// <summary>
+        /// Collection of all stakeholders associated with this project
+        /// </summary>
         [MyKanban.Hidden(true)]
         public People Stakeholders
         {
@@ -289,6 +362,9 @@ namespace MyKanban
 
         private StatusCodes _statusCodes;
 
+        /// <summary>
+        /// Collection of all status codes that can be used on this project, inherited from projects BoardSet
+        /// </summary>
         [JsonIgnore]
         [MyKanban.Hidden(true)]
         public StatusCodes StatusCodes
@@ -315,7 +391,10 @@ namespace MyKanban
 
         #region Methods
 
-        public void Delete()
+        /// <summary>
+        /// Delete this project from the database
+        /// </summary>
+        public override void Delete()
         {
             Data.DeleteProject(_id, _credential.Id);
 
@@ -332,18 +411,32 @@ namespace MyKanban
             }
         }
 
-        public bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
+        /// <summary>
+        /// Does specified user have permission to perform the requested operation
+        /// </summary>
+        /// <param name="userId">ID# of user</param>
+        /// <param name="authLevel">Requested operation</param>
+        /// <returns>True if user has permission to perform the requested operation</returns>
+        public override bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
         {
             return true;
         }
 
+        /// <summary>
+        /// Is this Project object in a valid state
+        /// </summary>
+        /// <returns>True if Project object is in a valid state</returns>
         public bool IsValid()
         {
             return true;
         }
 
-        // Populate the object instance with data from the database
-        public bool LoadData(bool force = false)
+        /// <summary>
+        /// Populate the Project instance with data from the database
+        /// </summary>
+        /// <param name="force">If true, populate this Project regardless of state</param>
+        /// <returns>True if data was successfully loaded</returns>
+        public override bool LoadData(bool force = false)
         {
             try
             {
@@ -398,8 +491,22 @@ namespace MyKanban
             }
         }
 
-        // Update the database with data from this object instance
-        public bool Update( bool force = false)
+        /// <summary>
+        /// Reload data from database into this Project object
+        /// </summary>
+        public override void Reload()
+        {
+            base.Reload();
+
+            ProjectIdConstructor(_id, _credential);
+        }
+
+        /// <summary>
+        /// Update the database with data from this object instance
+        /// </summary>
+        /// <param name="force">If true, save data to database regardless of the state of this Project object</param>
+        /// <returns>True if data successfully written to database</returns>
+        public override bool Update( bool force = false)
         {
             try
             {

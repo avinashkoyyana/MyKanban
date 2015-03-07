@@ -32,9 +32,17 @@ using System.Threading.Tasks;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// A MyKanban description that can be associated with a property, used by
+    /// .NET reflection to perform property-specific processing.
+    /// </summary>
     [AttributeUsage(AttributeTargets.All, Inherited = true, AllowMultiple = true)]
     public class Description : Attribute
     {
+        /// <summary>
+        /// Constructor to initialize attribute with text of property description.
+        /// </summary>
+        /// <param name="text">Text of description</param>
         public Description(string text)
         {
             _text = text;
@@ -42,6 +50,9 @@ namespace MyKanban
 
         private string _text = "";
 
+        /// <summary>
+        /// Text of property description.
+        /// </summary>
         public string Text
         {
             get { return _text; }
@@ -49,9 +60,17 @@ namespace MyKanban
         }
     }
 
+    /// <summary>
+    /// Indicates whether a property should be hidden in the MyKanban Object Browser
+    /// </summary>
     [AttributeUsage(AttributeTargets.All, Inherited = true, AllowMultiple = true)]
     public class Hidden : Attribute
     {
+        /// <summary>
+        /// Initialize with boolean value indicating whether this property
+        /// should appear in MyKanban Object Browser
+        /// </summary>
+        /// <param name="hidden">True = hide this property</param>
         public Hidden(bool hidden)
         {
             _hide = hidden;
@@ -59,6 +78,9 @@ namespace MyKanban
 
         private bool _hide = false;
 
+        /// <summary>
+        /// Value for this attribute.
+        /// </summary>
         public bool Hide
         {
             get { return _hide; }
@@ -66,9 +88,19 @@ namespace MyKanban
         }
     }
 
+    /// <summary>
+    /// Indicates whether a property should be treated as read-only in the
+    /// MyKanban Object Browser
+    /// </summary>
     [AttributeUsage(AttributeTargets.All, Inherited = true, AllowMultiple = true)]
     public class ReadOnly : Attribute
     {
+        /// <summary>
+        /// Initialize with boolean value indicating whether this property
+        /// should be treated as read-only.  Note, if property has no get{} method,
+        /// will be read-only regardless of this setting.
+        /// </summary>
+        /// <param name="readOnly">True = make this property read-only</param>
         public ReadOnly(bool readOnly)
         {
             _value = readOnly;
@@ -76,6 +108,9 @@ namespace MyKanban
 
         private bool _value = false;
 
+        /// <summary>
+        /// Value for this attribute
+        /// </summary>
         public bool Value
         {
             get { return _value; }
@@ -83,11 +118,22 @@ namespace MyKanban
         }
     }
 
+    /// <summary>
+    /// Allowable values for ControlType attribute.
+    /// </summary>
     public enum enumControlType {TextBox, StatusCode, DateTime, Numeric, Boolean}
 
+    /// <summary>
+    /// Indicates type of control to use when displaying this property in the
+    /// MyKanban Object Browser.  Default is "TextBox" if not specified.
+    /// </summary>
     [AttributeUsage(AttributeTargets.All, Inherited = true, AllowMultiple = true)]
     public class ControlType : Attribute
     {
+        /// <summary>
+        /// Initialize the control type.
+        /// </summary>
+        /// <param name="controlType">Must be a valid enumControlType value.</param>
         public ControlType(enumControlType controlType)
         {
             _type = controlType;
@@ -95,6 +141,9 @@ namespace MyKanban
 
         private enumControlType _type = enumControlType.TextBox;
 
+        /// <summary>
+        /// enumControlType value associated with this attribute.
+        /// </summary>
         public enumControlType Type
         {
             get { return _type; }

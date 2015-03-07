@@ -33,21 +33,44 @@ using Newtonsoft.Json;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Represents a collection of all approvers associated with a given task or sub-task
+    /// </summary>
     public class Approvers : MyKanban.BaseList, MyKanban.IDataList
     {
         #region Constructors
 
+        /// <summary>
+        /// Create a new approvers collection
+        /// </summary>
+        /// <param name="credential">Credentials to use when creating this collection.</param>
         public Approvers(Credential credential) 
         {
             if (credential != null) _credential = credential;
         }
 
+        /// <summary>
+        /// Create a new approvers collection
+        /// </summary>
+        /// <param name="task">Parent task or sub-task this collection is for</param>
+        /// <param name="credential">Credentials to use when creating this collection.</param>
         public Approvers(Task task, Credential credential)
+        {
+            ApproversTaskConstructor(task, credential);
+        }
+
+        /// <summary>
+        /// Code pulled out of constructor so can also be called by Reload() method
+        /// </summary>
+        /// <param name="task">Parent task or sub-task this collection is for</param>
+        /// <param name="credential">Credentials to use when creating this collection.</param>
+        private void ApproversTaskConstructor(Task task, Credential credential)
         {
             if (credential != null) _credential = credential;
 
             _parent = task;
             _parentId = task.Id;
+            _items.Clear();
             DataSet dsApprovers = MyKanban.Data.GetApproversByTask(task.Id, _credential.Id);
             if (dsApprovers.Tables.Count > 0)
             {
@@ -58,11 +81,27 @@ namespace MyKanban
             }
         }
 
+        /// <summary>
+        /// Create a new approvers collection
+        /// </summary>
+        /// <param name="taskId">ID# of parent task or sub-task</param>
+        /// <param name="credential">Credentials to use when creating this collection</param>
         public Approvers(long taskId, Credential credential)
+        {
+            ApproversTaskIdConstructor(taskId, credential);
+        }
+
+        /// <summary>
+        /// Code pulled out of constructor so could be called by Reload() method as well as by constructor
+        /// </summary>
+        /// <param name="taskId">ID# of parent task or sub-task</param>
+        /// <param name="credential">Credentials to use when creating this collection</param>
+        private void ApproversTaskIdConstructor(long taskId, Credential credential)
         {
             if (credential != null) _credential = credential;
 
             _parentId = taskId;
+            _items.Clear();
             DataSet dsApprovers = MyKanban.Data.GetApproversByTask(taskId, _credential.Id);
             if (dsApprovers.Tables.Count > 0)
             {
@@ -77,6 +116,11 @@ namespace MyKanban
 
         #region Properties
 
+        /// <summary>
+        /// Indexer for collection
+        /// </summary>
+        /// <param name="index">Ordinal position of item to return</param>
+        /// <returns>Approver at specified index position</returns>
         new public Approver this[int index]
         {
             get { return (Approver)_items[index]; }
@@ -87,6 +131,10 @@ namespace MyKanban
 
         #region Methods
 
+        /// <summary>
+        /// Remove all approvers from the collection
+        /// </summary>
+        /// <param name="delete">If true, will also cause removed items to be deleted from the database</param>
         public override void Clear(bool delete = false)
         {
             if (delete)
@@ -100,6 +148,10 @@ namespace MyKanban
             base.Clear();
         }
 
+        /// <summary>
+        /// Return a list of BaseItem objects corresponding to items in this collection
+        /// </summary>
+        /// <returns>A collection of BaseItems</returns>
         override public List<BaseItem> GetBaseList()
         {
             List<BaseItem> baseList = new List<BaseItem>();
@@ -109,6 +161,17 @@ namespace MyKanban
                 baseList.Add(baseItem);
             }
             return baseList;
+        }
+
+        /// <summary>
+        /// Reload all data for this collection from database
+        /// </summary>
+        public override void Reload()
+        {
+            base.Reload();
+
+            if (_parent != null) ApproversTaskConstructor((Task)_parent, _credential);
+            else if (_parentId > 0) ApproversTaskIdConstructor(_parentId, _credential);
         }
 
         #endregion

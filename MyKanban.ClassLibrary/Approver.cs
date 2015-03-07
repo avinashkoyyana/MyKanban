@@ -33,16 +33,28 @@ using Newtonsoft.Json;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Represents a single approver associated with a task or sub-task.
+    /// </summary>
     public class Approver : MyKanban.BaseItem, MyKanban.IDataItem
     {
         #region Constructors
 
+        /// <summary>
+        /// Create a new approver object instance
+        /// </summary>
+        /// <param name="credential">Credentials to use when creating this approver object</param>
         public Approver(Credential credential)
         {
             if (credential != null) _credential = credential;
             _id = 0;
         }
 
+        /// <summary>
+        /// Create a new approver object instance
+        /// </summary>
+        /// <param name="approverId">ID# of approver to read from database</param>
+        /// <param name="credential">Credentialo to use when creating this approver object</param>
         public Approver(long approverId, Credential credential)
         {
             if (credential != null) _credential = credential;
@@ -54,6 +66,9 @@ namespace MyKanban
 
         #region Properties
 
+        /// <summary>
+        /// Name of approver
+        /// </summary>
         [MyKanban.Description("Name of task approver")]
         [MyKanban.ReadOnly(true)]
         public new string Name
@@ -74,6 +89,9 @@ namespace MyKanban
 
         private long _personId = 0;
 
+        /// <summary>
+        /// ID# of task approver
+        /// </summary>
         [MyKanban.Description("ID# of task approver")]
         public long PersonId
         {
@@ -81,6 +99,9 @@ namespace MyKanban
             set { _personId = value; }
         }
 
+        /// <summary>
+        /// ID# of parent task
+        /// </summary>
         [MyKanban.Description("ID# of parent task")]
         [MyKanban.ReadOnly(true)]
         public long TaskId
@@ -93,11 +114,25 @@ namespace MyKanban
 
         #region Methods
 
+        /// <summary>
+        /// Delete this approver from task or sub-task
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// Approver approver = new Approver(123, user);
+        /// approver.Delete();        
+        /// </code>
+        /// </example>
         public override void Delete()
         {
             Data.DeleteApproverFromTask(_parentId, _personId, _credential.Id);
         }
 
+        /// <summary>
+        /// Retrieve data from database into this object
+        /// </summary>
+        /// <param name="force">If true, object will be reloaded even if no data has changed</param>
+        /// <returns></returns>
         public override bool LoadData(bool force = false)
         {
             if (_id > 0)
@@ -124,6 +159,11 @@ namespace MyKanban
             return true;
         }
 
+        /// <summary>
+        /// Save data from object to database
+        /// </summary>
+        /// <param name="force">If true, data will be saved even if no data has changed since being loaded into object from the database.</param>
+        /// <returns></returns>
         public override bool Update(bool force = false)
         {
             if (_parentId > 0)

@@ -45,10 +45,16 @@ namespace MyKanban
 
         public People(MyKanban.IDataItem parent, Credential credential)
         {
+            PeopleConstructor(parent, credential);
+        }
+
+        private void PeopleConstructor(IDataItem parent, Credential credential)
+        {
             if (credential != null) _credential = credential;
 
             _parent = parent;
             string t = parent.GetType().ToString();
+            _items.Clear();
             DataSet dsPeople = new DataSet();
             switch (t)
             {
@@ -192,6 +198,13 @@ namespace MyKanban
                 baseList.Add(baseItem);
             }
             return baseList;
+        }
+
+        public override void Reload()
+        {
+            base.Reload();
+
+            if (_parent != null) PeopleConstructor(_parent, _credential);
         }
 
         public override void Remove(int index, bool delete = false)

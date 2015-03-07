@@ -43,8 +43,14 @@ namespace MyKanban
 
         public Comments(Task task, Credential credential)
         {
+            CommentsTaskConstructor(task, credential);
+        }
+
+        private void CommentsTaskConstructor(Task task, Credential credential)
+        {
             if (credential != null) _credential = credential;
 
+            _items.Clear();
             DataSet dsComments = MyKanban.Data.GetCommentsByTask(task.Id, _credential.Id);
             foreach (DataRow drComment in dsComments.Tables["results"].Rows)
             {
@@ -129,7 +135,14 @@ namespace MyKanban
 
         public int Count
         {
-            get { return _items.Count; }
+            get { return this._items.Count; }
+        }
+
+        public override void Reload()
+        {
+            base.Reload();
+
+            CommentsTaskConstructor((Task)_parent, _credential);
         }
 
         public void Remove(int index)

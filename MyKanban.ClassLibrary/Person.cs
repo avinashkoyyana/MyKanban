@@ -38,28 +38,49 @@ using System.Diagnostics;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Represents a single person that may be associated with any MyKanban object
+    /// </summary>
     public class Person : MyKanban.BaseItem, MyKanban.IDataItem
     {
         #region Constructors
 
+        /// <summary>
+        /// Create a new Person object
+        /// </summary>
+        /// <param name="credential">Credentials used to create this object</param>
         public Person(Credential credential) 
         {
             if (credential != null) _credential = credential;
         }
 
+        /// <summary>
+        /// Create a new Person object
+        /// </summary>
+        /// <param name="personId">ID# of person data to read from database</param>
+        /// <param name="credential">Credentials used to create this object</param>
         public Person(long personId, Credential credential)
+        {
+            PersonIdConstructor(personId, credential);
+        }
+
+        private void PersonIdConstructor(long personId, Credential credential)
         {
             if (credential != null) _credential = credential;
 
             _id = personId;
             LoadData();
         }
+
         #endregion
 
         #region Properties
 
         bool _canLogin = false;
 
+        /// <summary>
+        /// Indicates whether this Person may login to the MyKanban system
+        /// </summary>
         [MyKanban.Description("Indicates whether this user has login privileges")]
         [MyKanban.ControlType(enumControlType.Boolean)]
         public bool CanLogin
@@ -69,6 +90,11 @@ namespace MyKanban
         }
 
         string _email = "";
+
+        /// <summary>
+        /// Email address of this person
+        /// </summary>
+        [MyKanban.Description("Email address of this person")]
         public string Email
         {
             get { return _email; }
@@ -78,6 +104,9 @@ namespace MyKanban
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string _password = "";
 
+        /// <summary>
+        /// Password of this Person.  Note: Password may be set but not read, except when attempting to obtain a credential
+        /// </summary>
         [MyKanban.Hidden(true)]
         public string Password
         {
@@ -85,6 +114,11 @@ namespace MyKanban
         }
 
         string _pictureUrl = "";
+
+        /// <summary>
+        /// Url to picture of this Person
+        /// </summary>
+        [MyKanban.Description("Url to picture of this Person")]
         public string PictureUrl
         {
             get { return _pictureUrl; }
@@ -92,6 +126,11 @@ namespace MyKanban
         }
 
         string _phone = "";
+
+        /// <summary>
+        /// Phone number of this Person
+        /// </summary>
+        [MyKanban.Description("Phone number of this Person")]
         public string Phone
         {
             get { return _phone; }
@@ -100,7 +139,11 @@ namespace MyKanban
 
         private Properties _properties = null;
 
+        /// <summary>
+        /// A collection of properties associated with this Person
+        /// </summary>
         [MyKanban.Description("Collection of properties associated with this person")]
+        [MyKanban.Hidden(true)]
         public Properties Properties
         {
             get
@@ -121,6 +164,11 @@ namespace MyKanban
         }
 
         string _userName = "";
+
+        /// <summary>
+        /// User login name
+        /// </summary>
+        [MyKanban.Description("User login name")]
         public string UserName
         {
             get
@@ -134,7 +182,10 @@ namespace MyKanban
 
         #region Methods
 
-        public void Delete()
+        /// <summary>
+        /// Delete this Person from the database
+        /// </summary>
+        public override void Delete()
         {
             Data.DeletePerson(_id, _credential.Id);
 
@@ -145,17 +196,32 @@ namespace MyKanban
             }
         }
 
-        public bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
+        /// <summary>
+        /// Is a given user authorized to perform the specified operation
+        /// </summary>
+        /// <param name="userId">ID# of user to check permissions for</param>
+        /// <param name="authLevel">Operation user wishes to perform</param>
+        /// <returns>True if user is authorized to perform the requested operation</returns>
+        public override bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
         {
             return true;
         }
 
-        public bool IsValid()
+        /// <summary>
+        /// Is this Person object in a valid state
+        /// </summary>
+        /// <returns>True if object is valid, false otherwise</returns>
+        public override bool IsValid()
         {
             return true;
         }
 
-        public bool LoadData(bool force = false)
+        /// <summary>
+        /// Load data from the database into this Person object
+        /// </summary>
+        /// <param name="force">If true, load data regardless of the state of this object</param>
+        /// <returns>True if data successfully loaded</returns>
+        public override bool LoadData(bool force = false)
         {
             try
             {
@@ -196,7 +262,12 @@ namespace MyKanban
             }
         }
 
-        public bool Update(bool force = false)
+        /// <summary>
+        /// Update the database with data from this Person object
+        /// </summary>
+        /// <param name="force">If true, update the database regardless of the state of this object</param>
+        /// <returns>True if the database was successfully updated</returns>
+        override public bool Update(bool force = false)
         {
             try
             {

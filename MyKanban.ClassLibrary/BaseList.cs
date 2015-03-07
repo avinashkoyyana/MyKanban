@@ -40,12 +40,20 @@ namespace MyKanban
     {
         #region Properties
 
+        /// <summary>
+        /// Indexer for this collection
+        /// </summary>
+        /// <param name="index">Ordinal position of BaseItem to return</param>
+        /// <returns>BaseItem object at the specified index position</returns>
         virtual public BaseItem this[int index]
         {
             get { return _items[index]; }
             set { _items[index] = value; }
         }
 
+        /// <summary>
+        /// Return the # of items in this collection
+        /// </summary>
         [MyKanban.Description("Number of items in this collection")]
         [MyKanban.ReadOnly(true)]
         virtual public int Count
@@ -55,6 +63,9 @@ namespace MyKanban
 
         protected List<BaseItem> _items = new List<BaseItem>();
 
+        /// <summary>
+        /// Return the underlying List<> upon which this collection is based
+        /// </summary>
         [MyKanban.Description("A generic MyKanban collection of items")]
         [MyKanban.ReadOnly(true)]
         virtual public List<BaseItem> Items
@@ -66,7 +77,11 @@ namespace MyKanban
 
         #region Methods
 
-        public void Add(BaseItem item)
+        /// <summary>
+        /// Add a new item to this collection
+        /// </summary>
+        /// <param name="item">Item to be added</param>
+        virtual public void Add(BaseItem item)
         {
             _isDirty = true;
             item.Parent = this.Parent;
@@ -74,11 +89,19 @@ namespace MyKanban
             _items.Add(item);
         }
 
+        /// <summary>
+        /// Remove all items from this collection
+        /// </summary>
+        /// <param name="delete">If true, delete all item data from database as well as removing them from the list</param>
         virtual public void Clear(bool delete = false)
         {
             _items.Clear();
         }
 
+        /// <summary>
+        /// Get a List<> containing basic data for all items in this collection
+        /// </summary>
+        /// <returns>A List<BaseItem> object containing all items in the list</BaseItem></returns>
         virtual public List<BaseItem> GetBaseList()
         {
             List<BaseItem> baseList = _items;
@@ -96,16 +119,31 @@ namespace MyKanban
             return baseList;
         }
 
+        /// <summary>
+        /// Remove item at the specified index position from the collection
+        /// </summary>
+        /// <param name="index">Ordinal position of the item to be removed</param>
+        /// <param name="delete">If true, also delete the item's data from the database</param>
         virtual public void Remove(int index, bool delete = false)
         {
             _items.Remove(_items[index]);
         }
 
+        /// <summary>
+        /// Remove a given item from the collection
+        /// </summary>
+        /// <param name="item">Object representing the item to be removed</param>
+        /// <param name="delete">If true, delete the item's data from the database</param>
         virtual public void Remove(BaseItem item, bool delete = false)
         {
             _items.Remove(item);
         }
 
+        /// <summary>
+        /// Update the database with data from all items in this collection
+        /// </summary>
+        /// <param name="force">If true, update the database regardless of the state of the individual items</param>
+        /// <returns>True if database is successfully updated</returns>
         virtual public bool Update(bool force = false)
         {
             try

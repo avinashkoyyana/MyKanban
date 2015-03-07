@@ -46,11 +46,17 @@ namespace MyKanban
 
         public Properties(IDataItem parentObject, Credential credential)
         {
+            PropertiesConstructor(parentObject, credential);
+        }
+
+        private void PropertiesConstructor(IDataItem parentObject, Credential credential)
+        {
             _credential = credential;
             _parent = parentObject;
             _parentId = parentObject.Id;
 
             // Load any existing properties
+            _items.Clear();
             DataSet ds = Data.GetPropertiesByObject(_parent.GetType().ToString(), _parentId, _credential.Id);
             if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
@@ -64,6 +70,18 @@ namespace MyKanban
                     property.Parent = _parent;
                     property.ParentId = _parentId;
                     property.ParentName = _parent.Name;
+                    DateTime _created;
+                    DateTime _modified;
+                    long _createdBy;
+                    long _modifiedBy;
+                    DateTime.TryParse(dr["created"].ToString(), out _created);
+                    DateTime.TryParse(dr["modified"].ToString(), out _modified);
+                    long.TryParse(dr["created_by"].ToString(), out _createdBy);
+                    long.TryParse(dr["modified_by"].ToString(), out _modifiedBy);
+                    property.Created = _created;
+                    property.Modified = _modified;
+                    property.CreatedBy = _createdBy;
+                    property.ModifiedBy = _modifiedBy;
                     _items.Add(property);
                 }
             }
@@ -155,6 +173,30 @@ namespace MyKanban
                 }
             }
             _items.Clear();
+        }
+
+        public override List<BaseItem> GetBaseList()
+        {
+            List<BaseItem> baseList = new List<BaseItem>();
+            foreach (var item in _items)
+            {
+                BaseItem baseItem = new BaseItem();
+                baseItem.Id = item.Id;
+                baseItem.Name = item.Name;
+                baseItem.Created = item.Created;
+                baseItem.CreatedBy = item.CreatedBy;
+                baseItem.Modified = item.Modified;
+                baseItem.ModifiedBy = item.ModifiedBy;
+                baseList.Add(baseItem);
+            }
+            return baseList;
+        }
+
+        public override void Reload()
+        {
+            base.Reload();
+
+            if (_parent != null) PropertiesConstructor(_parent, _credential);
         }
 
         new public void Remove(int index, bool delete = true)

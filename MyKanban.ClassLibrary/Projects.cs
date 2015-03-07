@@ -45,8 +45,14 @@ namespace MyKanban
 
         public Projects(Board board, Credential credential)
         {
+            ProjectsBoardConstructor(board, credential);
+        }
+
+        private void ProjectsBoardConstructor(Board board, Credential credential)
+        {
             if (credential != null) _credential = credential;
 
+            _items.Clear();
             DataSet dsProjects = MyKanban.Data.GetProjectsByBoard(board.Id, _credential.Id);
             foreach (DataRow drProject in dsProjects.Tables["results"].Rows)
             {
@@ -116,6 +122,13 @@ namespace MyKanban
                 baseList.Add(baseItem);
             }
             return baseList;
+        }
+
+        public override void Reload()
+        {
+            base.Reload();
+
+            if (_parent != null) ProjectsBoardConstructor((Board)_parent, _credential);
         }
 
         public void Remove(int index, bool delete = false)

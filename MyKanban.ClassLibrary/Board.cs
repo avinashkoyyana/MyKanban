@@ -37,20 +37,42 @@ using System.Reflection;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Represents a single MyKanban board object
+    /// </summary>
     public class Board : MyKanban.BaseItem, MyKanban.IDataItem
     {
         #region Constructors
 
+        /// <summary>
+        /// Create a new, empty Board object
+        /// </summary>
+        /// <param name="credential">Credentials to use when creating this object</param>
         public Board(Credential credential) 
         {
             if (credential != null) _credential = credential;
         }
 
+        /// <summary>
+        /// Create a new Board object by loading data for the given ID#
+        /// </summary>
+        /// <param name="boardId">ID# of board to load</param>
+        /// <param name="credential">Credentials to use when creating this object</param>
         public Board(long boardId, Credential credential)
+        {
+            BoardIdConstructor(boardId, credential);
+        }
+
+        private void BoardIdConstructor(long boardId, Credential credential)
         {
             if (credential != null) _credential = credential;
             _id = boardId;
-            LoadData();
+            _projects = null;
+            _properties = null;
+            _statusCodes = null;
+            _tasks = null;
+            _users = null;
+            LoadData(true);
         }
 
         #endregion
@@ -203,7 +225,10 @@ namespace MyKanban
 
         #region Methods
 
-        public void Delete()
+        /// <summary>
+        /// Delete this Board from the database
+        /// </summary>
+        public override void Delete()
         {
             Data.DeleteBoard(_id, _credential.Id);
 
@@ -223,6 +248,12 @@ namespace MyKanban
             }
         }
 
+        /// <summary>
+        /// Is the current user authorized to perform the specified operation
+        /// </summary>
+        /// <param name="userId">ID# of user</param>
+        /// <param name="authLevel">Operation being requested</param>
+        /// <returns>True if user is authorized, false otherwise</returns>
         public bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
         {
             // TODO: implement authorization logic
@@ -230,27 +261,36 @@ namespace MyKanban
             {
                 case Data.AuthorizationType.Read:
                     return true;
-                    break;
+
                 case Data.AuthorizationType.Add:
                     return false;
-                    break;
+
                 case Data.AuthorizationType.Update:
                     return false;
-                    break;
+
                 case Data.AuthorizationType.Delete:
                     return false;
-                    break;
+
                 default:
                     return false;
-                    break;
+
             }
         }
 
+        /// <summary>
+        /// Is the Board in a valid state
+        /// </summary>
+        /// <returns>True if Board is in valid state, false otherwise</returns>
         public bool IsValid()
         {
             return true;
         }
 
+        /// <summary>
+        /// Load Board datra from database
+        /// </summary>
+        /// <param name="force">If true, load data regardless of state of this object</param>
+        /// <returns>True if data has been successfully loaded</returns>
         public bool LoadData(bool force = false)
         {
             try
@@ -311,6 +351,24 @@ namespace MyKanban
             }
         }
 
+        /// <summary>
+        /// Reload data from database into this object
+        /// </summary>
+        public override void Reload()
+        {
+            base.Reload();
+
+            if (_id > 0)
+            {
+                BoardIdConstructor(_id, _credential);
+            }
+        }
+
+        /// <summary>
+        /// Update the database with data from this Board
+        /// </summary>
+        /// <param name="force">If true, write data to database regardless of the state of this object</param>
+        /// <returns>True if database has been successfully updated</returns>
         public bool Update(bool force = false)
         {
             try

@@ -38,6 +38,9 @@ namespace MyKanban
     {
         #region Properties
 
+        /// <summary>
+        /// Unique ID# for this object in the database
+        /// </summary>
         protected long _id = 0;
 
         /// <summary>
@@ -45,10 +48,10 @@ namespace MyKanban
         /// </summary>
         [MyKanban.Description("Unique ID# of this object in the database")]
         [MyKanban.ReadOnly(true)]
-        public long Id
+        virtual public long Id
         {
             get { return _id; }
-            set { _id = value; }
+            set { _id = value; _isDirty = true; }
         }
 
         protected string _name = "";
@@ -57,7 +60,7 @@ namespace MyKanban
         /// Display name of this item
         /// </summary>
         [MyKanban.Description("Display name")]
-        public string Name
+        public virtual string Name
         {
             get { return _name; }
             set
@@ -163,29 +166,52 @@ namespace MyKanban
 
         #region Methods
 
+        /// <summary>
+        /// Delete this item from its parent collection
+        /// </summary>
         virtual public void Delete()
         {
             // No Op - override in child class to perform operation
         }
 
+        /// <summary>
+        /// Is the current user authorized to perform the requestion operation
+        /// </summary>
+        /// <param name="id">ID# of user requesting operation</param>
+        /// <param name="authType">Type of authorization being requested.  Note: currently this method always returns true.</param>
+        /// <returns></returns>
         virtual public bool IsAuthorized(long id, Data.AuthorizationType authType)
         {
             // No Op - override in child class to perform operation
             return true;
         }
 
+        /// <summary>
+        /// Is the data in the object valid.
+        /// </summary>
+        /// <returns>True if valid, false otherwise</returns>
         virtual public bool IsValid()
         {
             // No Op - override in child class to perform operation
             return true;
         }
 
+        /// <summary>
+        /// Placeholder method for class-specific version to populate object with data from database.
+        /// </summary>
+        /// <param name="force">If true, read data from database regardless of state of object.</param>
+        /// <returns>True of data successfully loaded</returns>
         virtual public bool LoadData(bool force = false)
         {
             // No Op - override in child class to perform operation
             return true;
         }
 
+        /// <summary>
+        /// Placeholder method for class-specific version to save data from object back to database.
+        /// </summary>
+        /// <param name="force">If true, write data back to database regardless of state of object.</param>
+        /// <returns>True if data successfully written</returns>
         virtual public bool Update(bool force = false)
         {
             // No Op - override in child class to perform operation

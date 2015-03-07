@@ -35,10 +35,17 @@ using Newtonsoft.Json.Converters;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Represents a single MyKanban BoardSet - i.e. a collection of boards
+    /// </summary>
     public class BoardSet : MyKanban.BaseItem, MyKanban.IDataItem
     {
         #region Constructors
 
+        /// <summary>
+        /// Create a new instance of a BoardSet object
+        /// </summary>
+        /// <param name="credential">Credentials to use when creating this object</param>
         public BoardSet(Credential credential)
         {
             if (credential != null) _credential = credential;
@@ -47,10 +54,21 @@ namespace MyKanban
             _statusCodes = new StatusCodes(_credential);
         }
 
+        /// <summary>
+        /// Create a new instance of a BoardSet object
+        /// </summary>
+        /// <param name="boardSetId">ID# of BoardSet to load from database</param>
+        /// <param name="credential">Credentials to use when creating this object</param>
         public BoardSet(long boardSetId, Credential credential)
         {
+            BoardSetIdConstructor(boardSetId, credential);
+        }
+
+        private void BoardSetIdConstructor(long boardSetId, Credential credential)
+        {
+            if (credential != null) _credential = credential;
+
             _id = boardSetId;
-            _credential = credential;
             _boards = new Boards(_credential);
             _statusCodes = new StatusCodes(_credential);
 
@@ -62,6 +80,10 @@ namespace MyKanban
         #region Properties
 
         private Boards _boards;
+
+        /// <summary>
+        /// Collection of Board objects belonging to this BoardSet
+        /// </summary>
         public Boards Boards
         {
             get
@@ -72,6 +94,10 @@ namespace MyKanban
         }
         
         long _boardSetId = 0;
+
+        /// <summary>
+        /// ID# of this BoardSet
+        /// </summary>
         public long BoardSetId
         {
             get
@@ -87,6 +113,10 @@ namespace MyKanban
         }
 
         string _boardSetName = "";
+
+        /// <summary>
+        /// Name of this BoardSet
+        /// </summary>
         public string BoardSetName
         {
             get
@@ -96,6 +126,10 @@ namespace MyKanban
         }
 
         StatusCodes _statusCodes;
+
+        /// <summary>
+        /// Collection of status codes associated with this BoardSet
+        /// </summary>
         public StatusCodes StatusCodes
         {
             get
@@ -109,7 +143,10 @@ namespace MyKanban
 
         #region Methods
 
-        public void Delete()
+        /// <summary>
+        /// Delete this BoardSet from the database
+        /// </summary>
+        public override void Delete()
         {
             // First delete any boards that are part of this board set
             Boards boards = new Boards(this, _credential);
@@ -122,17 +159,32 @@ namespace MyKanban
             Data.DeleteBoardSet(_id, _credential.Id);
         }
 
+        /// <summary>
+        /// Is the user authorized to perform the requested operation
+        /// </summary>
+        /// <param name="userId">ID# of user</param>
+        /// <param name="authLevel">Operation requested</param>
+        /// <returns>True if user is authorized to perform the requested operation.  Note: this method currently always returns true.</returns>
         public bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
         {
             return true;
         }
 
+        /// <summary>
+        /// Is the BoardSet in a valid state
+        /// </summary>
+        /// <returns>True if BoardSet is in valid state, false otherwise</returns>
         public bool IsValid()
         {
             return true;
         }
 
-        public bool LoadData(bool force = false)
+        /// <summary>
+        /// Load data from database into this BoardSet object
+        /// </summary>
+        /// <param name="force">If true, load the BoardSet from database regardless of its state</param>
+        /// <returns>True if data successfully loaded</returns>
+        public override bool LoadData(bool force = false)
         {
             try
             {
@@ -179,6 +231,21 @@ namespace MyKanban
             }
         }
 
+        /// <summary>
+        /// Reload data from database 
+        /// </summary>
+        public override void Reload()
+        {
+            base.Reload();
+
+            BoardSetIdConstructor(_id, _credential);
+        }
+
+        /// <summary>
+        /// Update the database with data from this BoardSet object
+        /// </summary>
+        /// <param name="force">If true, update the database regardless of the state of this BoardSet object</param>
+        /// <returns>True if database successfully updated</returns>
         public bool Update(bool force = false)
         {
             try

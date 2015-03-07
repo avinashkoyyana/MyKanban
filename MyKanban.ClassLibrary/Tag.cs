@@ -32,15 +32,27 @@ using System.Data;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Represents a single tag that may be associated with a task
+    /// </summary>
     public class Tag : MyKanban.BaseItem, MyKanban.IDataItem
     {
         #region Constructors
 
+        /// <summary>
+        /// Create a new Tag object
+        /// </summary>
+        /// <param name="credential">Credentials to use when creating this Tag object</param>
         public Tag(Credential credential) 
         {
             if (credential != null) _credential = credential;
         }
 
+        /// <summary>
+        /// Create a new Tag object and initialize its Name property
+        /// </summary>
+        /// <param name="name">Name to assign to this Tag object</param>
+        /// <param name="credential">Credentials to use when creating this Tag object</param>
         public Tag(string name, Credential credential)
         {
             if (credential != null) _credential = credential;
@@ -48,6 +60,12 @@ namespace MyKanban
             _name = name;
         }
 
+        /// <summary>
+        /// Create a new Tag object and initialize its data from the database
+        /// based on the provided ID#
+        /// </summary>
+        /// <param name="tagId">ID# of tag to read from the database</param>
+        /// <param name="credential">Credentials to use when creating this Tag object</param>
         public Tag(long tagId, Credential credential)
         {
             if (credential != null) _credential = credential;
@@ -60,6 +78,9 @@ namespace MyKanban
 
         #region Properties
 
+        /// <summary>
+        /// Text of this Tag object, is a synonym for the Name property
+        /// </summary>
         public string Text
         {
             get { return _name; }
@@ -70,6 +91,10 @@ namespace MyKanban
         }
 
         long _tagId = 0;
+
+        /// <summary>
+        /// ID# of this Tag
+        /// </summary>
         public long TagId
         {
             get { return _tagId; }
@@ -77,6 +102,10 @@ namespace MyKanban
         }
 
         long _taskId = 0;
+
+        /// <summary>
+        /// ID# of parent Task object
+        /// </summary>
         public long TaskId
         {
             get { return _taskId; }
@@ -87,23 +116,40 @@ namespace MyKanban
 
         #region Methods
 
-        public void Delete()
+        /// <summary>
+        /// Delete this tag from the database
+        /// </summary>
+        public override void Delete()
         {
             Data.DeleteTaskTag(_taskId, _name, _credential.Id);
         }
 
-        public bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
+        /// <summary>
+        /// Does specified user have permission to perform the requested operation
+        /// </summary>
+        /// <param name="userId">ID# of user</param>
+        /// <param name="authLevel">Requested operation</param>
+        /// <returns>True if user has permission to perform the requested operation</returns>
+        public override bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
         {
-            return true;
+            return base.IsAuthorized(userId, authLevel);
         }
 
-        public bool IsValid()
+        /// <summary>
+        /// Is this Project object in a valid state
+        /// </summary>
+        /// <returns>True if Project object is in a valid state</returns>
+        public override bool IsValid()
         {
-            return true;
+            return base.IsValid();
         }
 
-        // Populate the object instance with data from the database
-        public bool LoadData(bool force = false)
+        /// <summary>
+        /// Populate the Tag instance with data from the database
+        /// </summary>
+        /// <param name="force">If true, populate this Tag regardless of state</param>
+        /// <returns>True if data was successfully loaded</returns>
+        public override bool LoadData(bool force = false)
         {
             try
             {
@@ -137,8 +183,12 @@ namespace MyKanban
             }
         }
 
-        // Update the database with data from this object instance
-        public bool Update( bool force = false)
+        /// <summary>
+        /// Update the database with data from this object instance
+        /// </summary>
+        /// <param name="force">If true, save data to database regardless of the state of this StatusCode object</param>
+        /// <returns>True if data successfully written to database</returns>
+        public override bool Update(bool force = false)
         {
             try
             {

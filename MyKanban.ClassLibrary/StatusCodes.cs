@@ -45,8 +45,14 @@ namespace MyKanban
 
         public StatusCodes(BoardSet boardSet, Credential credential)
         {
+            StatusCodesBoardSetConstructor(boardSet, credential);
+        }
+
+        private void StatusCodesBoardSetConstructor(BoardSet boardSet, Credential credential)
+        {
             if (credential != null) _credential = credential;
 
+            _items.Clear();
             DataSet dsStatusCodes = MyKanban.Data.GetStatusCodesByBoardSet(boardSet.Id, _credential.Id);
             foreach (DataRow drStatusCode in dsStatusCodes.Tables["results"].Rows)
             {
@@ -162,6 +168,13 @@ namespace MyKanban
                 baseList.Add(baseItem);
             }
             return baseList;
+        }
+
+        public override void Reload()
+        {
+            base.Reload();
+
+            if (_parent != null) StatusCodesBoardSetConstructor((BoardSet)_parent, _credential);
         }
 
         public void Remove(int index, bool delete = false)

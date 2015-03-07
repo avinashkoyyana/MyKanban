@@ -32,16 +32,30 @@ using System.Data;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Represents a single user who may access one or more boards
+    /// </summary>
     public class User : BaseItem, IDataItem
     {
         #region Constructors
 
+        /// <summary>
+        /// Create a new empty User object
+        /// </summary>
+        /// <param name="credential">Credentials to use when creating this User object</param>
         public User(Credential credential) 
         {
             if (credential != null) _credential = credential;
             Person = new Person(credential);
         }
 
+        /// <summary>
+        /// Create a new User object and populate its data from database based
+        /// on provided board and person IDs
+        /// </summary>
+        /// <param name="boardId">ID# of board</param>
+        /// <param name="personId">ID# of person</param>
+        /// <param name="credential">Credentials to use when creating this User object</param>
         public User(long boardId, long personId, Credential credential)
         {
             if (credential != null) _credential = credential;
@@ -59,6 +73,12 @@ namespace MyKanban
             }
         }
 
+        /// <summary>
+        /// Create a new User object and populate its data from database based
+        /// on the ID# provided
+        /// </summary>
+        /// <param name="userId">ID# of user</param>
+        /// <param name="credential">Credentials to use when creating this User object</param>
         public User(long userId, Credential credential)
         {
             if (credential != null) _credential = credential;
@@ -81,6 +101,9 @@ namespace MyKanban
 
         long _boardId = 0;
 
+        /// <summary>
+        /// ID# of board this user has access to
+        /// </summary>
         [MyKanban.Description("ID# of board this user has access to")]
         [MyKanban.ReadOnly(true)]
         public long BoardId
@@ -89,6 +112,9 @@ namespace MyKanban
             set { _boardId = value; }
         }
 
+        /// <summary>
+        /// Date/time underlying Person object created
+        /// </summary>
         [MyKanban.Description("Date/time created")]
         [MyKanban.ReadOnly(true)]
         public DateTime Created
@@ -97,7 +123,10 @@ namespace MyKanban
             set { Person.Created = value; }
         }
 
-        [MyKanban.Description("ID# of user who created this object")]
+        /// <summary>
+        /// ID# of user who created underlying Person object 
+        /// </summary>
+        [MyKanban.Description("ID# of user who created underlying Person object")]
         [MyKanban.ReadOnly(true)]
         public long CreatedBy
         {
@@ -105,6 +134,9 @@ namespace MyKanban
             set { Person.CreatedBy = value; }
         }
 
+        /// <summary>
+        /// Display name of user who created underlying Person object
+        /// </summary>
         [MyKanban.Description("Display name of user who created this object")]
         [MyKanban.ReadOnly(true)]
         public string CreatedByName
@@ -114,6 +146,9 @@ namespace MyKanban
 
         Credential _credential;
 
+        /// <summary>
+        /// Credential associated with this object
+        /// </summary>
         [MyKanban.Hidden(true)]
         public Credential Credential
         {
@@ -123,7 +158,10 @@ namespace MyKanban
 
         private long _personId = 0;
 
-        [MyKanban.Description("ID# of this user")]
+        /// <summary>
+        /// ID# of underlying Person object
+        /// </summary>
+        [MyKanban.Description("ID# of underlying Person object")]
         public long PersonId
         {
             get 
@@ -138,19 +176,28 @@ namespace MyKanban
             }
         }
 
+        /// <summary>
+        /// iDirty value of underlying Person object
+        /// </summary>
         [MyKanban.Hidden(true)]
         public bool IsDirty
         {
             get { return Person.IsDirty; }
         }
 
+        /// <summary>
+        /// isLoaded value of underlying Person object
+        /// </summary>
         [MyKanban.Hidden(true)]
         public bool IsLoaded
         {
             get { return Person.IsLoaded; }
         }
 
-        [MyKanban.Description("Date/time object was last modified")]
+        /// <summary>
+        /// Date/time underlying Person object was last modified
+        /// </summary>
+        [MyKanban.Description("Date/time underlying Person object was last modified")]
         [MyKanban.ReadOnly(true)]
         public DateTime Modified
         {
@@ -158,7 +205,10 @@ namespace MyKanban
             set { Person.Modified = value; }
         }
 
-        [MyKanban.Description("ID# of user who last modified this object")]
+        /// <summary>
+        /// ID# of user who last modified underlying Person object
+        /// </summary>
+        [MyKanban.Description("ID# of user who last modified underlying Person object")]
         [MyKanban.ReadOnly(true)]
         public long ModifiedBy
         {
@@ -166,24 +216,36 @@ namespace MyKanban
             set { Person.ModifiedBy = value; }
         }
 
-        [MyKanban.Description("Display name of user who last modified this object")]
+        /// <summary>
+        /// Display name of user who last modified underlying Person object
+        /// </summary>
+        [MyKanban.Description("Display name of user who last modified underlying Person object")]
         [MyKanban.ReadOnly(true)]
         public string ModifiedByName
         {
             get { return Person.ModifiedByName; }
         }
 
-        [MyKanban.Description("Display name of user")]
+        /// <summary>
+        /// Display name of underlying Person
+        /// </summary>
+        [MyKanban.Description("Display name of underlying Person")]
         [MyKanban.ReadOnly(true)]
         public string Name
         {
             get { return Person.Name; }
         }
 
+        /// <summary>
+        /// Underlying Person object
+        /// </summary>
         public Person Person;
 
         bool _canAdd = false;
 
+        /// <summary>
+        /// Can this user add tasks to the board
+        /// </summary>
         [MyKanban.Description("Can this user add tasks to the board")]
         [MyKanban.ControlType(enumControlType.Boolean)]
         public bool CanAdd
@@ -194,6 +256,9 @@ namespace MyKanban
 
         bool _canEdit = false;
 
+        /// <summary>
+        /// Can this user edit tasks in the board
+        /// </summary>
         [MyKanban.Description("Can this user edit tasks in the board")]
         [MyKanban.ControlType(enumControlType.Boolean)]
         public bool CanEdit
@@ -204,6 +269,9 @@ namespace MyKanban
 
         bool _canDelete = false;
 
+        /// <summary>
+        /// Can this user delete tasks from the board
+        /// </summary>
         [MyKanban.Description("Can this user delete tasks from the board")]
         [MyKanban.ControlType(enumControlType.Boolean)]
         public bool CanDelete
@@ -214,6 +282,9 @@ namespace MyKanban
 
         bool _canRead = true;
 
+        /// <summary>
+        /// Can this user view this board
+        /// </summary>
         [MyKanban.Description("Can this user view this board")]
         [MyKanban.ControlType(enumControlType.Boolean)]
         public bool CanRead
@@ -222,7 +293,10 @@ namespace MyKanban
             set { _canRead = value; }
         }
 
-        [MyKanban.Description("Login name of this user")]
+        /// <summary>
+        /// Login name of this user
+        /// </summary>
+        [MyKanban.Description("Login name of the underlying Person")]
         [MyKanban.ReadOnly(true)]
         public string UserName
         {
@@ -233,23 +307,40 @@ namespace MyKanban
 
         #region Methods
 
-        public void Delete() 
+        /// <summary>
+        /// Delete this user from its parent board
+        /// </summary>
+        public override void Delete() 
         {
-            //Person.Delete();
             Data.DeleteUserFromBoard(_boardId, Person.Id, _credential.Id);
         }
 
-        public bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
+        /// <summary>
+        /// Does specified user have permission to perform the requested operation
+        /// </summary>
+        /// <param name="userId">ID# of user</param>
+        /// <param name="authLevel">Requested operation</param>
+        /// <returns>True if user has permission to perform the requested operation</returns>
+        public override bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
         {
             return Person.IsAuthorized(userId, authLevel);
         }
 
-        public string JSON() 
+        /// <summary>
+        /// Return JSON for underlying Person object
+        /// </summary>
+        /// <returns>JSON of Person object</returns>
+        public override string JSON() 
         {
             return Person.JSON();
         }
 
-        public bool LoadData(bool force = false) 
+        /// <summary>
+        /// Populate the Userk instance with data from the database
+        /// </summary>
+        /// <param name="force">If true, populate this User regardless of state</param>
+        /// <returns>True if data was successfully loaded</returns>
+        public override bool LoadData(bool force = false) 
         {
             Person.LoadData(force);
             if (_id > 0)
@@ -267,7 +358,12 @@ namespace MyKanban
             return true;
         }
 
-        public bool Update(bool force = false) 
+        /// <summary>
+        /// Update the database with data from this object instance
+        /// </summary>
+        /// <param name="force">If true, save data to database regardless of the state of this StatusCode object</param>
+        /// <returns>True if data successfully written to database</returns>
+        public override bool Update(bool force = false) 
         {
             //return Person.Update(force);
             if (_boardId > 0 && _personId > 0)

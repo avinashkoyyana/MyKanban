@@ -37,6 +37,9 @@ using MySql.Data.MySqlClient;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Specifies contract that all MyKanban list objects must meet
+    /// </summary>
     public interface IDataList
     {
 
@@ -46,6 +49,7 @@ namespace MyKanban
         bool IsDirty { get; }
         bool IsLoaded { get; }
         int Count { get; }
+        List<BaseItem> Items { get; }
         MyKanban.IDataItem Parent { get; set; }
         long ParentId { get; }
 
@@ -55,6 +59,7 @@ namespace MyKanban
 
         void Clear(bool delete = false);
         string JSON();
+        void Reload();
         void Remove(int index, bool delete = false);
         bool Update(bool force = false);
 

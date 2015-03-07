@@ -32,15 +32,27 @@ using System.Data;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Represents a single Comment associated with a task or sub-task
+    /// </summary>
     public class Comment : MyKanban.BaseItem, MyKanban.IDataItem
     {
         #region Constructors
 
+        /// <summary>
+        /// Create a new Comment object
+        /// </summary>
+        /// <param name="credential">Credentials used to create this Comment</param>
         public Comment(Credential credential) 
         {
             if (credential != null) _credential = credential;
         }
 
+        /// <summary>
+        /// Create a new Comment object
+        /// </summary>
+        /// <param name="name">Text of comment to create</param>
+        /// <param name="credential">Credentials used to create this Comment</param>
         public Comment(string name, Credential credential)
         {
             if (credential != null) _credential = credential;
@@ -48,6 +60,11 @@ namespace MyKanban
             _name = name;
         }
 
+        /// <summary>
+        /// Create a new Comment object
+        /// </summary>
+        /// <param name="CommentId">ID# of comment to load from database</param>
+        /// <param name="credential">Credentials used to create this Comment</param>
         public Comment(long CommentId, Credential credential)
         {
             if (credential != null) _credential = credential;
@@ -60,6 +77,9 @@ namespace MyKanban
 
         #region Properties
 
+        /// <summary>
+        /// ID# of this Comment
+        /// </summary>
         [MyKanban.Description("The ID# of this comment")]
         [MyKanban.ReadOnly(true)]
         public long CommentId
@@ -68,6 +88,9 @@ namespace MyKanban
             set { _id = value; }
         }
 
+        /// <summary>
+        /// Parent object of this comment - i.e. the parent task
+        /// </summary>
         [MyKanban.Description("Parent object of this comment - i.e. the parent task")]
         [MyKanban.Hidden(true)]
         public override IDataItem Parent
@@ -85,6 +108,9 @@ namespace MyKanban
             }
         }
 
+        /// <summary>
+        /// Synonym for TaskId property; the task that this comment belongs to
+        /// </summary>
         [MyKanban.Description("Synonym for TaskId property; the task that this comment belongs to")]
         public override long ParentId
         {
@@ -101,6 +127,9 @@ namespace MyKanban
             }
         }
 
+        /// <summary>
+        /// Name of parent task for this comment
+        /// </summary>
         [MyKanban.Description("Name of parent task for this comment")]
         public override string ParentName
         {
@@ -117,6 +146,9 @@ namespace MyKanban
             }
         }
 
+        /// <summary>
+        /// Synonym for Name property
+        /// </summary>
         [MyKanban.Description("Synonym for Name property")]
         public string Text
         {
@@ -130,6 +162,9 @@ namespace MyKanban
 
         long _taskId = 0;
 
+        /// <summary>
+        /// Synonym for ID# of this comment
+        /// </summary>
         [MyKanban.Description("Synonym for ID# of this comment")]
         [MyKanban.ReadOnly(true)]
         public long TaskId
@@ -142,23 +177,40 @@ namespace MyKanban
 
         #region Methods
 
-        public void Delete()
+        /// <summary>
+        /// Delete this Comment object from the database
+        /// </summary>
+        public override void Delete()
         {
             Data.DeleteTaskComment(_id, _credential.Id);
         }
 
-        public bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
+        /// <summary>
+        /// Is the user authorized to perform the specified operation
+        /// </summary>
+        /// <param name="userId">ID# of user</param>
+        /// <param name="authLevel">Operation to perform</param>
+        /// <returns>True if user is authorized to perform the requested operation</returns>
+        public override bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
         {
             return true;
         }
 
-        public bool IsValid()
+        /// <summary>
+        /// Is this object in a valid state
+        /// </summary>
+        /// <returns>True if object is in a valid state, false otherwise</returns>
+        public override bool IsValid()
         {
             return true;
         }
 
-        // Populate the object instance with data from the database
-        public bool LoadData(bool force = false)
+        /// <summary>
+        /// Populate the object instance with data from the database
+        /// </summary>
+        /// <param name="force">If true, load data from database regardless of the state of this object</param>
+        /// <returns>True if data successfully loaded</returns>
+        public override bool LoadData(bool force = false)
         {
             try
             {
@@ -191,8 +243,12 @@ namespace MyKanban
             }
         }
 
-        // Update the database with data from this object instance
-        public bool Update( bool force = false)
+        /// <summary>
+        /// Update the database with data from this object instance
+        /// </summary>
+        /// <param name="force">If true, update the database regardless of the state of this object</param>
+        /// <returns>True if database successfully updated</returns>
+        public override bool Update( bool force = false)
         {
             try
             {

@@ -39,6 +39,9 @@ namespace MyKanban
     {
         #region Properties
 
+        /// <summary>
+        /// Variable to store credentials used when instantiating a new instance
+        /// </summary>
         protected Credential _credential = new Credential();
 
         /// <summary>
@@ -52,17 +55,23 @@ namespace MyKanban
             set { _credential = value; }
         }
 
+        /// <summary>
+        /// Indicates whether any property or field values have changed
+        /// </summary>
         protected bool _isDirty = true;
 
         /// <summary>
         /// Indicates whether data in this object has changed since last Update()
         /// </summary>
         [MyKanban.Hidden(true)]
-        public bool IsDirty
+        virtual public bool IsDirty
         {
             get { return _isDirty; }
         }
 
+        /// <summary>
+        /// Indicates whether data has been loaded into this object from the database
+        /// </summary>
         protected bool _isLoaded = false;
 
         /// <summary>
@@ -122,6 +131,7 @@ namespace MyKanban
         private string _parentType = "None";
 
         [MyKanban.Description("The class name of this object's parent")]
+        [MyKanban.Hidden(true)]
         virtual public string ParentType
         {
             get 
@@ -135,18 +145,25 @@ namespace MyKanban
 
         #region Methods
 
+        private string _JSON = "";
+
         /// <summary>
         /// Get JSON for this item
         /// </summary>
         /// <returns>String containing item JSON</returns>
-        private string _JSON = "";
-        public string JSON()
+        virtual public string JSON()
         {
             if (string.IsNullOrEmpty(_JSON))
             {
                 _JSON = Data.GetJson(this);
             }
             return _JSON;
+        }
+
+        // No op - to be filled in for specific classes
+        virtual public void Reload()
+        {
+            _isLoaded = false;
         }
 
         #endregion

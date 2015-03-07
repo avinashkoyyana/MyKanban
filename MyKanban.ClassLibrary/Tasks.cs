@@ -45,8 +45,14 @@ namespace MyKanban
 
         public Tasks(Board board, Credential credential)
         {
+            TaskBoardConstructor(board, credential);
+        }
+
+        private void TaskBoardConstructor(Board board, Credential credential)
+        {
             if (credential != null) _credential = credential;
 
+            _items.Clear();
             DataSet dsTasks = MyKanban.Data.GetTasksByBoard(board.Id, _credential.Id);
             foreach (DataRow drTask in dsTasks.Tables["results"].Rows)
             {
@@ -62,8 +68,14 @@ namespace MyKanban
 
         public Tasks(Project project, Credential credential)
         {
+            TaskProjectConstructor(project, credential);
+        }
+
+        private void TaskProjectConstructor(Project project, Credential credential)
+        {
             if (credential != null) _credential = credential;
 
+            _items.Clear();
             DataSet dsTasks = MyKanban.Data.GetTasksByProject(project.Id, _credential.Id);
             foreach (DataRow drTask in dsTasks.Tables["results"].Rows)
             {
@@ -78,8 +90,14 @@ namespace MyKanban
 
         public Tasks(Task task, Credential credential)
         {
+            TaskTaskConstructor(task, credential);
+        }
+
+        private void TaskTaskConstructor(Task task, Credential credential)
+        {
             if (credential != null) _credential = credential;
 
+            _items.Clear();
             if (task.Id > 0)
             {
                 DataSet dsTasks = MyKanban.Data.GetSubTasksForTask(task.Id, _credential.Id);
@@ -192,7 +210,27 @@ namespace MyKanban
             UpdateProjectId(task);
         }
 
-        public bool Update(bool force = false)
+        public override void Reload()
+        {
+            base.Reload();
+
+            switch (this.ParentType)
+            {
+                case "MyKanban.Board":
+                    TaskBoardConstructor((MyKanban.Board)_parent, _credential);
+                    break;
+                case "MyKanban.Project":
+                    TaskProjectConstructor((MyKanban.Project)_parent, _credential);
+                    break;
+                case "MyKanban.Task":
+                    TaskTaskConstructor((MyKanban.Task)_parent, _credential);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public override bool Update(bool force = false)
         {
             try
             {

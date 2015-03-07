@@ -1,0 +1,8 @@
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanClassLibrary\bin\Release\MyKanbanClassLibrary.dll.config
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanClassLibrary\bin\Release\MyKanbanClassLibrary.dll
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanClassLibrary\bin\Release\MyKanbanClassLibrary.pdb
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanClassLibrary\bin\Release\Newtonsoft.Json.dll
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanClassLibrary\bin\Release\Newtonsoft.Json.xml
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanClassLibrary\obj\Release\MyKanbanClassLibrary.dll
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanClassLibrary\obj\Release\MyKanbanClassLibrary.pdb
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanClassLibrary\obj\Release\MyKanbanClassLibrary.csprojResolveAssemblyReference.cache

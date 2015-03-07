@@ -45,8 +45,13 @@ namespace MyKanban
 
         public Boards(BoardSet boardSet, Credential credential)
         {
-            if (credential != null) _credential = credential;
+            BoardsBoardSetConstructor(boardSet, credential);
+        }
 
+        public void BoardsBoardSetConstructor(BoardSet boardSet, Credential credential)
+        {
+            if (credential != null) _credential = credential;
+            _items.Clear();
             DataSet dsBoards = MyKanban.Data.GetBoardsByBoardSet(boardSet.Id, _credential.Id);
             foreach (DataRow drBoard in dsBoards.Tables["results"].Rows)
             {
@@ -121,6 +126,13 @@ namespace MyKanban
                 baseList.Add(baseItem);
             }
             return baseList;
+        }
+
+        public override void Reload()
+        {
+            base.Reload();
+
+            if (_parent != null) BoardsBoardSetConstructor((BoardSet)_parent, _credential);
         }
 
         public void Remove(Board board, bool delete = false)

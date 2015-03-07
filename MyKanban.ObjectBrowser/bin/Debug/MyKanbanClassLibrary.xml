@@ -1,0 +1,1662 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyKanbanClassLibrary</name>
+    </assembly>
+    <members>
+        <member name="T:MyKanban.Approver">
+            <summary>
+            Represents a single approver associated with a task or sub-task.
+            </summary>
+        </member>
+        <member name="T:MyKanban.BaseItem">
+            <summary>
+            Contains common methods and properties for all 
+            item-level classes
+            </summary>
+        </member>
+        <member name="T:MyKanban.Base">
+            <summary>
+            Contains properties and methods common to both item and list level classes
+            </summary>
+        </member>
+        <member name="F:MyKanban.Base._credential">
+            <summary>
+            Variable to store credentials used when instantiating a new instance
+            </summary>
+        </member>
+        <member name="F:MyKanban.Base._isDirty">
+            <summary>
+            Indicates whether any property or field values have changed
+            </summary>
+        </member>
+        <member name="F:MyKanban.Base._isLoaded">
+            <summary>
+            Indicates whether data has been loaded into this object from the database
+            </summary>
+        </member>
+        <member name="M:MyKanban.Base.JSON">
+            <summary>
+            Get JSON for this item
+            </summary>
+            <returns>String containing item JSON</returns>
+        </member>
+        <member name="P:MyKanban.Base.Credential">
+            <summary>
+            Object representing user credentials in MyKanban system
+            </summary>
+        </member>
+        <member name="P:MyKanban.Base.IsDirty">
+            <summary>
+            Indicates whether data in this object has changed since last Update()
+            </summary>
+        </member>
+        <member name="P:MyKanban.Base.IsLoaded">
+            <summary>
+            Indicates whether all data has been loaded into the object
+            </summary>
+        </member>
+        <member name="P:MyKanban.Base.Parent">
+            <summary>
+            Parent object of this object
+            </summary>
+        </member>
+        <member name="P:MyKanban.Base.ParentId">
+            <summary>
+            ID# of the parent of this object
+            </summary>
+        </member>
+        <member name="P:MyKanban.Base.ParentName">
+            <summary>
+            Name of the parent of this object
+            </summary>
+        </member>
+        <member name="F:MyKanban.BaseItem._id">
+            <summary>
+            Unique ID# for this object in the database
+            </summary>
+        </member>
+        <member name="M:MyKanban.BaseItem.Delete">
+            <summary>
+            Delete this item from its parent collection
+            </summary>
+        </member>
+        <member name="M:MyKanban.BaseItem.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)">
+            <summary>
+            Is the current user authorized to perform the requestion operation
+            </summary>
+            <param name="id">ID# of user requesting operation</param>
+            <param name="authType">Type of authorization being requested.  Note: currently this method always returns true.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MyKanban.BaseItem.IsValid">
+            <summary>
+            Is the data in the object valid.
+            </summary>
+            <returns>True if valid, false otherwise</returns>
+        </member>
+        <member name="M:MyKanban.BaseItem.LoadData(System.Boolean)">
+            <summary>
+            Placeholder method for class-specific version to populate object with data from database.
+            </summary>
+            <param name="force">If true, read data from database regardless of state of object.</param>
+            <returns>True of data successfully loaded</returns>
+        </member>
+        <member name="M:MyKanban.BaseItem.Update(System.Boolean)">
+            <summary>
+            Placeholder method for class-specific version to save data from object back to database.
+            </summary>
+            <param name="force">If true, write data back to database regardless of state of object.</param>
+            <returns>True if data successfully written</returns>
+        </member>
+        <member name="P:MyKanban.BaseItem.Id">
+            <summary>
+            Unique ID# of this item
+            </summary>
+        </member>
+        <member name="P:MyKanban.BaseItem.Name">
+            <summary>
+            Display name of this item
+            </summary>
+        </member>
+        <member name="P:MyKanban.BaseItem.Created">
+            <summary>
+            Date &amp; time this item was added to the system
+            </summary>
+        </member>
+        <member name="P:MyKanban.BaseItem.CreatedBy">
+            <summary>
+            ID# of the user who added this item
+            </summary>
+        </member>
+        <member name="P:MyKanban.BaseItem.CreatedByName">
+            <summary>
+            Name of the user who added this item
+            </summary>
+        </member>
+        <member name="P:MyKanban.BaseItem.ModifiedBy">
+            <summary>
+            ID# of user who last modified this item
+            </summary>
+        </member>
+        <member name="P:MyKanban.BaseItem.Modified">
+            <summary>
+            Date &amp; time when this item was last modified
+            </summary>
+        </member>
+        <member name="P:MyKanban.BaseItem.ModifiedByName">
+            <summary>
+            Name of user who last modified this item
+            </summary>
+        </member>
+        <member name="T:MyKanban.IDataItem">
+            <summary>
+            Specifies contract that all MyKanban item classes must meet
+            </summary>
+        </member>
+        <member name="M:MyKanban.Approver.#ctor(MyKanban.Credential)">
+            <summary>
+            Create a new approver object instance
+            </summary>
+            <param name="credential">Credentials to use when creating this approver object</param>
+        </member>
+        <member name="M:MyKanban.Approver.#ctor(System.Int64,MyKanban.Credential)">
+            <summary>
+            Create a new approver object instance
+            </summary>
+            <param name="approverId">ID# of approver to read from database</param>
+            <param name="credential">Credentialo to use when creating this approver object</param>
+        </member>
+        <member name="M:MyKanban.Approver.Delete">
+            <summary>
+            Delete this approver from task or sub-task
+            </summary>
+            <example>
+            <code>
+            Approver approver = new Approver(123, user);
+            approver.Delete();        
+            </code>
+            </example>
+        </member>
+        <member name="M:MyKanban.Approver.LoadData(System.Boolean)">
+            <summary>
+            Retrieve data from database into this object
+            </summary>
+            <param name="force">If true, object will be reloaded even if no data has changed</param>
+            <returns></returns>
+        </member>
+        <member name="M:MyKanban.Approver.Update(System.Boolean)">
+            <summary>
+            Save data from object to database
+            </summary>
+            <param name="force">If true, data will be saved even if no data has changed since being loaded into object from the database.</param>
+            <returns></returns>
+        </member>
+        <member name="P:MyKanban.Approver.Name">
+            <summary>
+            Name of approver
+            </summary>
+        </member>
+        <member name="P:MyKanban.Approver.PersonId">
+            <summary>
+            ID# of task approver
+            </summary>
+        </member>
+        <member name="P:MyKanban.Approver.TaskId">
+            <summary>
+            ID# of parent task
+            </summary>
+        </member>
+        <member name="T:MyKanban.Approvers">
+            <summary>
+            Represents a collection of all approvers associated with a given task or sub-task
+            </summary>
+        </member>
+        <member name="T:MyKanban.BaseList">
+            <summary>
+            Contains common properties and methods for all list-level
+            classes
+            </summary>
+        </member>
+        <member name="T:MyKanban.IDataList">
+            <summary>
+            Specifies contract that all MyKanban list objects must meet
+            </summary>
+        </member>
+        <member name="M:MyKanban.BaseList.Add(MyKanban.BaseItem)">
+            <summary>
+            Add a new item to this collection
+            </summary>
+            <param name="item">Item to be added</param>
+        </member>
+        <member name="M:MyKanban.BaseList.Clear(System.Boolean)">
+            <summary>
+            Remove all items from this collection
+            </summary>
+            <param name="delete">If true, delete all item data from database as well as removing them from the list</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:MyKanban.BaseList.GetBaseList" -->
+        <member name="M:MyKanban.BaseList.Remove(System.Int32,System.Boolean)">
+            <summary>
+            Remove item at the specified index position from the collection
+            </summary>
+            <param name="index">Ordinal position of the item to be removed</param>
+            <param name="delete">If true, also delete the item's data from the database</param>
+        </member>
+        <member name="M:MyKanban.BaseList.Remove(MyKanban.BaseItem,System.Boolean)">
+            <summary>
+            Remove a given item from the collection
+            </summary>
+            <param name="item">Object representing the item to be removed</param>
+            <param name="delete">If true, delete the item's data from the database</param>
+        </member>
+        <member name="M:MyKanban.BaseList.Update(System.Boolean)">
+            <summary>
+            Update the database with data from all items in this collection
+            </summary>
+            <param name="force">If true, update the database regardless of the state of the individual items</param>
+            <returns>True if database is successfully updated</returns>
+        </member>
+        <member name="P:MyKanban.BaseList.Item(System.Int32)">
+            <summary>
+            Indexer for this collection
+            </summary>
+            <param name="index">Ordinal position of BaseItem to return</param>
+            <returns>BaseItem object at the specified index position</returns>
+        </member>
+        <member name="P:MyKanban.BaseList.Count">
+            <summary>
+            Return the # of items in this collection
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:MyKanban.BaseList.Items" -->
+        <member name="M:MyKanban.Approvers.#ctor(MyKanban.Credential)">
+            <summary>
+            Create a new approvers collection
+            </summary>
+            <param name="credential">Credentials to use when creating this collection.</param>
+        </member>
+        <member name="M:MyKanban.Approvers.#ctor(MyKanban.Task,MyKanban.Credential)">
+            <summary>
+            Create a new approvers collection
+            </summary>
+            <param name="task">Parent task or sub-task this collection is for</param>
+            <param name="credential">Credentials to use when creating this collection.</param>
+        </member>
+        <member name="M:MyKanban.Approvers.ApproversTaskConstructor(MyKanban.Task,MyKanban.Credential)">
+            <summary>
+            Code pulled out of constructor so can also be called by Reload() method
+            </summary>
+            <param name="task">Parent task or sub-task this collection is for</param>
+            <param name="credential">Credentials to use when creating this collection.</param>
+        </member>
+        <member name="M:MyKanban.Approvers.#ctor(System.Int64,MyKanban.Credential)">
+            <summary>
+            Create a new approvers collection
+            </summary>
+            <param name="taskId">ID# of parent task or sub-task</param>
+            <param name="credential">Credentials to use when creating this collection</param>
+        </member>
+        <member name="M:MyKanban.Approvers.ApproversTaskIdConstructor(System.Int64,MyKanban.Credential)">
+            <summary>
+            Code pulled out of constructor so could be called by Reload() method as well as by constructor
+            </summary>
+            <param name="taskId">ID# of parent task or sub-task</param>
+            <param name="credential">Credentials to use when creating this collection</param>
+        </member>
+        <member name="M:MyKanban.Approvers.Clear(System.Boolean)">
+            <summary>
+            Remove all approvers from the collection
+            </summary>
+            <param name="delete">If true, will also cause removed items to be deleted from the database</param>
+        </member>
+        <member name="M:MyKanban.Approvers.GetBaseList">
+            <summary>
+            Return a list of BaseItem objects corresponding to items in this collection
+            </summary>
+            <returns>A collection of BaseItems</returns>
+        </member>
+        <member name="M:MyKanban.Approvers.Reload">
+            <summary>
+            Reload all data for this collection from database
+            </summary>
+        </member>
+        <member name="P:MyKanban.Approvers.Item(System.Int32)">
+            <summary>
+            Indexer for collection
+            </summary>
+            <param name="index">Ordinal position of item to return</param>
+            <returns>Approver at specified index position</returns>
+        </member>
+        <member name="T:MyKanban.Description">
+            <summary>
+            A MyKanban description that can be associated with a property, used by
+            .NET reflection to perform property-specific processing.
+            </summary>
+        </member>
+        <member name="M:MyKanban.Description.#ctor(System.String)">
+            <summary>
+            Constructor to initialize attribute with text of property description.
+            </summary>
+            <param name="text">Text of description</param>
+        </member>
+        <member name="P:MyKanban.Description.Text">
+            <summary>
+            Text of property description.
+            </summary>
+        </member>
+        <member name="T:MyKanban.Hidden">
+            <summary>
+            Indicates whether a property should be hidden in the MyKanban Object Browser
+            </summary>
+        </member>
+        <member name="M:MyKanban.Hidden.#ctor(System.Boolean)">
+            <summary>
+            Initialize with boolean value indicating whether this property
+            should appear in MyKanban Object Browser
+            </summary>
+            <param name="hidden">True = hide this property</param>
+        </member>
+        <member name="P:MyKanban.Hidden.Hide">
+            <summary>
+            Value for this attribute.
+            </summary>
+        </member>
+        <member name="T:MyKanban.ReadOnly">
+            <summary>
+            Indicates whether a property should be treated as read-only in the
+            MyKanban Object Browser
+            </summary>
+        </member>
+        <member name="M:MyKanban.ReadOnly.#ctor(System.Boolean)">
+            <summary>
+            Initialize with boolean value indicating whether this property
+            should be treated as read-only.  Note, if property has no get{} method,
+            will be read-only regardless of this setting.
+            </summary>
+            <param name="readOnly">True = make this property read-only</param>
+        </member>
+        <member name="P:MyKanban.ReadOnly.Value">
+            <summary>
+            Value for this attribute
+            </summary>
+        </member>
+        <member name="T:MyKanban.enumControlType">
+            <summary>
+            Allowable values for ControlType attribute.
+            </summary>
+        </member>
+        <member name="T:MyKanban.ControlType">
+            <summary>
+            Indicates type of control to use when displaying this property in the
+            MyKanban Object Browser.  Default is "TextBox" if not specified.
+            </summary>
+        </member>
+        <member name="M:MyKanban.ControlType.#ctor(MyKanban.enumControlType)">
+            <summary>
+            Initialize the control type.
+            </summary>
+            <param name="controlType">Must be a valid enumControlType value.</param>
+        </member>
+        <member name="P:MyKanban.ControlType.Type">
+            <summary>
+            enumControlType value associated with this attribute.
+            </summary>
+        </member>
+        <member name="T:MyKanban.Comment">
+            <summary>
+            Represents a single Comment associated with a task or sub-task
+            </summary>
+        </member>
+        <member name="M:MyKanban.Comment.#ctor(MyKanban.Credential)">
+            <summary>
+            Create a new Comment object
+            </summary>
+            <param name="credential">Credentials used to create this Comment</param>
+        </member>
+        <member name="M:MyKanban.Comment.#ctor(System.String,MyKanban.Credential)">
+            <summary>
+            Create a new Comment object
+            </summary>
+            <param name="name">Text of comment to create</param>
+            <param name="credential">Credentials used to create this Comment</param>
+        </member>
+        <member name="M:MyKanban.Comment.#ctor(System.Int64,MyKanban.Credential)">
+            <summary>
+            Create a new Comment object
+            </summary>
+            <param name="CommentId">ID# of comment to load from database</param>
+            <param name="credential">Credentials used to create this Comment</param>
+        </member>
+        <member name="M:MyKanban.Comment.Delete">
+            <summary>
+            Delete this Comment object from the database
+            </summary>
+        </member>
+        <member name="M:MyKanban.Comment.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)">
+            <summary>
+            Is the user authorized to perform the specified operation
+            </summary>
+            <param name="userId">ID# of user</param>
+            <param name="authLevel">Operation to perform</param>
+            <returns>True if user is authorized to perform the requested operation</returns>
+        </member>
+        <member name="M:MyKanban.Comment.IsValid">
+            <summary>
+            Is this object in a valid state
+            </summary>
+            <returns>True if object is in a valid state, false otherwise</returns>
+        </member>
+        <member name="M:MyKanban.Comment.LoadData(System.Boolean)">
+            <summary>
+            Populate the object instance with data from the database
+            </summary>
+            <param name="force">If true, load data from database regardless of the state of this object</param>
+            <returns>True if data successfully loaded</returns>
+        </member>
+        <member name="M:MyKanban.Comment.Update(System.Boolean)">
+            <summary>
+            Update the database with data from this object instance
+            </summary>
+            <param name="force">If true, update the database regardless of the state of this object</param>
+            <returns>True if database successfully updated</returns>
+        </member>
+        <member name="P:MyKanban.Comment.CommentId">
+            <summary>
+            ID# of this Comment
+            </summary>
+        </member>
+        <member name="P:MyKanban.Comment.Parent">
+            <summary>
+            Parent object of this comment - i.e. the parent task
+            </summary>
+        </member>
+        <member name="P:MyKanban.Comment.ParentId">
+            <summary>
+            Synonym for TaskId property; the task that this comment belongs to
+            </summary>
+        </member>
+        <member name="P:MyKanban.Comment.ParentName">
+            <summary>
+            Name of parent task for this comment
+            </summary>
+        </member>
+        <member name="P:MyKanban.Comment.Text">
+            <summary>
+            Synonym for Name property
+            </summary>
+        </member>
+        <member name="P:MyKanban.Comment.TaskId">
+            <summary>
+            Synonym for ID# of this comment
+            </summary>
+        </member>
+        <member name="T:MyKanban.Property">
+            <summary>
+            Represents a single property key/value pair that may be associated with another object
+            </summary>
+        </member>
+        <member name="M:MyKanban.Property.#ctor(MyKanban.Credential)">
+            <summary>
+            Create a new Property object instance
+            </summary>
+            <param name="credential">Credentials to use when creating Property object</param>
+        </member>
+        <member name="M:MyKanban.Property.#ctor(MyKanban.IDataItem,MyKanban.Credential)">
+            <summary>
+            Create a new Property object for a given parent object
+            </summary>
+            <param name="parentObject">Parent object to create property for</param>
+            <param name="credential">Credentials to use when creating Property object</param>
+        </member>
+        <member name="M:MyKanban.Property.Delete">
+            <summary>
+            Delete this property from the database
+            </summary>
+        </member>
+        <member name="M:MyKanban.Property.LoadData(System.Boolean)">
+            <summary>
+            Load data for this property from the database
+            </summary>
+            <param name="force">If true, load this property regardless of its state</param>
+            <returns>True if property successfully loaded</returns>
+        </member>
+        <member name="M:MyKanban.Property.Update(System.Boolean)">
+            <summary>
+            Write this Property object's data back to the database
+            </summary>
+            <param name="force">If true, update the database regardless of the state of this property object</param>
+            <returns>True if data successfully written</returns>
+        </member>
+        <member name="P:MyKanban.Property.Value">
+            <summary>
+            Value to assign to thie property
+            </summary>
+        </member>
+        <member name="P:MyKanban.Property.ValueType">
+            <summary>
+            Type of this property
+            </summary>
+        </member>
+        <member name="T:MyKanban.Sprint">
+            <summary>
+            Represents a single sprint interval that may be associated with a Board object
+            </summary>
+        </member>
+        <member name="M:MyKanban.Sprint.#ctor(MyKanban.Credential)">
+            <summary>
+            Create an empty Sprint object
+            </summary>
+            <param name="credential">Credentials to use when creating this Sprint object</param>
+        </member>
+        <member name="M:MyKanban.Sprint.#ctor(System.Int64,MyKanban.Credential)">
+            <summary>
+            Create a new Sprint object and load data for the provided ID# from the database
+            </summary>
+            <param name="sprintId">ID# of Sprint to load from database</param>
+            <param name="credential">Credentials to use when creating this Sprint object</param>
+        </member>
+        <member name="M:MyKanban.Sprint.#ctor(System.Int64,System.DateTime,System.DateTime,System.Int32,MyKanban.Credential)">
+            <summary>
+            Create a new Sprint object and initialize its data with provided parameters
+            </summary>
+            <param name="boardId">ID# of Board this sprint belongs to</param>
+            <param name="startDate">Start date of sprint</param>
+            <param name="endDate">End date of sprint</param>
+            <param name="sequence">Ordinal position of this sprint within list of sprints</param>
+            <param name="credential">Credentials to use when creating this Sprint object</param>
+        </member>
+        <member name="M:MyKanban.Sprint.Delete">
+            <summary>
+            Delete this Sprint from the database
+            </summary>
+        </member>
+        <member name="M:MyKanban.Sprint.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)">
+            <summary>
+            Is the specified user authorized to perform the requested operation
+            </summary>
+            <param name="userId">ID# of user</param>
+            <param name="authLevel">Operation to perform</param>
+            <returns>True if user is authorized to perform the requested operation</returns>
+        </member>
+        <member name="M:MyKanban.Sprint.IsValid">
+            <summary>
+            Is this Sprint object in a valid state
+            </summary>
+            <returns>True if this Sprint object is in a valid state</returns>
+        </member>
+        <member name="M:MyKanban.Sprint.LoadData(System.Boolean)">
+            <summary>
+            Load data for this Sprint object from the database
+            </summary>
+            <param name="force">If true, load data regardless of the state of this object</param>
+            <returns>True if data successfully loaded</returns>
+        </member>
+        <member name="M:MyKanban.Sprint.Update(System.Boolean)">
+            <summary>
+            Update the database with data from this Sprint object
+            </summary>
+            <param name="force">If true, write data to database regardless of the state of this object</param>
+            <returns>True if data successfully written</returns>
+        </member>
+        <member name="P:MyKanban.Sprint.EndDate">
+            <summary>
+            End date of sprint
+            </summary>
+        </member>
+        <member name="P:MyKanban.Sprint.Name">
+            <summary>
+            Display name of this sprint
+            </summary>
+        </member>
+        <member name="P:MyKanban.Sprint.ParentName">
+            <summary>
+            Name of board containing this sprint object
+            </summary>
+        </member>
+        <member name="P:MyKanban.Sprint.ParentType">
+            <summary>
+            "Type of parent object
+            </summary>
+        </member>
+        <member name="P:MyKanban.Sprint.Sequence">
+            <summary>
+            Ordinal position of this sprint within all sprints for this board
+            </summary>
+        </member>
+        <member name="P:MyKanban.Sprint.StartDate">
+            <summary>
+            Start date of this sprint
+            </summary>
+        </member>
+        <member name="T:MyKanban.BoardSet">
+            <summary>
+            Represents a single MyKanban BoardSet - i.e. a collection of boards
+            </summary>
+        </member>
+        <member name="M:MyKanban.BoardSet.#ctor(MyKanban.Credential)">
+            <summary>
+            Create a new instance of a BoardSet object
+            </summary>
+            <param name="credential">Credentials to use when creating this object</param>
+        </member>
+        <member name="M:MyKanban.BoardSet.#ctor(System.Int64,MyKanban.Credential)">
+            <summary>
+            Create a new instance of a BoardSet object
+            </summary>
+            <param name="boardSetId">ID# of BoardSet to load from database</param>
+            <param name="credential">Credentials to use when creating this object</param>
+        </member>
+        <member name="M:MyKanban.BoardSet.Delete">
+            <summary>
+            Delete this BoardSet from the database
+            </summary>
+        </member>
+        <member name="M:MyKanban.BoardSet.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)">
+            <summary>
+            Is the user authorized to perform the requested operation
+            </summary>
+            <param name="userId">ID# of user</param>
+            <param name="authLevel">Operation requested</param>
+            <returns>True if user is authorized to perform the requested operation.  Note: this method currently always returns true.</returns>
+        </member>
+        <member name="M:MyKanban.BoardSet.IsValid">
+            <summary>
+            Is the BoardSet in a valid state
+            </summary>
+            <returns>True if BoardSet is in valid state, false otherwise</returns>
+        </member>
+        <member name="M:MyKanban.BoardSet.LoadData(System.Boolean)">
+            <summary>
+            Load data from database into this BoardSet object
+            </summary>
+            <param name="force">If true, load the BoardSet from database regardless of its state</param>
+            <returns>True if data successfully loaded</returns>
+        </member>
+        <member name="M:MyKanban.BoardSet.Reload">
+            <summary>
+            Reload data from database 
+            </summary>
+        </member>
+        <member name="M:MyKanban.BoardSet.Update(System.Boolean)">
+            <summary>
+            Update the database with data from this BoardSet object
+            </summary>
+            <param name="force">If true, update the database regardless of the state of this BoardSet object</param>
+            <returns>True if database successfully updated</returns>
+        </member>
+        <member name="P:MyKanban.BoardSet.Boards">
+            <summary>
+            Collection of Board objects belonging to this BoardSet
+            </summary>
+        </member>
+        <member name="P:MyKanban.BoardSet.BoardSetId">
+            <summary>
+            ID# of this BoardSet
+            </summary>
+        </member>
+        <member name="P:MyKanban.BoardSet.BoardSetName">
+            <summary>
+            Name of this BoardSet
+            </summary>
+        </member>
+        <member name="P:MyKanban.BoardSet.StatusCodes">
+            <summary>
+            Collection of status codes associated with this BoardSet
+            </summary>
+        </member>
+        <member name="T:MyKanban.Credential">
+            <summary>
+            Represents an authorized user and their permissions for all Boards they have permission to access
+            </summary>
+        </member>
+        <member name="M:MyKanban.Credential.#ctor">
+            <summary>
+            Null constructor
+            </summary>
+        </member>
+        <member name="M:MyKanban.Credential.#ctor(System.String,System.String)">
+            <summary>
+            Obtain user credentials based on user name and password
+            </summary>
+            <param name="userName">User name stored in database</param>
+            <param name="password">Password stored in database (in encrypted form)</param>
+        </member>
+        <member name="P:MyKanban.Credential.UserName">
+            <summary>
+            User name as entered during authentication
+            </summary>
+        </member>
+        <member name="P:MyKanban.Credential.Name">
+            <summary>
+            Display name of this user
+            </summary>
+        </member>
+        <member name="P:MyKanban.Credential.Id">
+            <summary>
+            ID# of this user
+            </summary>
+        </member>
+        <member name="P:MyKanban.Credential.Boards">
+            <summary>
+            List of Boards with associated permissions that this user has access to
+            </summary>
+        </member>
+        <member name="T:MyKanban.BoardPermissions">
+            <summary>
+            Represents a set of permissions that user has for a given Board
+            </summary>
+        </member>
+        <member name="F:MyKanban.BoardPermissions.Name">
+            <summary>
+            Name of Board
+            </summary>
+        </member>
+        <member name="F:MyKanban.BoardPermissions.Id">
+            <summary>
+            ID# of Board
+            </summary>
+        </member>
+        <member name="F:MyKanban.BoardPermissions.CanEdit">
+            <summary>
+            Does user have permission to edit this Board
+            </summary>
+        </member>
+        <member name="F:MyKanban.BoardPermissions.CanAdd">
+            <summary>
+            Does user have permission to add items to this Board
+            </summary>
+        </member>
+        <member name="F:MyKanban.BoardPermissions.CanDelete">
+            <summary>
+            Does user have permission to delete items from this Board
+            </summary>
+        </member>
+        <member name="F:MyKanban.BoardPermissions.CanRead">
+            <summary>
+            Does user have permission to read data in this board
+            </summary>
+        </member>
+        <member name="T:MyKanban.Person">
+            <summary>
+            Represents a single person that may be associated with any MyKanban object
+            </summary>
+        </member>
+        <member name="M:MyKanban.Person.#ctor(MyKanban.Credential)">
+            <summary>
+            Create a new Person object
+            </summary>
+            <param name="credential">Credentials used to create this object</param>
+        </member>
+        <member name="M:MyKanban.Person.#ctor(System.Int64,MyKanban.Credential)">
+            <summary>
+            Create a new Person object
+            </summary>
+            <param name="personId">ID# of person data to read from database</param>
+            <param name="credential">Credentials used to create this object</param>
+        </member>
+        <member name="M:MyKanban.Person.Delete">
+            <summary>
+            Delete this Person from the database
+            </summary>
+        </member>
+        <member name="M:MyKanban.Person.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)">
+            <summary>
+            Is a given user authorized to perform the specified operation
+            </summary>
+            <param name="userId">ID# of user to check permissions for</param>
+            <param name="authLevel">Operation user wishes to perform</param>
+            <returns>True if user is authorized to perform the requested operation</returns>
+        </member>
+        <member name="M:MyKanban.Person.IsValid">
+            <summary>
+            Is this Person object in a valid state
+            </summary>
+            <returns>True if object is valid, false otherwise</returns>
+        </member>
+        <member name="M:MyKanban.Person.LoadData(System.Boolean)">
+            <summary>
+            Load data from the database into this Person object
+            </summary>
+            <param name="force">If true, load data regardless of the state of this object</param>
+            <returns>True if data successfully loaded</returns>
+        </member>
+        <member name="M:MyKanban.Person.Update(System.Boolean)">
+            <summary>
+            Update the database with data from this Person object
+            </summary>
+            <param name="force">If true, update the database regardless of the state of this object</param>
+            <returns>True if the database was successfully updated</returns>
+        </member>
+        <member name="P:MyKanban.Person.CanLogin">
+            <summary>
+            Indicates whether this Person may login to the MyKanban system
+            </summary>
+        </member>
+        <member name="P:MyKanban.Person.Email">
+            <summary>
+            Email address of this person
+            </summary>
+        </member>
+        <member name="P:MyKanban.Person.Password">
+            <summary>
+            Password of this Person.  Note: Password may be set but not read, except when attempting to obtain a credential
+            </summary>
+        </member>
+        <member name="P:MyKanban.Person.PictureUrl">
+            <summary>
+            Url to picture of this Person
+            </summary>
+        </member>
+        <member name="P:MyKanban.Person.Phone">
+            <summary>
+            Phone number of this Person
+            </summary>
+        </member>
+        <member name="P:MyKanban.Person.Properties">
+            <summary>
+            A collection of properties associated with this Person
+            </summary>
+        </member>
+        <member name="P:MyKanban.Person.UserName">
+            <summary>
+            User login name
+            </summary>
+        </member>
+        <member name="T:MyKanban.StatusCode">
+            <summary>
+            Represents a single status code that may be associated with a 
+            board set, project or task
+            </summary>
+        </member>
+        <member name="M:MyKanban.StatusCode.#ctor(MyKanban.Credential)">
+            <summary>
+            Create a new empty StatusCode object
+            </summary>
+            <param name="credential">Credentials to use when creating this StatusCode object</param>
+        </member>
+        <member name="M:MyKanban.StatusCode.#ctor(System.String,MyKanban.Credential)">
+            <summary>
+            Create a new StatusCode object and initialize its Name property
+            </summary>
+            <param name="name">Name to assign to this status code</param>
+            <param name="credential">Credentials to use when creating this StatusCode object</param>
+        </member>
+        <member name="M:MyKanban.StatusCode.#ctor(System.Int64,MyKanban.Credential)">
+            <summary>
+            Create a new StatusCode object and initialize its data from the database based on the
+            provided ID#
+            </summary>
+            <param name="statusCodeId">ID# of status code to read from database</param>
+            <param name="credential">Credentials to use when creating this StatusCode object</param>
+        </member>
+        <member name="M:MyKanban.StatusCode.Delete">
+            <summary>
+            Delete this status code from the database
+            </summary>
+        </member>
+        <member name="M:MyKanban.StatusCode.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)">
+            <summary>
+            Does specified user have permission to perform the requested operation
+            </summary>
+            <param name="userId">ID# of user</param>
+            <param name="authLevel">Requested operation</param>
+            <returns>True if user has permission to perform the requested operation</returns>
+        </member>
+        <member name="M:MyKanban.StatusCode.IsValid">
+            <summary>
+            Is this Project object in a valid state
+            </summary>
+            <returns>True if Project object is in a valid state</returns>
+        </member>
+        <member name="M:MyKanban.StatusCode.LoadData(System.Boolean)">
+            <summary>
+            Populate the StatusCode instance with data from the database
+            </summary>
+            <param name="force">If true, populate this StatusCode regardless of state</param>
+            <returns>True if data was successfully loaded</returns>
+        </member>
+        <member name="M:MyKanban.StatusCode.Update(System.Boolean)">
+            <summary>
+            Update the database with data from this object instance
+            </summary>
+            <param name="force">If true, save data to database regardless of the state of this StatusCode object</param>
+            <returns>True if data successfully written to database</returns>
+        </member>
+        <member name="P:MyKanban.StatusCode.ColumnHeading">
+            <summary>
+            Column heading to use when displaying this status code on pages 
+            or in drop-down lists
+            </summary>
+        </member>
+        <member name="P:MyKanban.StatusCode.BackColor">
+            <summary>
+            Background color to use for tasks with this status
+            </summary>
+        </member>
+        <member name="P:MyKanban.StatusCode.ForeColor">
+            <summary>
+            Foreground color to use for tasks with this status
+            </summary>
+        </member>
+        <member name="P:MyKanban.StatusCode.Name">
+            <summary>
+            Synonym for the Status property
+            </summary>
+        </member>
+        <member name="P:MyKanban.StatusCode.Sequence">
+            <summary>
+            Ordinal position of this status code within list and on boards
+            </summary>
+        </member>
+        <member name="P:MyKanban.StatusCode.Status">
+            <summary>
+            Name of this status code
+            </summary>
+        </member>
+        <member name="T:MyKanban.Tag">
+            <summary>
+            Represents a single tag that may be associated with a task
+            </summary>
+        </member>
+        <member name="M:MyKanban.Tag.#ctor(MyKanban.Credential)">
+            <summary>
+            Create a new Tag object
+            </summary>
+            <param name="credential">Credentials to use when creating this Tag object</param>
+        </member>
+        <member name="M:MyKanban.Tag.#ctor(System.String,MyKanban.Credential)">
+            <summary>
+            Create a new Tag object and initialize its Name property
+            </summary>
+            <param name="name">Name to assign to this Tag object</param>
+            <param name="credential">Credentials to use when creating this Tag object</param>
+        </member>
+        <member name="M:MyKanban.Tag.#ctor(System.Int64,MyKanban.Credential)">
+            <summary>
+            Create a new Tag object and initialize its data from the database
+            based on the provided ID#
+            </summary>
+            <param name="tagId">ID# of tag to read from the database</param>
+            <param name="credential">Credentials to use when creating this Tag object</param>
+        </member>
+        <member name="M:MyKanban.Tag.Delete">
+            <summary>
+            Delete this tag from the database
+            </summary>
+        </member>
+        <member name="M:MyKanban.Tag.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)">
+            <summary>
+            Does specified user have permission to perform the requested operation
+            </summary>
+            <param name="userId">ID# of user</param>
+            <param name="authLevel">Requested operation</param>
+            <returns>True if user has permission to perform the requested operation</returns>
+        </member>
+        <member name="M:MyKanban.Tag.IsValid">
+            <summary>
+            Is this Project object in a valid state
+            </summary>
+            <returns>True if Project object is in a valid state</returns>
+        </member>
+        <member name="M:MyKanban.Tag.LoadData(System.Boolean)">
+            <summary>
+            Populate the Tag instance with data from the database
+            </summary>
+            <param name="force">If true, populate this Tag regardless of state</param>
+            <returns>True if data was successfully loaded</returns>
+        </member>
+        <member name="M:MyKanban.Tag.Update(System.Boolean)">
+            <summary>
+            Update the database with data from this object instance
+            </summary>
+            <param name="force">If true, save data to database regardless of the state of this StatusCode object</param>
+            <returns>True if data successfully written to database</returns>
+        </member>
+        <member name="P:MyKanban.Tag.Text">
+            <summary>
+            Text of this Tag object, is a synonym for the Name property
+            </summary>
+        </member>
+        <member name="P:MyKanban.Tag.TagId">
+            <summary>
+            ID# of this Tag
+            </summary>
+        </member>
+        <member name="P:MyKanban.Tag.TaskId">
+            <summary>
+            ID# of parent Task object
+            </summary>
+        </member>
+        <member name="T:MyKanban.Task">
+            <summary>
+            Represents a single task being tracked by the MyKanban system
+            </summary>
+        </member>
+        <member name="M:MyKanban.Task.#ctor(MyKanban.Credential)">
+            <summary>
+            Create a new Task instance
+            </summary>
+            <param name="credential">Credentials to use when creating this Task instance</param>
+        </member>
+        <member name="M:MyKanban.Task.#ctor(System.String,MyKanban.Credential)">
+            <summary>
+            Create a new Task object and initialize its Name property
+            </summary>
+            <param name="name">Name to assign to new task</param>
+            <param name="credential">Credentials to use when creating this Task instance</param>
+        </member>
+        <member name="M:MyKanban.Task.#ctor(System.Int64,MyKanban.Credential)">
+            <summary>
+            Create a new Task instance and load its data from the database using
+            the provided ID#
+            </summary>
+            <param name="taskId">ID# of task to load</param>
+            <param name="credential">Credentials to use when creating this Task instance</param>
+        </member>
+        <member name="F:MyKanban.Task._statusName">
+            <summary>
+            Display name of current task status
+            </summary>
+        </member>
+        <member name="M:MyKanban.Task.Delete">
+            <summary>
+            Delete this task from the database
+            </summary>
+        </member>
+        <member name="M:MyKanban.Task.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)">
+            <summary>
+            Does specified user have permission to perform the requested operation
+            </summary>
+            <param name="userId">ID# of user</param>
+            <param name="authLevel">Requested operation</param>
+            <returns>True if user has permission to perform the requested operation</returns>
+        </member>
+        <member name="M:MyKanban.Task.IsValid">
+            <summary>
+            Is this Task object in a valid state
+            </summary>
+            <returns>True if Task object is in a valid state</returns>
+        </member>
+        <member name="M:MyKanban.Task.LoadData(System.Boolean)">
+            <summary>
+            Populate the Task instance with data from the database
+            </summary>
+            <param name="force">If true, populate this Task regardless of state</param>
+            <returns>True if data was successfully loaded</returns>
+        </member>
+        <member name="M:MyKanban.Task.Reload">
+            <summary>
+            Reload data for this Task from the database
+            </summary>
+        </member>
+        <member name="M:MyKanban.Task.Update(System.Boolean)">
+            <summary>
+            Update the database with data from this object instance
+            </summary>
+            <param name="force">If true, save data to database regardless of the state of this StatusCode object</param>
+            <returns>True if data successfully written to database</returns>
+        </member>
+        <member name="P:MyKanban.Task.ActHours">
+            <summary>
+            Actual hours required to complete this task
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.AssignedTo">
+            <summary>
+            List of individuals this task is assigned to
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.Approvers">
+            <summary>
+            Approvers associated with this task
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.Assignees">
+            <summary>
+            Collection of individuals assigned to this task
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.BackColor">
+            <summary>
+            Background color to use when displaying this task
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.BoardSetId">
+            <summary>
+            ID# of board set this task belongs to
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.BoardSetName">
+            <summary>
+            Name of board set this task belongs to
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.DefineDone">
+            <summary>
+            The expected deliverble(s) or outcome when task is complete
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.Sequence">
+            <summary>
+            The ordinal position of this task when displayed on a board
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.StartDate">
+            <summary>
+            Task start date
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.EstHours">
+            <summary>
+            Estimated hours to complete this task
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.EndDate">
+            <summary>
+            Task end date
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.ForeColor">
+            <summary>
+            The foreground color to use when displaying this task
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.ParentTaskId">
+            <summary>
+            If this is a sub-task, the ID# of its parent task
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.ProjectId">
+            <summary>
+            ID# of project this task belongs to
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.ProjectName">
+            <summary>
+            Display name of project this task belongs to
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.Properties">
+            <summary>
+            Collection of properties associated with this task
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.Status">
+            <summary>
+            ID# of status code for this task
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.StatusCodes">
+            <summary>
+            List of StatusCodes that may be assigned to this task
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.SubTaskActHours">
+            <summary>
+            Total actual hours associated with all sub-tasks
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.SubTaskEstHours">
+            <summary>
+            Total estimated hours associated with all sub-tasks
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.SubTasks">
+            <summary>
+            Collection of all sub-tasks for this task
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.Comments">
+            <summary>
+            Collection of all comments associated with this task
+            </summary>
+        </member>
+        <member name="P:MyKanban.Task.Tags">
+            <summary>
+            Collection of all tags associated with this task
+            </summary>
+        </member>
+        <member name="T:MyKanban.Project">
+            <summary>
+            Represents a single MyKanban project
+            </summary>
+        </member>
+        <member name="M:MyKanban.Project.#ctor(MyKanban.Credential)">
+            <summary>
+            Create a new empty Project instance
+            </summary>
+            <param name="credential">Credentials to use when creating this Project</param>
+        </member>
+        <member name="M:MyKanban.Project.#ctor(System.Int64,MyKanban.Credential)">
+            <summary>
+            Create a new instance of a Project and populate it from the database using the 
+            provided ID#
+            </summary>
+            <param name="projectId">ID# of project to load</param>
+            <param name="credential">Credentials to use when creating this Project</param>
+        </member>
+        <member name="M:MyKanban.Project.Delete">
+            <summary>
+            Delete this project from the database
+            </summary>
+        </member>
+        <member name="M:MyKanban.Project.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)">
+            <summary>
+            Does specified user have permission to perform the requested operation
+            </summary>
+            <param name="userId">ID# of user</param>
+            <param name="authLevel">Requested operation</param>
+            <returns>True if user has permission to perform the requested operation</returns>
+        </member>
+        <member name="M:MyKanban.Project.IsValid">
+            <summary>
+            Is this Project object in a valid state
+            </summary>
+            <returns>True if Project object is in a valid state</returns>
+        </member>
+        <member name="M:MyKanban.Project.LoadData(System.Boolean)">
+            <summary>
+            Populate the Project instance with data from the database
+            </summary>
+            <param name="force">If true, populate this Project regardless of state</param>
+            <returns>True if data was successfully loaded</returns>
+        </member>
+        <member name="M:MyKanban.Project.Reload">
+            <summary>
+            Reload data from database into this Project object
+            </summary>
+        </member>
+        <member name="M:MyKanban.Project.Update(System.Boolean)">
+            <summary>
+            Update the database with data from this object instance
+            </summary>
+            <param name="force">If true, save data to database regardless of the state of this Project object</param>
+            <returns>True if data successfully written to database</returns>
+        </member>
+        <member name="P:MyKanban.Project.ActHours">
+            <summary>
+            Total actual hours for all top-level tasks in this project
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.BoardId">
+            <summary>
+            ID# of parent Board
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.BoardSetId">
+            <summary>
+            ID# of parent BoardSet
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.BoardSetName">
+            <summary>
+            Name of parent BoardSet
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.DefineDone">
+            <summary>
+            Description of expected deliverable(s) or outcomes when project is completed
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.EarliestTaskStartDate">
+            <summary>
+            Earlest start date for all tasks in this project
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.EstHours">
+            <summary>
+            Estimated total hours for project
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.ExpectedEndDate">
+            <summary>
+            Date project is expected to end
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.ExpectedStartDate">
+            <summary>
+            Date project is expected to start
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.LatestTaskEndDate">
+            <summary>
+            Latest end date for all tasks in this project
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.ParentName">
+            <summary>
+            Name of board containing this sprint object
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.ParentType">
+            <summary>
+            Type of parent object
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.ProjectLead">
+            <summary>
+            Individual primarily responsible for this project
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.Status">
+            <summary>
+            Current status of this project
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.Tasks">
+            <summary>
+            Collection of all top-level tasks associated with this project
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.Properties">
+            <summary>
+            Collection of properties associated with this project
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.Stakeholders">
+            <summary>
+            Collection of all stakeholders associated with this project
+            </summary>
+        </member>
+        <member name="P:MyKanban.Project.StatusCodes">
+            <summary>
+            Collection of all status codes that can be used on this project, inherited from projects BoardSet
+            </summary>
+        </member>
+        <member name="T:MyKanban.Board">
+            <summary>
+            Represents a single MyKanban board object
+            </summary>
+        </member>
+        <member name="M:MyKanban.Board.#ctor(MyKanban.Credential)">
+            <summary>
+            Create a new, empty Board object
+            </summary>
+            <param name="credential">Credentials to use when creating this object</param>
+        </member>
+        <member name="M:MyKanban.Board.#ctor(System.Int64,MyKanban.Credential)">
+            <summary>
+            Create a new Board object by loading data for the given ID#
+            </summary>
+            <param name="boardId">ID# of board to load</param>
+            <param name="credential">Credentials to use when creating this object</param>
+        </member>
+        <member name="M:MyKanban.Board.Delete">
+            <summary>
+            Delete this Board from the database
+            </summary>
+        </member>
+        <member name="M:MyKanban.Board.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)">
+            <summary>
+            Is the current user authorized to perform the specified operation
+            </summary>
+            <param name="userId">ID# of user</param>
+            <param name="authLevel">Operation being requested</param>
+            <returns>True if user is authorized, false otherwise</returns>
+        </member>
+        <member name="M:MyKanban.Board.IsValid">
+            <summary>
+            Is the Board in a valid state
+            </summary>
+            <returns>True if Board is in valid state, false otherwise</returns>
+        </member>
+        <member name="M:MyKanban.Board.LoadData(System.Boolean)">
+            <summary>
+            Load Board datra from database
+            </summary>
+            <param name="force">If true, load data regardless of state of this object</param>
+            <returns>True if data has been successfully loaded</returns>
+        </member>
+        <member name="M:MyKanban.Board.Reload">
+            <summary>
+            Reload data from database into this object
+            </summary>
+        </member>
+        <member name="M:MyKanban.Board.Update(System.Boolean)">
+            <summary>
+            Update the database with data from this Board
+            </summary>
+            <param name="force">If true, write data to database regardless of the state of this object</param>
+            <returns>True if database has been successfully updated</returns>
+        </member>
+        <member name="M:MyKanban.Data.AddApproverToTask(System.Int64,System.Int64,System.Int64)">
+            <summary>
+            Add an approver to a task
+            </summary>
+            <param name="taskId">ID# of task to add approver to</param>
+            <param name="personId">ID# of person being added as an approver</param>
+            <param name="userId">ID# of user making the assignment</param>
+            <returns></returns>
+        </member>
+        <member name="M:MyKanban.Data.AddAssigneeToTask(System.Int64,System.Int64,System.Int64)">
+            <summary>
+            Add an assignee to a task
+            </summary>
+            <param name="taskId">ID# of task to assign to</param>
+            <param name="personId">ID# of person being assigned</param>
+            <param name="userId">ID# of user making the assignment</param>
+            <returns></returns>
+        </member>
+        <member name="M:MyKanban.Data.DeleteApproverFromTask(System.Int64,System.Int64,System.Int64)">
+            <summary>
+            Remove an approver from a task
+            </summary>
+            <param name="taskId">ID# of task to remove approver from</param>
+            <param name="personId">ID# of approver being removed</param>
+            <param name="userId">ID# of user removing the approver</param>
+        </member>
+        <member name="M:MyKanban.Data.DeleteAssigneeFromTask(System.Int64,System.Int64,System.Int64)">
+            <summary>
+            Remove an assignee from a task
+            </summary>
+            <param name="taskId">ID# of task to remove assignee from</param>
+            <param name="personId">ID# of assignee being removed</param>
+            <param name="userId">ID# of user removing the assignee</param>
+        </member>
+        <member name="M:MyKanban.Data.GetApprover(System.Int64,System.Int64)">
+            <summary>
+            Return a DataSet containing all data for a given approver
+            </summary>
+            <param name="approverId">ID# of approver to return</param>
+            <param name="userId">ID# of user requesting this data</param>
+            <returns></returns>
+        </member>
+        <member name="M:MyKanban.Data.GetApproversByTask(System.Int64,System.Int64)">
+            <summary>
+            Return a DataSet containing all approvers for a given task
+            </summary>
+            <param name="taskId">ID# of task to return approvers for</param>
+            <param name="userId">ID# of user making request</param>
+            <returns></returns>
+        </member>
+        <member name="M:MyKanban.Data.GetAssigneesByTask(System.Int64,System.Int64)">
+            <summary>
+            Return a DataSet containing all assignees for a given task
+            </summary>
+            <param name="taskId">ID# of task to return assignees for</param>
+            <param name="userId">ID# of user making request</param>
+            <returns></returns>
+        </member>
+        <member name="M:MyKanban.Data.GetData(System.String)">
+            <summary>
+            Call a MySql stored procedure that returns data
+            </summary>
+            <param name="sql">SQL statement to execute</param>
+            <returns>DataSet containing results</returns>
+        </member>
+        <member name="M:MyKanban.Data.GetDataViaStoredProcedure(System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Run a given stored procedure against the database.  This is a better alternative in order to avoid
+            SQL injection attacks
+            </summary>
+            <param name="ProcedureName">Name of stored procedure to run</param>
+            <param name="parameters">Dictionary of key/value pairs representing the stored procedure parameters</param>
+            <returns>DataSet containing results</returns>
+        </member>
+        <member name="M:MyKanban.Data.SetData(System.String)">
+            <summary>
+            Call MySql and run the provided SQL
+            </summary>
+            <param name="sql">SQL to execute on MySql</param>
+        </member>
+        <member name="M:MyKanban.Data.SetDataViaStoredProcedure(System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Write data to database without returning any data
+            </summary>
+            <param name="procedureName">Stored procedure to call</param>
+            <param name="parameters">Dictionary of key/value pairs representing the parameters of the stored procedure</param>
+        </member>
+        <member name="T:MyKanban.User">
+            <summary>
+            Represents a single user who may access one or more boards
+            </summary>
+        </member>
+        <member name="M:MyKanban.User.#ctor(MyKanban.Credential)">
+            <summary>
+            Create a new empty User object
+            </summary>
+            <param name="credential">Credentials to use when creating this User object</param>
+        </member>
+        <member name="M:MyKanban.User.#ctor(System.Int64,System.Int64,MyKanban.Credential)">
+            <summary>
+            Create a new User object and populate its data from database based
+            on provided board and person IDs
+            </summary>
+            <param name="boardId">ID# of board</param>
+            <param name="personId">ID# of person</param>
+            <param name="credential">Credentials to use when creating this User object</param>
+        </member>
+        <member name="M:MyKanban.User.#ctor(System.Int64,MyKanban.Credential)">
+            <summary>
+            Create a new User object and populate its data from database based
+            on the ID# provided
+            </summary>
+            <param name="userId">ID# of user</param>
+            <param name="credential">Credentials to use when creating this User object</param>
+        </member>
+        <member name="F:MyKanban.User.Person">
+            <summary>
+            Underlying Person object
+            </summary>
+        </member>
+        <member name="M:MyKanban.User.Delete">
+            <summary>
+            Delete this user from its parent board
+            </summary>
+        </member>
+        <member name="M:MyKanban.User.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)">
+            <summary>
+            Does specified user have permission to perform the requested operation
+            </summary>
+            <param name="userId">ID# of user</param>
+            <param name="authLevel">Requested operation</param>
+            <returns>True if user has permission to perform the requested operation</returns>
+        </member>
+        <member name="M:MyKanban.User.JSON">
+            <summary>
+            Return JSON for underlying Person object
+            </summary>
+            <returns>JSON of Person object</returns>
+        </member>
+        <member name="M:MyKanban.User.LoadData(System.Boolean)">
+            <summary>
+            Populate the Userk instance with data from the database
+            </summary>
+            <param name="force">If true, populate this User regardless of state</param>
+            <returns>True if data was successfully loaded</returns>
+        </member>
+        <member name="M:MyKanban.User.Update(System.Boolean)">
+            <summary>
+            Update the database with data from this object instance
+            </summary>
+            <param name="force">If true, save data to database regardless of the state of this StatusCode object</param>
+            <returns>True if data successfully written to database</returns>
+        </member>
+        <member name="P:MyKanban.User.BoardId">
+            <summary>
+            ID# of board this user has access to
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.Created">
+            <summary>
+            Date/time underlying Person object created
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.CreatedBy">
+            <summary>
+            ID# of user who created underlying Person object 
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.CreatedByName">
+            <summary>
+            Display name of user who created underlying Person object
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.Credential">
+            <summary>
+            Credential associated with this object
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.PersonId">
+            <summary>
+            ID# of underlying Person object
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.IsDirty">
+            <summary>
+            iDirty value of underlying Person object
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.IsLoaded">
+            <summary>
+            isLoaded value of underlying Person object
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.Modified">
+            <summary>
+            Date/time underlying Person object was last modified
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.ModifiedBy">
+            <summary>
+            ID# of user who last modified underlying Person object
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.ModifiedByName">
+            <summary>
+            Display name of user who last modified underlying Person object
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.Name">
+            <summary>
+            Display name of underlying Person
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.CanAdd">
+            <summary>
+            Can this user add tasks to the board
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.CanEdit">
+            <summary>
+            Can this user edit tasks in the board
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.CanDelete">
+            <summary>
+            Can this user delete tasks from the board
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.CanRead">
+            <summary>
+            Can this user view this board
+            </summary>
+        </member>
+        <member name="P:MyKanban.User.UserName">
+            <summary>
+            Login name of this user
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -35,10 +35,17 @@ using Newtonsoft.Json.Converters;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Represents a single task being tracked by the MyKanban system
+    /// </summary>
     public class Task : MyKanban.BaseItem, MyKanban.IDataItem
     {
         #region Constructors
 
+        /// <summary>
+        /// Create a new Task instance
+        /// </summary>
+        /// <param name="credential">Credentials to use when creating this Task instance</param>
         public Task(Credential credential) 
         {
             if (credential != null) _credential = credential;
@@ -48,6 +55,11 @@ namespace MyKanban
             _comments = new Comments(_credential);
         }
 
+        /// <summary>
+        /// Create a new Task object and initialize its Name property
+        /// </summary>
+        /// <param name="name">Name to assign to new task</param>
+        /// <param name="credential">Credentials to use when creating this Task instance</param>
         public Task(string name, Credential credential)
         {
             if (credential != null) _credential = credential;
@@ -58,12 +70,28 @@ namespace MyKanban
             _comments = new Comments(this, _credential);
         }
 
+        /// <summary>
+        /// Create a new Task instance and load its data from the database using
+        /// the provided ID#
+        /// </summary>
+        /// <param name="taskId">ID# of task to load</param>
+        /// <param name="credential">Credentials to use when creating this Task instance</param>
         public Task(long taskId, Credential credential)
+        {
+            TaskIdConstructor(taskId, credential);
+        }
+
+        private void TaskIdConstructor(long taskId, Credential credential)
         {
             if (credential != null) _credential = credential;
 
             _id = taskId;
-            LoadData();
+            _assignees = null;
+            _approvers = null;
+            _properties = null;
+            _subTasks = null;
+            _comments = null;
+            LoadData(true);
         }
 
         #endregion
@@ -72,6 +100,9 @@ namespace MyKanban
 
         private double _actHours;
 
+        /// <summary>
+        /// Actual hours required to complete this task
+        /// </summary>
         [MyKanban.Description("Actual hours required to complete this task")]
         [MyKanban.ControlType(enumControlType.Numeric)]
         public double ActHours
@@ -97,6 +128,9 @@ namespace MyKanban
 
         private string _assignedTo = null;
 
+        /// <summary>
+        /// List of individuals this task is assigned to
+        /// </summary>
         [MyKanban.Description("List of individuals this task is assigned to")]
         public string AssignedTo
         {
@@ -117,6 +151,9 @@ namespace MyKanban
 
         private Approvers _approvers;
 
+        /// <summary>
+        /// Approvers associated with this task
+        /// </summary>
         [MyKanban.Hidden(true)]
         public Approvers Approvers
         {
@@ -143,7 +180,9 @@ namespace MyKanban
 
         private People _assignees;
 
-        //[JsonIgnore]
+        /// <summary>
+        /// Collection of individuals assigned to this task
+        /// </summary>
         [MyKanban.Hidden(true)]
         public People Assignees
         {
@@ -166,6 +205,9 @@ namespace MyKanban
 
         string _backColor = null;
 
+        /// <summary>
+        /// Background color to use when displaying this task
+        /// </summary>
         [MyKanban.Description("Background color to use when displaying this task")]
         public string BackColor
         {
@@ -189,6 +231,9 @@ namespace MyKanban
 
         private long _boardSetId = 0;
 
+        /// <summary>
+        /// ID# of board set this task belongs to
+        /// </summary>
         [MyKanban.Description("ID# of board set this task belongs to")]
         public long BoardSetId
         {
@@ -197,6 +242,9 @@ namespace MyKanban
 
         private string _boardSetName = "";
 
+        /// <summary>
+        /// Name of board set this task belongs to
+        /// </summary>
         [MyKanban.Description("Name of board set this task belongs to")]
         public string BoardSetName
         {
@@ -205,6 +253,9 @@ namespace MyKanban
 
         private string _defineDone;
 
+        /// <summary>
+        /// The expected deliverble(s) or outcome when task is complete
+        /// </summary>
         [MyKanban.Description("The expected deliverble(s) or outcome when task is complete")]
         public string DefineDone
         {
@@ -214,6 +265,9 @@ namespace MyKanban
 
         private int _sequence = 999;
 
+        /// <summary>
+        /// The ordinal position of this task when displayed on a board
+        /// </summary>
         [MyKanban.Description("The ordinal position of this task when displayed on a board")]
         public int Sequence
         {
@@ -223,6 +277,9 @@ namespace MyKanban
 
         private DateTime _startDate = DateTime.Now;
 
+        /// <summary>
+        /// Task start date
+        /// </summary>
         [MyKanban.Description("Task start date")]
         public DateTime StartDate
         {
@@ -239,6 +296,9 @@ namespace MyKanban
 
         private double _estHours;
 
+        /// <summary>
+        /// Estimated hours to complete this task
+        /// </summary>
         [MyKanban.Description("Estimated hours to complete this task")]
         [MyKanban.ControlType(enumControlType.Numeric)]
         public double EstHours
@@ -264,6 +324,9 @@ namespace MyKanban
 
         private DateTime _endDate = DateTime.Now;
 
+        /// <summary>
+        /// Task end date
+        /// </summary>
         [MyKanban.Description("Task end date")]
         public DateTime EndDate
         {
@@ -280,6 +343,9 @@ namespace MyKanban
 
         string _foreColor = null;
 
+        /// <summary>
+        /// The foreground color to use when displaying this task
+        /// </summary>
         [MyKanban.Description("The foreground color to use when displaying this task")]
         public string ForeColor
         {
@@ -303,6 +369,9 @@ namespace MyKanban
 
         long _parentTaskId = 0;
 
+        /// <summary>
+        /// If this is a sub-task, the ID# of its parent task
+        /// </summary>
         [MyKanban.Description("If this is a sub-task, the ID# of its parent task")]
         [MyKanban.ReadOnly(true)]
         public long ParentTaskId
@@ -313,6 +382,9 @@ namespace MyKanban
 
         long _projectId = 0;
 
+        /// <summary>
+        /// ID# of project this task belongs to
+        /// </summary>
         [MyKanban.Description("ID# of project this task belongs to")]
         [MyKanban.ReadOnly(true)]
         public long ProjectId
@@ -339,6 +411,9 @@ namespace MyKanban
 
         private string _projectName = "";
 
+        /// <summary>
+        /// Display name of project this task belongs to
+        /// </summary>
         [MyKanban.Description("Display name of project this task belongs to")]
         [MyKanban.ReadOnly(true)]
         public string ProjectName
@@ -349,6 +424,9 @@ namespace MyKanban
 
         private Properties _properties = null;
 
+        /// <summary>
+        /// Collection of properties associated with this task
+        /// </summary>
         [MyKanban.Description("Collection of properties associated with this task")]
         public Properties Properties
         {
@@ -371,6 +449,9 @@ namespace MyKanban
         
         private long _status = -1;
 
+        /// <summary>
+        /// ID# of status code for this task
+        /// </summary>
         [MyKanban.Description("ID# of status code for this task")]
         [MyKanban.ControlType(enumControlType.StatusCode)]
         public long Status
@@ -389,6 +470,9 @@ namespace MyKanban
             set { _status = value; _isDirty = true; }
         }
 
+        /// <summary>
+        /// Display name of current task status
+        /// </summary>
         private string _statusName = "Unknown";
         [MyKanban.Description("Display name of current task status")]
         public string StatusName
@@ -418,8 +502,12 @@ namespace MyKanban
 
         private StatusCodes _statusCodes;
 
+        /// <summary>
+        /// List of StatusCodes that may be assigned to this task
+        /// </summary>
         [JsonIgnore]
         [MyKanban.Hidden(true)]
+        [MyKanban.ReadOnly(true)]
         public StatusCodes StatusCodes
         {
             get 
@@ -449,8 +537,24 @@ namespace MyKanban
             }
         }
 
+        double _subTaskActHours = 0;
+
+        /// <summary>
+        /// Total actual hours associated with all sub-tasks
+        /// </summary>
+        [MyKanban.Description("Total actual hours associated with all sub-tasks")]
+        [MyKanban.ReadOnly(true)]
+        public double SubTaskActHours
+        {
+            get { return _subTaskActHours; }
+            set { _subTaskActHours = value; _isDirty = true; }
+        }
+        
         double _subTaskEstHours = 0;
 
+        /// <summary>
+        /// Total estimated hours associated with all sub-tasks
+        /// </summary>
         [MyKanban.Description("Total estimated hours associated with all sub-tasks")]
         [MyKanban.ReadOnly(true)]
         public double SubTaskEstHours
@@ -459,18 +563,11 @@ namespace MyKanban
             set { _subTaskEstHours = value; _isDirty = true; }
         }
 
-        double _subTaskActHours = 0;
-
-        [MyKanban.Description("Total actual hours associated with all sub-tasks")]
-        [MyKanban.ReadOnly(true)]
-        public double SubTaskActHours
-        {
-            get { return _subTaskActHours; }
-            set { _subTaskActHours = value; _isDirty = true; }
-        }
-
         private Tasks _subTasks;
 
+        /// <summary>
+        /// Collection of all sub-tasks for this task
+        /// </summary>
         [JsonIgnore]
         [MyKanban.Hidden(true)]
         public Tasks SubTasks
@@ -497,6 +594,9 @@ namespace MyKanban
 
         private Comments _comments;
 
+        /// <summary>
+        /// Collection of all comments associated with this task
+        /// </summary>
         [JsonIgnore]
         [MyKanban.Hidden(true)]
         public Comments Comments
@@ -525,6 +625,9 @@ namespace MyKanban
 
         private Tags _tags;
 
+        /// <summary>
+        /// Collection of all tags associated with this task
+        /// </summary>
         [JsonIgnore]
         [MyKanban.Hidden(true)]
         public Tags Tags
@@ -556,7 +659,10 @@ namespace MyKanban
 
         #region Methods
 
-        public void Delete()
+        /// <summary>
+        /// Delete this task from the database
+        /// </summary>
+        public override void Delete()
         {
             Data.DeleteTask(_id, _credential.Id);
 
@@ -573,17 +679,31 @@ namespace MyKanban
             }
         }
 
-        public bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
+        /// <summary>
+        /// Does specified user have permission to perform the requested operation
+        /// </summary>
+        /// <param name="userId">ID# of user</param>
+        /// <param name="authLevel">Requested operation</param>
+        /// <returns>True if user has permission to perform the requested operation</returns>
+        public override bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
         {
-            return true;
+            return base.IsAuthorized(userId, authLevel);
         }
 
-        public bool IsValid()
+        /// <summary>
+        /// Is this Task object in a valid state
+        /// </summary>
+        /// <returns>True if Task object is in a valid state</returns>
+        public override bool IsValid()
         {
-            return true;
+            return base.IsValid();
         }
 
-        // Populate the object instance with data from the database
+        /// <summary>
+        /// Populate the Task instance with data from the database
+        /// </summary>
+        /// <param name="force">If true, populate this Task regardless of state</param>
+        /// <returns>True if data was successfully loaded</returns>
         public bool LoadData(bool force = false)
         {
             try
@@ -634,8 +754,22 @@ namespace MyKanban
             }
         }
 
-        // Update the database with data from this object instance
-        public bool Update( bool force = false)
+        /// <summary>
+        /// Reload data for this Task from the database
+        /// </summary>
+        public override void Reload()
+        {
+            base.Reload();
+
+            TaskIdConstructor(_id, _credential);
+        }
+
+        /// <summary>
+        /// Update the database with data from this object instance
+        /// </summary>
+        /// <param name="force">If true, save data to database regardless of the state of this StatusCode object</param>
+        /// <returns>True if data successfully written to database</returns>
+        public override bool Update(bool force = false)
         {
             try
             {

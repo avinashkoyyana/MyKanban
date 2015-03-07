@@ -34,15 +34,27 @@ using System.Data;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Represents a single property key/value pair that may be associated with another object
+    /// </summary>
     public class Property : MyKanban.BaseItem, MyKanban.IDataItem
     {
         #region Constructors
 
+        /// <summary>
+        /// Create a new Property object instance
+        /// </summary>
+        /// <param name="credential">Credentials to use when creating Property object</param>
         public Property (Credential credential)
         {
             _credential = credential;
         }
 
+        /// <summary>
+        /// Create a new Property object for a given parent object
+        /// </summary>
+        /// <param name="parentObject">Parent object to create property for</param>
+        /// <param name="credential">Credentials to use when creating Property object</param>
         public Property(IDataItem parentObject, Credential credential)
         {
             _credential = credential;
@@ -56,12 +68,18 @@ namespace MyKanban
 
         private object _value = null;
 
+        /// <summary>
+        /// Value to assign to thie property
+        /// </summary>
         public object Value
         {
             get { return _value; }
             set { _value = value; }
         }
 
+        /// <summary>
+        /// Type of this property
+        /// </summary>
         public string ValueType
         {
             get 
@@ -77,11 +95,19 @@ namespace MyKanban
 
         #region Methods
 
+        /// <summary>
+        /// Delete this property from the database
+        /// </summary>
         public override void Delete()
         {
             Data.DeleteProperty(_id, _credential.Id);
         }
 
+        /// <summary>
+        /// Load data for this property from the database
+        /// </summary>
+        /// <param name="force">If true, load this property regardless of its state</param>
+        /// <returns>True if property successfully loaded</returns>
         public override bool LoadData(bool force = false)
         {
             // Property data will be loaded in collection constructor
@@ -89,6 +115,11 @@ namespace MyKanban
             return base.LoadData(force);
         }
 
+        /// <summary>
+        /// Write this Property object's data back to the database
+        /// </summary>
+        /// <param name="force">If true, update the database regardless of the state of this property object</param>
+        /// <returns>True if data successfully written</returns>
         public override bool Update(bool force = false)
         {
             if (_id > 0)

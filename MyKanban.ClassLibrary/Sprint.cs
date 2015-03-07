@@ -36,15 +36,27 @@ using Newtonsoft.Json.Converters;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Represents a single sprint interval that may be associated with a Board object
+    /// </summary>
     public class Sprint : MyKanban.BaseItem, MyKanban.IDataItem
     {
         #region Constructors
 
+        /// <summary>
+        /// Create an empty Sprint object
+        /// </summary>
+        /// <param name="credential">Credentials to use when creating this Sprint object</param>
         public Sprint(Credential credential) 
         {
             if (credential != null) _credential = credential;
         }
 
+        /// <summary>
+        /// Create a new Sprint object and load data for the provided ID# from the database
+        /// </summary>
+        /// <param name="sprintId">ID# of Sprint to load from database</param>
+        /// <param name="credential">Credentials to use when creating this Sprint object</param>
         public Sprint(long sprintId, Credential credential)
         {
             if (credential != null) _credential = credential;
@@ -53,6 +65,14 @@ namespace MyKanban
             LoadData();
         }
 
+        /// <summary>
+        /// Create a new Sprint object and initialize its data with provided parameters
+        /// </summary>
+        /// <param name="boardId">ID# of Board this sprint belongs to</param>
+        /// <param name="startDate">Start date of sprint</param>
+        /// <param name="endDate">End date of sprint</param>
+        /// <param name="sequence">Ordinal position of this sprint within list of sprints</param>
+        /// <param name="credential">Credentials to use when creating this Sprint object</param>
         public Sprint(long boardId, DateTime startDate, DateTime endDate, int sequence, Credential credential)
         {
             if (credential != null) _credential = credential;
@@ -69,6 +89,9 @@ namespace MyKanban
 
         DateTime _endDate;
 
+        /// <summary>
+        /// End date of sprint
+        /// </summary>
         [MyKanban.Description("End date of sprint")]
         [MyKanban.ControlType(enumControlType.DateTime)]
         public DateTime EndDate
@@ -77,8 +100,11 @@ namespace MyKanban
             set { _endDate = value; _isDirty = true; }
         }
 
+        /// <summary>
+        /// Display name of this sprint
+        /// </summary>
         [MyKanban.Description("Display name of this sprint")]
-        public string Name
+        public override string Name
         {
             get
             {
@@ -91,10 +117,11 @@ namespace MyKanban
             }
         }
 
-        private string _parentName;
-
+        /// <summary>
+        /// Name of board containing this sprint object
+        /// </summary>
         [MyKanban.Description("Name of board containing this sprint object")]
-        public string ParentName
+        public override string ParentName
         {
             get
             {
@@ -110,8 +137,11 @@ namespace MyKanban
 
         private string _parentType;
 
+        /// <summary>
+        /// "Type of parent object
+        /// </summary>
         [MyKanban.Description("Type of parent object")]
-        public string ParentType
+        public override string ParentType
         {
             get 
             {
@@ -127,6 +157,9 @@ namespace MyKanban
         
         int _sequence = 0;
 
+        /// <summary>
+        /// Ordinal position of this sprint within all sprints for this board
+        /// </summary>
         [MyKanban.Description("Ordinal position of this sprint within all sprints for this board")]
         [MyKanban.ControlType(enumControlType.Numeric)]
         public int Sequence
@@ -137,6 +170,9 @@ namespace MyKanban
 
         DateTime _startDate;
 
+        /// <summary>
+        /// Start date of this sprint
+        /// </summary>
         [MyKanban.Description("Start date of this sprint")]
         [MyKanban.ControlType(enumControlType.DateTime)]
         public DateTime StartDate
@@ -149,22 +185,40 @@ namespace MyKanban
 
         #region Methods
 
-        public void Delete()
+        /// <summary>
+        /// Delete this Sprint from the database
+        /// </summary>
+        public override void Delete()
         {
             Data.DeleteSprint(_id, _credential.Id);
         }
 
-        public bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
+        /// <summary>
+        /// Is the specified user authorized to perform the requested operation
+        /// </summary>
+        /// <param name="userId">ID# of user</param>
+        /// <param name="authLevel">Operation to perform</param>
+        /// <returns>True if user is authorized to perform the requested operation</returns>
+        public override bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
         {
             return true;
         }
 
+        /// <summary>
+        /// Is this Sprint object in a valid state
+        /// </summary>
+        /// <returns>True if this Sprint object is in a valid state</returns>
         public bool IsValid()
         {
             return true;
         }
 
-        public bool LoadData(bool force = false)
+        /// <summary>
+        /// Load data for this Sprint object from the database
+        /// </summary>
+        /// <param name="force">If true, load data regardless of the state of this object</param>
+        /// <returns>True if data successfully loaded</returns>
+        public override bool LoadData(bool force = false)
         {
             try
             {
@@ -199,7 +253,12 @@ namespace MyKanban
             }
         }
 
-        public bool Update(bool force = false)
+        /// <summary>
+        /// Update the database with data from this Sprint object
+        /// </summary>
+        /// <param name="force">If true, write data to database regardless of the state of this object</param>
+        /// <returns>True if data successfully written</returns>
+        public override bool Update(bool force = false)
         {
             try
             {

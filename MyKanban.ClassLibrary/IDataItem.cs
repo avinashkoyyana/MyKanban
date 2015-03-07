@@ -31,6 +31,9 @@ using System.Threading.Tasks;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Specifies contract that all MyKanban item classes must meet
+    /// </summary>
     public interface IDataItem
     {
 
@@ -58,6 +61,7 @@ namespace MyKanban
         void Delete();
         string JSON();
         bool LoadData(bool force = false);
+        void Reload();
         bool Update(bool force = false);
         bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read);
         bool IsValid();

@@ -1,0 +1,11 @@
+C:\Users\Mark\Documents\Visual Studio 2013\Projects\Test1\MyKanbanClassLibrary\bin\Debug\MyKanbanClassLibrary.dll.config
+C:\Users\Mark\Documents\Visual Studio 2013\Projects\Test1\MyKanbanClassLibrary\bin\Debug\MyKanbanClassLibrary.dll
+C:\Users\Mark\Documents\Visual Studio 2013\Projects\Test1\MyKanbanClassLibrary\bin\Debug\MyKanbanClassLibrary.pdb
+C:\Users\Mark\Documents\Visual Studio 2013\Projects\Test1\MyKanbanClassLibrary\bin\Debug\Microsoft.SharePoint.Client.dll
+C:\Users\Mark\Documents\Visual Studio 2013\Projects\Test1\MyKanbanClassLibrary\bin\Debug\Microsoft.SharePoint.Client.Runtime.dll
+C:\Users\Mark\Documents\Visual Studio 2013\Projects\Test1\MyKanbanClassLibrary\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Mark\Documents\Visual Studio 2013\Projects\Test1\MyKanbanClassLibrary\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Mark\Documents\Visual Studio 2013\Projects\Test1\MyKanbanClassLibrary\obj\Debug\MyKanbanClassLibrary.dll
+C:\Users\Mark\Documents\Visual Studio 2013\Projects\Test1\MyKanbanClassLibrary\obj\Debug\MyKanbanClassLibrary.pdb
+C:\Users\Mark\Documents\Visual Studio 2013\Projects\Test1\MyKanbanClassLibrary\obj\Debug\MyKanbanClassLibrary.csprojResolveAssemblyReference.cache
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanClassLibrary\bin\Debug\MyKanbanClassLibrary.XML

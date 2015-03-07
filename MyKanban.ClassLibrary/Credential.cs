@@ -34,14 +34,25 @@ using Newtonsoft.Json;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Represents an authorized user and their permissions for all Boards they have permission to access
+    /// </summary>
     public class Credential
     {
 
         #region Constructors
 
+        /// <summary>
+        /// Null constructor
+        /// </summary>
         public Credential()
         { }
 
+        /// <summary>
+        /// Obtain user credentials based on user name and password
+        /// </summary>
+        /// <param name="userName">User name stored in database</param>
+        /// <param name="password">Password stored in database (in encrypted form)</param>
         public Credential(string userName, string password)
         {
             _id = Data.Login(userName, password);
@@ -51,6 +62,9 @@ namespace MyKanban
 
         #region Properties
 
+        /// <summary>
+        /// User name as entered during authentication
+        /// </summary>
         public string UserName
         {
             get 
@@ -67,6 +81,9 @@ namespace MyKanban
             }
         }
 
+        /// <summary>
+        /// Display name of this user
+        /// </summary>
         public string Name
         {
             get
@@ -84,6 +101,10 @@ namespace MyKanban
         }
 
         private long _id = 0;
+
+        /// <summary>
+        /// ID# of this user
+        /// </summary>
         public long Id
         {
             get { return _id; }
@@ -94,6 +115,9 @@ namespace MyKanban
 
         private List<BoardPermissions> _boards = null;
 
+        /// <summary>
+        /// List of Boards with associated permissions that this user has access to
+        /// </summary>
         [JsonIgnore]
         public List<BoardPermissions> Boards
         {
@@ -133,13 +157,39 @@ namespace MyKanban
 
     }
 
+    /// <summary>
+    /// Represents a set of permissions that user has for a given Board
+    /// </summary>
     public class BoardPermissions
     {
+        /// <summary>
+        /// Name of Board
+        /// </summary>
         public string Name = "";
+
+        /// <summary>
+        /// ID# of Board
+        /// </summary>
         public long Id = 0;
+
+        /// <summary>
+        /// Does user have permission to edit this Board
+        /// </summary>
         public bool CanEdit = false;
+
+        /// <summary>
+        /// Does user have permission to add items to this Board
+        /// </summary>
         public bool CanAdd = false;
+
+        /// <summary>
+        /// Does user have permission to delete items from this Board
+        /// </summary>
         public bool CanDelete = false;
+
+        /// <summary>
+        /// Does user have permission to read data in this board
+        /// </summary>
         public bool CanRead = false;    
     }
 }

@@ -471,11 +471,13 @@ namespace MyKanban
             DataSet ds;
             Dictionary<string, object> parameters = new Dictionary<string, object>();
 
+            object val = (value == null ? "" : value);
+
             if (DatabaseType != DbType.SharePoint)
             {
                 parameters.Add("p_name", name);
-                parameters.Add("p_value", value);
-                parameters.Add("p_value_type", value.GetType().ToString());
+                parameters.Add("p_value", val);
+                parameters.Add("p_value_type", val.GetType().ToString());
                 parameters.Add("p_parent_type", parent_type);
                 parameters.Add("p_parent_id", parent_id);
                 parameters.Add("p_user_id", userId);
@@ -484,8 +486,8 @@ namespace MyKanban
             else
             {
                 parameters.Add("name", name);
-                parameters.Add("value", value);
-                parameters.Add("value_type", value.GetType().ToString());
+                parameters.Add("value", val);
+                parameters.Add("value_type", val.GetType().ToString());
                 parameters.Add("parent_type", parent_type);
                 parameters.Add("parent_id", parent_id);
                 parameters.Add("user_id", userId);
@@ -910,6 +912,7 @@ namespace MyKanban
                         resultDA.Fill(ds);
                         if (ds.Tables.Count > 0) ds.Tables[0].TableName = "results";
                     }
+                    catch { }
                     finally
                     {
                         con.Close();
@@ -1574,7 +1577,7 @@ namespace MyKanban
             parameters.Add("p_value_type", value.GetType().ToString());
             parameters.Add("p_user_id", userId);
 
-            return GetDataViaStoredProcedure("sp_update_project", parameters);
+            return GetDataViaStoredProcedure("sp_update_property", parameters);
         }
 
         public static void UpdateSprint(long sprintId, long boardId, DateTime startDate, DateTime endDate, int sequence, long userId)

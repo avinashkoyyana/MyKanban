@@ -43,14 +43,21 @@ namespace MyKanban
 
         public Users(Board board, Credential credential)
         {
+            UsersBoardConstructor(board, credential);
+        }
+
+        private void UsersBoardConstructor(Board board, Credential credential)
+        {
             if (credential != null) _credential = credential;
 
+            _items.Clear();
             DataSet dsUsers = MyKanban.Data.GetPeopleByBoard(board.Id, credential.Id);
             foreach (DataRow drUser in dsUsers.Tables["results"].Rows)
             {
                 User user = new User(board.Id, long.Parse(drUser["person_id"].ToString()), _credential);
                 _items.Add(user);
             }
+            _boardId = board.Id;
             _parent = board;
             _parentId = board.Id;
         }
@@ -132,6 +139,13 @@ namespace MyKanban
                 baseList.Add(baseItem);
             }
             return baseList;
+        }
+
+        public override void Reload()
+        {
+            base.Reload();
+
+            if (_parent != null) UsersBoardConstructor((Board)_parent, _credential);
         }
 
         public void Remove(int index)

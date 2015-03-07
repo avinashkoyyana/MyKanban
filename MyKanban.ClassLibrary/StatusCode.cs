@@ -33,15 +33,28 @@ using MyKanban;
 ---------------------------------------------------------------------------- */
 namespace MyKanban
 {
+    /// <summary>
+    /// Represents a single status code that may be associated with a 
+    /// board set, project or task
+    /// </summary>
     public class StatusCode : MyKanban.BaseItem, MyKanban.IDataItem
     {
         #region Constructors
 
+        /// <summary>
+        /// Create a new empty StatusCode object
+        /// </summary>
+        /// <param name="credential">Credentials to use when creating this StatusCode object</param>
         public StatusCode(Credential credential) 
         {
             if (credential != null) _credential = credential;
         }
 
+        /// <summary>
+        /// Create a new StatusCode object and initialize its Name property
+        /// </summary>
+        /// <param name="name">Name to assign to this status code</param>
+        /// <param name="credential">Credentials to use when creating this StatusCode object</param>
         public StatusCode(string name, Credential credential)
         {
             if (credential != null) _credential = credential;
@@ -51,6 +64,12 @@ namespace MyKanban
             _columnHeading = name;
         }
 
+        /// <summary>
+        /// Create a new StatusCode object and initialize its data from the database based on the
+        /// provided ID#
+        /// </summary>
+        /// <param name="statusCodeId">ID# of status code to read from database</param>
+        /// <param name="credential">Credentials to use when creating this StatusCode object</param>
         public StatusCode(long statusCodeId, Credential credential)
         {
             if (credential != null) _credential = credential;
@@ -65,6 +84,10 @@ namespace MyKanban
 
         string _columnHeading = "";
 
+        /// <summary>
+        /// Column heading to use when displaying this status code on pages 
+        /// or in drop-down lists
+        /// </summary>
         [MyKanban.Description("Display heading to use for this status")]
         public string ColumnHeading
         {
@@ -72,10 +95,13 @@ namespace MyKanban
             set { _columnHeading = value; _isDirty = true; }
         }
 
-        string _foreColor = "black";
+        // Default colors to use
+        private string _foreColor = "black";
+        private string _backColor = "white";
 
-        string _backColor = "white";
-
+        /// <summary>
+        /// Background color to use for tasks with this status
+        /// </summary>
         [MyKanban.Description("Background color to use for tasks with this status")]
         public string BackColor
         {
@@ -83,6 +109,9 @@ namespace MyKanban
             set { _backColor = value; _isDirty = true; }
         }
 
+        /// <summary>
+        /// Foreground color to use for tasks with this status
+        /// </summary>
         [MyKanban.Description("Foreground color to use for tasks with this status")]
         public string ForeColor
         {
@@ -90,7 +119,10 @@ namespace MyKanban
             set { _foreColor = value; _isDirty = true; }
         }
 
-        [MyKanban.Description("Synonym for the \"Status\" property")]
+        /// <summary>
+        /// Synonym for the Status property
+        /// </summary>
+        [MyKanban.Description("Synonym for the Status property")]
         public new string Name
         {
             get { return _status; }
@@ -99,6 +131,9 @@ namespace MyKanban
 
         int _sequence = 0;
 
+        /// <summary>
+        /// Ordinal position of this status code within list and on boards
+        /// </summary>
         [MyKanban.Description("Ordinal position of this status code within list and on boards")]
         public int Sequence
         {
@@ -108,6 +143,9 @@ namespace MyKanban
 
         string _status = "";
 
+        /// <summary>
+        /// Name of this status code
+        /// </summary>
         [MyKanban.Description("Name of this status code")]
         [MyKanban.ReadOnly(true)]
         public string Status
@@ -119,22 +157,40 @@ namespace MyKanban
 
         #region Methods
 
-        public void Delete()
+        /// <summary>
+        /// Delete this status code from the database
+        /// </summary>
+        public override void Delete()
         {
             Data.DeleteStatusCode(_id, _credential.Id);
         }
 
-        public bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
+        /// <summary>
+        /// Does specified user have permission to perform the requested operation
+        /// </summary>
+        /// <param name="userId">ID# of user</param>
+        /// <param name="authLevel">Requested operation</param>
+        /// <returns>True if user has permission to perform the requested operation</returns>
+        public override bool IsAuthorized(long userId, Data.AuthorizationType authLevel = Data.AuthorizationType.Read)
         {
-            return true;
+            return base.IsAuthorized(userId, authLevel);
         }
 
-        public bool IsValid()
+        /// <summary>
+        /// Is this Project object in a valid state
+        /// </summary>
+        /// <returns>True if Project object is in a valid state</returns>
+        public override bool IsValid()
         {
-            return true;
+            return base.IsValid();
         }
 
-        public bool LoadData(bool force = false)
+        /// <summary>
+        /// Populate the StatusCode instance with data from the database
+        /// </summary>
+        /// <param name="force">If true, populate this StatusCode regardless of state</param>
+        /// <returns>True if data was successfully loaded</returns>
+        public override bool LoadData(bool force = false)
         {
             try 
             {
@@ -170,7 +226,12 @@ namespace MyKanban
             catch { return false; }
         }
 
-        public bool Update(bool force = false) 
+        /// <summary>
+        /// Update the database with data from this object instance
+        /// </summary>
+        /// <param name="force">If true, save data to database regardless of the state of this StatusCode object</param>
+        /// <returns>True if data successfully written to database</returns>
+        public override bool Update(bool force = false) 
         {
             try 
             {
