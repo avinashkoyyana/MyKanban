@@ -1,0 +1,10 @@
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanUnitTests\bin\Debug\MyKanbanUnitTests.dll
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanUnitTests\bin\Debug\MyKanbanUnitTests.pdb
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanUnitTests\bin\Debug\MyKanbanClassLibrary.dll
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanUnitTests\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanUnitTests\bin\Debug\MyKanbanClassLibrary.pdb
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanUnitTests\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanUnitTests\obj\Debug\MyKanbanUnitTests.dll
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanUnitTests\obj\Debug\MyKanbanUnitTests.pdb
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanUnitTests\bin\Debug\Microsoft.SharePoint.Client.dll
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanUnitTests\bin\Debug\Microsoft.SharePoint.Client.Runtime.dll

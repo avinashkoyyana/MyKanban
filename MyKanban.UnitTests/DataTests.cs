@@ -1563,6 +1563,8 @@ namespace MyKanbanUnitTests
 
             // Cleanup
             t3.Delete();
+            user.Delete();
+            user2.Delete();
 
             // Make sure successfully deleted
             Assert.IsTrue(new Tasks(t3.Name, credential).Count == 0);
@@ -2265,6 +2267,41 @@ namespace MyKanbanUnitTests
         }
 
         [TestMethod]
+        public void CreatePropertyForPerson()
+        {
+            // Find entry for "Mark Gerow", if one doesn't exist, create it
+            Person mark;
+            People matches = new People("Mark Gerow", TestCredential);
+            if (matches.Count == 0)
+            {
+                mark = new Person(TestCredential);
+                mark.Name = "Mark Gerow";
+                mark.UserName = "mgerow";
+                mark.Password = "password";
+                mark.Update();
+            }
+            else
+            {
+                mark = matches[0];
+            }
+
+            // Add some new properties
+            Property favoriteColor = new Property(mark.Credential);
+            favoriteColor.Name = "FavoriteColor";
+            favoriteColor.Value = "Green";
+
+            Property birthday = new Property(mark.Credential);
+            birthday.Name = "Birthday";
+            birthday.Value = new DateTime(1958, 3, 12);
+
+            mark.Properties.Add(favoriteColor);
+            mark.Properties.Add(birthday);
+            mark.Properties["ElementarySchool"].Value = "Ohlones";
+
+            mark.Properties.Update();
+        }
+
+        [TestMethod]
         public void SetPropertyByName()
         {
             Task task = new Task(TestCredential);
@@ -2352,6 +2389,7 @@ namespace MyKanbanUnitTests
         {
             Person person = new Person(TestCredential);
             person.Name = "A new person - " + Guid.NewGuid().ToString();
+            person.UserName = "user_" + Guid.NewGuid().ToString();
             person.Update();
 
             person.Properties["Size"].Value = 123.45;
@@ -2398,6 +2436,151 @@ namespace MyKanbanUnitTests
 
             // Cleanup
             project.Delete();
+        }
+
+        [TestMethod]
+        public void ReloadBoard()
+        {
+            // Create a new board
+            Board b = new Board(TestCredential);
+
+            // Add a project
+            Project p = new Project(b.Credential);
+            b.Projects.Add(p);
+            b.Update();
+            b.Projects.Update();
+
+            // Create a 2nd instance of the same board
+            Board b2 = new Board(b.Id, b.Credential);
+
+            // Verify that they have the same project count
+            Assert.IsTrue(b.Projects.Count == 1 &&
+                b.Projects.Count == b2.Projects.Count);
+
+            // Now add a 2nd project to the first instance of the board
+            Project p2 = new Project(b.Credential);
+            b.Projects.Add(p2);
+            b.Projects.Update();
+
+            // Verify that first instance has 2 projects and 2nd instance only 1
+            Assert.IsTrue(b.Projects.Count == 2 &&
+                b2.Projects.Count == 1);
+
+            // Now reload the 2nd instance and verify that both instances 
+            // have 2 projects
+            b2.Reload();
+
+            Assert.IsTrue(b.Projects.Count == 2 &&
+                b.Projects.Count == b2.Projects.Count);
+
+            // Cleanup
+            p.Delete();
+            p2.Delete();
+            b.Delete();
+        }
+
+        [TestMethod]
+        public void ReloadProject()
+        {
+            // Create a new project
+            Project p = new Project(TestCredential);
+            p.Update();
+
+            // Add a task
+            Task t = new Task(p.Credential);
+            p.Tasks.Add(t);
+            p.Tasks.Update();
+
+            // Create a 2nd instance of the same project
+            Project p2 = new Project(p.Id, p.Credential);
+
+            // Verify that they have the same sub-project count
+            Assert.IsTrue(p.Tasks.Count == 1 &&
+                p.Tasks.Count == p2.Tasks.Count);
+
+            // Now add a 2nd task to the first instance of the project
+            Task t2 = new Task(p.Credential);
+            p.Tasks.Add(t2);
+            p.Tasks.Update();
+
+            // Verify that first instance has 2 tasks and 2nd instance only 1
+            Assert.IsTrue(p.Tasks.Count == 2 &&
+                p2.Tasks.Count == 1);
+
+            // Now reload the 2nd instance and verify that both instances 
+            // have 2 tasks
+            p2.Reload();
+
+            Assert.IsTrue(p.Tasks.Count == 2 &&
+                p.Tasks.Count == p2.Tasks.Count);
+
+            // Cleanup
+        }
+
+        [TestMethod]
+        public void ReloadTask()
+        {
+            // Create a new task
+
+            // Add a sub-task
+
+            // Create a 2nd instance of the same task
+
+            // Verify that they have the same sub-task count
+
+            // Now add a 2nd sub-task to the first instance of the task
+
+            // Verify that first instance has 2 sub-tasks and 2nd instance only 1
+
+            // Now reload the 2nd instance and verify that both instances 
+            // have 2 sub-tasks
+
+            // Cleanup
+        }
+
+        [TestMethod]
+        public void ReloadTasks()
+        {
+            // Create a new project
+            Project p1 = new Project(TestCredential);
+            p1.Name = "New project - " + Guid.NewGuid().ToString();
+
+            // Add a task
+            Task t1 = new Task(p1.Credential);
+            t1.Name = "New task # 1";
+            p1.Tasks.Add(t1);
+            p1.Tasks.Update();
+            p1.Update();
+
+            // Create a 2nd instance of the same project
+            Project p2 = new Project(p1.Id, p1.Credential);
+
+            // Verify that they have the same task count
+            Assert.IsTrue(p1.Tasks.Count == 1 &&
+                p1.Tasks.Count == p2.Tasks.Count);
+
+            // Now add a 2nd task to the first instance of the project
+            Task t2 = new Task(p1.Credential);
+            t2.Name = "New task # 2";
+            p1.Tasks.Add(t2);
+            p1.Tasks.Update();
+
+            // Verify that first instance has 2 tasks and 2nd instance only 1
+            Assert.IsTrue(p1.Tasks.Count == 2 &&
+                p2.Tasks.Count == 1);
+
+            // Now reload the 2nd instance and verify that both instances 
+            // have 2 tasks
+            p2.Tasks.Reload();
+
+            Assert.IsTrue(p1.Tasks.Count == 2 &&
+                p2.Tasks.Count == 2);
+
+            // Cleanup
+            t1.Delete();
+            t2.Delete();
+            p1.Delete();
+
         }
 
     #endregion
