@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shfbBuild product="Sandcastle Help File Builder" version="2015.1.12.0" projectFile="C:\NonSpsApps\MyKanban\Documentation\MyKanban.shfbproj" started="3/7/2015 10:07:20 AM">
+<shfbBuild product="Sandcastle Help File Builder" version="2015.1.12.0" projectFile="C:\NonSpsApps\MyKanban\Documentation\MyKanban.shfbproj" started="3/21/2015 11:43:18 AM">
 <buildStep step="Initializing">
 Finding tools...
 The Sandcastle tools are located in &#39;C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\&#39;
@@ -25,16 +25,16 @@ Copying XML comments files
 <buildStep step="GenerateSharedContent">
 Generating shared content files (en-US, English (United States))...
 <plugIn name="Lightweight Website Style" behavior="After" priority="1000">
-</plugIn>    Last step completed in 00:00:00.0160
+</plugIn>    Last step completed in 00:00:00.0430
 </buildStep>
 <buildStep step="GenerateApiFilter">
 Generating API filter for MRefBuilder...
-    Last step completed in 00:00:00.0030
+    Last step completed in 00:00:00.0020
 </buildStep>
 <buildStep step="GenerateReflectionInfo">
 Generating reflection information...
 [C:\windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe]
-Build started 3/7/2015 10:07:20 AM.
+Build started 3/21/2015 11:43:19 AM.
 Project &quot;C:\NonSpsApps\MyKanban\Documentation\Help\Working\GenerateRefInfo.proj&quot; on node 1 (default targets).
 PrepareForBuild:
   Creating directory &quot;obj\Debug\&quot;.
@@ -43,7 +43,7 @@ GenerateRefInfo:
   Copyright c 2006-2015, Microsoft Corporation, All Rights Reserved.
   Portions Copyright c 2006-2014, Eric Woodruff, All Rights Reserved.
   Loaded 1 assemblies for reflection and 1 dependency assemblies.
-  Wrote information on 2 namespaces, 41 types, and 573 members
+  Wrote information on 1 namespaces, 40 types, and 575 members
   Copying file from &quot;reflection.org&quot; to &quot;reflection.all&quot;.
   XslTransform (v2015.1.12.0)
   Copyright c 2006-2015, Microsoft Corporation, All Rights Reserved.
@@ -54,18 +54,18 @@ Done Building Project &quot;C:\NonSpsApps\MyKanban\Documentation\Help\Working\Ge
 Build succeeded.
 
 Time Elapsed 00:00:01.30
-    Last step completed in 00:00:01.3940
+    Last step completed in 00:00:01.3941
 </buildStep>
 <buildStep step="TransformReflectionInfo">
 Transforming reflection output...
 [C:\windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe]
-Build started 3/7/2015 10:07:22 AM.
+Build started 3/21/2015 11:43:20 AM.
 Project &quot;C:\NonSpsApps\MyKanban\Documentation\Help\Working\TransformManifest.proj&quot; on node 1 (default targets).
 TransformManifest:
   XslTransform (v2015.1.12.0)
   Copyright c 2006-2015, Microsoft Corporation, All Rights Reserved.
   Portions Copyright c 2006-2014, Eric Woodruff, All Rights Reserved.
-  Applying XSL transformation &#39;C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\ProductionTransforms\ApplyVSDocModel.xsl&#39;.
+  Applying XSL transformation &#39;C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\\ProductionTransforms\ApplyVSDocModel.xsl&#39;.
   Copying file from &quot;reflection.xml&quot; to &quot;reflection.nofilenames&quot;.
   XslTransform (v2015.1.12.0)
   Copyright c 2006-2015, Microsoft Corporation, All Rights Reserved.
@@ -79,55 +79,55 @@ Done Building Project &quot;C:\NonSpsApps\MyKanban\Documentation\Help\Working\Tr
 
 Build succeeded.
 
-Time Elapsed 00:00:01.18
-    Last step completed in 00:00:01.2920
+Time Elapsed 00:00:01.17
+    Last step completed in 00:00:01.2741
 </buildStep>
 <buildStep step="GenerateNamespaceSummaries">
 Generating namespace summary information...
-    Last step completed in 00:00:00.0520
+    Last step completed in 00:00:00.0570
 </buildStep>
 <buildStep step="CopyAdditionalContent">
 Copying additional content files...
 No additional content to copy
-    Last step completed in 00:00:00.0060
+    Last step completed in 00:00:00.0020
 </buildStep>
 <buildStep step="MergeTablesOfContents">
 Merging conceptual and additional tables of contents...
-    Last step completed in 00:00:00.0030
+    Last step completed in 00:00:00.0010
 </buildStep>
 <buildStep step="GenerateIntermediateTableOfContents">
 Generating intermediate table of contents file...
 [C:\windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe]
-Build started 3/7/2015 10:07:23 AM.
+Build started 3/21/2015 11:43:21 AM.
 Project &quot;C:\NonSpsApps\MyKanban\Documentation\Help\Working\GenerateIntermediateTOC.proj&quot; on node 1 (default targets).
 GenerateIntermediateTOC:
   XslTransform (v2015.1.12.0)
   Copyright c 2006-2015, Microsoft Corporation, All Rights Reserved.
   Portions Copyright c 2006-2014, Eric Woodruff, All Rights Reserved.
-  Applying XSL transformation &#39;C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\ProductionTransforms\CreateVSToc.xsl&#39;.
+  Applying XSL transformation &#39;C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\\ProductionTransforms\CreateVSToc.xsl&#39;.
 Done Building Project &quot;C:\NonSpsApps\MyKanban\Documentation\Help\Working\GenerateIntermediateTOC.proj&quot; (default targets).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.23
+Time Elapsed 00:00:00.22
 Generating conceptual content intermediate TOC file...
-    Last step completed in 00:00:00.3200
+    Last step completed in 00:00:00.3000
 </buildStep>
 <buildStep step="CreateBuildAssemblerConfigs">
 Creating Sandcastle configuration files...
     sandcastle.config
-    Last step completed in 00:00:00.3300
+    Last step completed in 00:00:00.3020
 </buildStep>
 <buildStep step="MergeCustomConfigs">
 Merging custom build component configurations
 C:\NonSpsApps\MyKanban\Documentation\Help\Working\sandcastle.config
     Replacing default configuration for &#39;Code Block Component&#39; with the custom configuration
-    Last step completed in 00:00:00.0410
+    Last step completed in 00:00:00.0620
 </buildStep>
 <buildStep step="BuildReferenceTopics">
 Building reference help topics...
 [C:\windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe]
-Build started 3/7/2015 10:07:24 AM.
+Build started 3/21/2015 11:43:22 AM.
 Project &quot;C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj&quot; on node 1 (default targets).
 BuildReferenceTopics:
   BuildAssembler (v2015.1.12.0)
@@ -135,48 +135,11 @@ BuildReferenceTopics:
   Portions Copyright c 2006-2014, Eric Woodruff, All Rights Reserved.
   Loading configuration...
   Processing topics...
-BuildAssembler : warning : ShowMissingComponent: [T:EncDec] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.Byte[],System.Byte[],System.Byte[])] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.Byte[],System.Byte[],System.Byte[])] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.Byte[],System.Byte[],System.Byte[])] Missing &lt;param name=&quot;cipherData&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.Byte[],System.Byte[],System.Byte[])] Missing &lt;param name=&quot;Key&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.Byte[],System.Byte[],System.Byte[])] Missing &lt;param name=&quot;IV&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.Byte[],System.String)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.Byte[],System.String)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.Byte[],System.String)] Missing &lt;param name=&quot;cipherData&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.Byte[],System.String)] Missing &lt;param name=&quot;Password&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.String,System.String)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.String,System.String)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.String,System.String)] Missing &lt;param name=&quot;cipherText&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.String,System.String)] Missing &lt;param name=&quot;Password&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.String,System.String,System.String)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.String,System.String,System.String)] Missing &lt;param name=&quot;fileIn&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.String,System.String,System.String)] Missing &lt;param name=&quot;fileOut&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Decrypt(System.String,System.String,System.String)] Missing &lt;param name=&quot;Password&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.Byte[],System.Byte[],System.Byte[])] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.Byte[],System.Byte[],System.Byte[])] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.Byte[],System.Byte[],System.Byte[])] Missing &lt;param name=&quot;clearData&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.Byte[],System.Byte[],System.Byte[])] Missing &lt;param name=&quot;Key&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.Byte[],System.Byte[],System.Byte[])] Missing &lt;param name=&quot;IV&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.Byte[],System.String)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.Byte[],System.String)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.Byte[],System.String)] Missing &lt;param name=&quot;clearData&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.Byte[],System.String)] Missing &lt;param name=&quot;Password&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.String,System.String)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.String,System.String)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.String,System.String)] Missing &lt;param name=&quot;clearText&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.String,System.String)] Missing &lt;param name=&quot;Password&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.String,System.String,System.String)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.String,System.String,System.String)] Missing &lt;param name=&quot;fileIn&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.String,System.String,System.String)] Missing &lt;param name=&quot;fileOut&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:EncDec.Encrypt(System.String,System.String,System.String)] Missing &lt;param name=&quot;Password&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Approver.LoadData(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Approver.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [F:MyKanban.Base._parent] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [F:MyKanban.Base._parentId] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [F:MyKanban.Base._parentName] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Base.JSON] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Base.JSON] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Base.ParentType] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Base.Reload] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [F:MyKanban.BaseItem._created] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
@@ -268,6 +231,7 @@ BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Comments.TaskId] Mi
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Comments.Update(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Comments.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Comments.Update(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Credential.#ctor(System.String)] Missing &lt;param name=&quot;token&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.Data] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.AddApproverToTask(System.Int64,System.Int64,System.Int64)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.AddAssigneeToTask(System.Int64,System.Int64,System.Int64)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
@@ -375,7 +339,6 @@ BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.AddTask(System
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.AddTask(System.Int64,System.String,System.DateTime,System.DateTime,System.Int64,System.String,System.Double,System.Double,System.Int64,System.Double,System.Double,System.Int32,System.Int64)] Missing &lt;param name=&quot;subTaskActHours&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.AddTask(System.Int64,System.String,System.DateTime,System.DateTime,System.Int64,System.String,System.Double,System.Double,System.Int64,System.Double,System.Double,System.Int32,System.Int64)] Missing &lt;param name=&quot;sequence&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.AddTask(System.Int64,System.String,System.DateTime,System.DateTime,System.Int64,System.String,System.Double,System.Double,System.Int64,System.Double,System.Double,System.Int32,System.Int64)] Missing &lt;param name=&quot;userId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Data.DatabaseType] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.DeleteBoard(System.Int64,System.Int64)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.DeleteBoard(System.Int64,System.Int64)] Missing &lt;param name=&quot;boardId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.DeleteBoard(System.Int64,System.Int64)] Missing &lt;param name=&quot;userId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
@@ -481,10 +444,6 @@ BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.GetPeopleByNam
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.GetPeopleByName(System.String,System.Int64)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.GetPeopleByName(System.String,System.Int64)] Missing &lt;param name=&quot;nameFilter&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.GetPeopleByName(System.String,System.Int64)] Missing &lt;param name=&quot;userId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.GetPersonById(System.Int64,System.Int64)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.GetPersonById(System.Int64,System.Int64)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.GetPersonById(System.Int64,System.Int64)] Missing &lt;param name=&quot;id&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.GetPersonById(System.Int64,System.Int64)] Missing &lt;param name=&quot;userId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.GetProjectById(System.Int64,System.Int64)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.GetProjectById(System.Int64,System.Int64)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.GetProjectById(System.Int64,System.Int64)] Missing &lt;param name=&quot;id&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
@@ -655,7 +614,6 @@ BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.UpdateTask(Sys
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.UpdateTask(System.Int64,System.Int64,System.String,System.DateTime,System.DateTime,System.Int64,System.String,System.Double,System.Double,System.Int64,System.Double,System.Double,System.Int32,System.Int64)] Missing &lt;param name=&quot;sequence&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Data.UpdateTask(System.Int64,System.Int64,System.String,System.DateTime,System.DateTime,System.Int64,System.String,System.Double,System.Double,System.Int64,System.Double,System.Double,System.Int32,System.Int64)] Missing &lt;param name=&quot;userId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.Data.AuthorizationType] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.Data.DbType] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.Data.SharePointOperation] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.IDataItem.Created] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.IDataItem.CreatedBy] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
@@ -730,43 +688,7 @@ BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.People.Remove(Syste
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.People.Update(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.People.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.People.Update(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.Person] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.Project] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.#ctor(MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.#ctor(System.Int64,MyKanban.Credential)] Missing &lt;param name=&quot;projectId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.#ctor(System.Int64,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.ActHours] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.BoardId] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.BoardSetId] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.BoardSetName] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.DefineDone] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.Delete] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.EarliestTaskStartDate] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.EstHours] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.ExpectedEndDate] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.ExpectedStartDate] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;param name=&quot;userId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;param name=&quot;authLevel&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.IsValid] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.IsValid] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.LatestTaskEndDate] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.LoadData(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.LoadData(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.LoadData(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.ParentName] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.ParentType] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.ProjectLead] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.Properties] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.Reload] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.Stakeholders] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.Status] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.StatusCodes] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Project.Tasks] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.Update(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Project.Update(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Person.Reload] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.Projects] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Projects.#ctor(MyKanban.Board,MyKanban.Credential)] Missing &lt;param name=&quot;board&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Projects.#ctor(MyKanban.Board,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
@@ -813,50 +735,7 @@ BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Properties.Remove(S
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Properties.Remove(System.String,System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Properties.Remove(System.String,System.Boolean)] Missing &lt;param name=&quot;name&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Properties.Remove(System.String,System.Boolean)] Missing &lt;param name=&quot;delete&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Properties.Update(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Properties.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Properties.Update(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.Property] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Property.#ctor(MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Property.#ctor(MyKanban.IDataItem,MyKanban.Credential)] Missing &lt;param name=&quot;parentObject&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Property.#ctor(MyKanban.IDataItem,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Property.Delete] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Property.LoadData(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Property.LoadData(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Property.LoadData(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Property.Update(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Property.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Property.Update(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Property.Value] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Property.ValueType] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.Sprint] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.#ctor(MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.#ctor(System.Int64,MyKanban.Credential)] Missing &lt;param name=&quot;sprintId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.#ctor(System.Int64,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.#ctor(System.Int64,System.DateTime,System.DateTime,System.Int32,MyKanban.Credential)] Missing &lt;param name=&quot;boardId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.#ctor(System.Int64,System.DateTime,System.DateTime,System.Int32,MyKanban.Credential)] Missing &lt;param name=&quot;startDate&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.#ctor(System.Int64,System.DateTime,System.DateTime,System.Int32,MyKanban.Credential)] Missing &lt;param name=&quot;endDate&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.#ctor(System.Int64,System.DateTime,System.DateTime,System.Int32,MyKanban.Credential)] Missing &lt;param name=&quot;sequence&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.#ctor(System.Int64,System.DateTime,System.DateTime,System.Int32,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.Delete] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Sprint.EndDate] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;param name=&quot;userId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;param name=&quot;authLevel&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.IsValid] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.IsValid] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.LoadData(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.LoadData(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.LoadData(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Sprint.Name] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Sprint.ParentName] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Sprint.ParentType] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Sprint.Sequence] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Sprint.StartDate] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.Update(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprint.Update(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.Sprints] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprints.#ctor(MyKanban.Board,MyKanban.Credential)] Missing &lt;param name=&quot;board&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprints.#ctor(MyKanban.Board,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
@@ -879,31 +758,6 @@ BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprints.Remove(Syst
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprints.Update(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprints.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Sprints.Update(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.StatusCode] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.#ctor(MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.#ctor(System.Int64,MyKanban.Credential)] Missing &lt;param name=&quot;statusCodeId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.#ctor(System.Int64,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.#ctor(System.String,MyKanban.Credential)] Missing &lt;param name=&quot;name&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.#ctor(System.String,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.StatusCode.BackColor] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.StatusCode.ColumnHeading] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.Delete] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.StatusCode.ForeColor] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;param name=&quot;userId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;param name=&quot;authLevel&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.IsValid] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.IsValid] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.LoadData(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.LoadData(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.LoadData(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.StatusCode.Name] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.StatusCode.Sequence] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.StatusCode.Status] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.Update(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCode.Update(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.StatusCodes] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCodes.#ctor(MyKanban.BoardSet,MyKanban.Credential)] Missing &lt;param name=&quot;boardSet&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCodes.#ctor(MyKanban.BoardSet,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
@@ -934,28 +788,6 @@ BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCodes.Remove(
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCodes.Update(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCodes.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.StatusCodes.Update(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.Tag] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.#ctor(MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.#ctor(System.Int64,MyKanban.Credential)] Missing &lt;param name=&quot;tagId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.#ctor(System.Int64,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.#ctor(System.String,MyKanban.Credential)] Missing &lt;param name=&quot;name&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.#ctor(System.String,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.Delete] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;param name=&quot;userId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;param name=&quot;authLevel&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.IsValid] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.IsValid] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.LoadData(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.LoadData(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.LoadData(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Tag.TagId] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Tag.TaskId] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Tag.Text] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.Update(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tag.Update(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.Tags] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tags.#ctor(MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tags.#ctor(MyKanban.Task,MyKanban.Credential)] Missing &lt;param name=&quot;task&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
@@ -985,51 +817,8 @@ BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Tags.TaskId] Missin
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tags.Update(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tags.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tags.Update(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.Task] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.#ctor(MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.#ctor(System.Int64,MyKanban.Credential)] Missing &lt;param name=&quot;taskId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.#ctor(System.Int64,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.#ctor(System.String,MyKanban.Credential)] Missing &lt;param name=&quot;name&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.#ctor(System.String,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.ActHours] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.Approvers] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.AssignedTo] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.Assignees] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.BackColor] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.BoardSetId] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.BoardSetName] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.Comments] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.DefineDone] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.Delete] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.EndDate] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.EstHours] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.ForeColor] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;param name=&quot;userId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;param name=&quot;authLevel&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.IsValid] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.IsValid] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.LoadData(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.LoadData(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.LoadData(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.ParentTaskId] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.ProjectId] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.ProjectName] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.Properties] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.Reload] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.Sequence] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.StartDate] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.Status] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.StatusCodes] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
+BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.ApprovedBy] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.StatusName] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.SubTaskActHours] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.SubTaskEstHours] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.SubTasks] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.Task.Tags] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.Update(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Task.Update(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.Tasks] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tasks.#ctor(MyKanban.Board,MyKanban.Credential)] Missing &lt;param name=&quot;board&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tasks.#ctor(MyKanban.Board,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
@@ -1060,44 +849,6 @@ BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tasks.Remove(System
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tasks.Update(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tasks.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Tasks.Update(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.User] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.#ctor(MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.#ctor(System.Int64,MyKanban.Credential)] Missing &lt;param name=&quot;userId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.#ctor(System.Int64,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.#ctor(System.Int64,System.Int64,MyKanban.Credential)] Missing &lt;param name=&quot;boardId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.#ctor(System.Int64,System.Int64,MyKanban.Credential)] Missing &lt;param name=&quot;personId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.#ctor(System.Int64,System.Int64,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.BoardId] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.CanAdd] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.CanDelete] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.CanEdit] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.CanRead] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.Created] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.CreatedBy] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.CreatedByName] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.Credential] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.Delete] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;param name=&quot;userId&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.IsAuthorized(System.Int64,MyKanban.Data.AuthorizationType)] Missing &lt;param name=&quot;authLevel&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.IsDirty] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.IsLoaded] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.JSON] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.JSON] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.LoadData(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.LoadData(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.LoadData(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.Modified] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.ModifiedBy] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.ModifiedByName] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.Name] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [F:MyKanban.User.Person] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.PersonId] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.Update(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.User.Update(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-BuildAssembler : warning : ShowMissingComponent: [P:MyKanban.User.UserName] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [T:MyKanban.Users] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Users.#ctor(MyKanban.Board,MyKanban.Credential)] Missing &lt;param name=&quot;board&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Users.#ctor(MyKanban.Board,MyKanban.Credential)] Missing &lt;param name=&quot;credential&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
@@ -1119,22 +870,22 @@ BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Users.Remove(System
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Users.Update(System.Boolean)] Missing &lt;summary&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Users.Update(System.Boolean)] Missing &lt;returns&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
 BuildAssembler : warning : ShowMissingComponent: [M:MyKanban.Users.Update(System.Boolean)] Missing &lt;param name=&quot;force&quot;/&gt; documentation [C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj]
-  Processed 758 topic(s)
-  984 warning(s)
+  Processed 755 topic(s)
+  735 warning(s)
   CopyFromIndexComponent: &quot;reflection&quot; in-memory cache entries used: 4 of 15.
   CopyFromIndexComponent: &quot;comments&quot; in-memory cache entries used: 2 of 30.
 Done Building Project &quot;C:\NonSpsApps\MyKanban\Documentation\Help\Working\BuildReferenceTopics.proj&quot; (default targets).
 
 Build succeeded.
 
-Time Elapsed 00:01:40.61
-    Last step completed in 00:01:40.7325
+Time Elapsed 00:00:36.75
+    Last step completed in 00:00:36.8767
 </buildStep>
 <buildStep step="CombiningIntermediateTocFiles">
 Combining conceptual and API intermediate TOC files...
 
 Clearing any prior web output
-    Last step completed in 00:00:01.1271
+    Last step completed in 00:00:00.9561
 </buildStep>
 <buildStep step="ExtractingHtmlInfo">
 Extracting HTML info for HTML Help 1 and/or website...
@@ -1146,17 +897,17 @@ E-Mail: Eric@EWoodruff.us
 Using LCID &#39;1033&#39;, code page &#39;65001&#39;, encoding charset &#39;UTF-8&#39;.
 
 Processing Help 1 files in C:\NonSpsApps\MyKanban\Documentation\Help\Working\Output\HtmlHelp1
-Processed 758 HTML files
+Processed 755 HTML files
 Sorting keywords and generating See Also indices
 Saving HTML Help 1 keyword index to C:\NonSpsApps\MyKanban\Documentation\Help\Working\MyKanbanDocumentation.hhk
 Saving HTML Help 1 table of contents to C:\NonSpsApps\MyKanban\Documentation\Help\Working\MyKanbanDocumentation.hhc
 
 Processing website files in C:\NonSpsApps\MyKanban\Documentation\Help\Working\Output\Website
-Processed 758 HTML files
+Processed 755 HTML files
 Sorting keywords and generating See Also indices
 Saving website keyword index to C:\NonSpsApps\MyKanban\Documentation\Help\Working\WebKI.xml
 Saving website table of contents to C:\NonSpsApps\MyKanban\Documentation\Help\Working\WebTOC.xml
-    Last step completed in 00:00:03.4603
+    Last step completed in 00:00:05.0505
 </buildStep>
 <buildStep step="CopyStandardHelpContent">
 Copying standard help content...
@@ -1299,11 +1050,11 @@ C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\PresentationStyle
 C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\PresentationStyles\VS2013\Web\icons\TocOpen.gif -&gt; C:\NonSpsApps\MyKanban\Documentation\Help\Working\Output\Website\icons\TocOpen.gif
 C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\PresentationStyles\VS2013\Web\scripts\branding-Website.js -&gt; C:\NonSpsApps\MyKanban\Documentation\Help\Working\Output\Website\scripts\branding-Website.js
 C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\PresentationStyles\VS2013\Web\scripts\jquery-1.11.0.min.js -&gt; C:\NonSpsApps\MyKanban\Documentation\Help\Working\Output\Website\scripts\jquery-1.11.0.min.js
-    Last step completed in 00:00:02.0122
+    Last step completed in 00:00:06.9487
 </buildStep>
 <buildStep step="GenerateHelpFormatTableOfContents">
 Generating HTML Help 1 table of contents file...
-    Last step completed in 00:00:00.0030
+    Last step completed in 00:00:00.0020
 </buildStep>
 <buildStep step="GenerateHelpFileIndex">
 Generating HTML Help 1 index file...
@@ -1311,7 +1062,7 @@ Generating HTML Help 1 index file...
 </buildStep>
 <buildStep step="GenerateHelpProject">
 Generating HTML Help 1 project file...
-    Last step completed in 00:00:00.0140
+    Last step completed in 00:00:00.0120
 </buildStep>
 <buildStep step="CompilingHelpFile">
 Compiling HTML Help 1 file...
@@ -1326,13 +1077,13 @@ Compiling HTML Help 1 file...
   
   
   
-  Compile time: 0 minutes, 14 seconds
+  Compile time: 0 minutes, 9 seconds
   
-  760	Topics
+  757	Topics
   
-  10,520	Local links
+  10,528	Local links
   
-  1,932	Internet links
+  2,640	Internet links
   
   0	Graphics
   
@@ -1340,22 +1091,22 @@ Compiling HTML Help 1 file...
   
   
   
-  Created c:\NonSpsApps\MyKanban\Documentation\Help\Working\Output\HtmlHelp1\MyKanbanDocumentation.chm, 889,026 bytes
+  Created c:\NonSpsApps\MyKanban\Documentation\Help\Working\Output\HtmlHelp1\MyKanbanDocumentation.chm, 1,006,204 bytes
   
-  Compression decreased file by 5,623,741 bytes.
+  Compression decreased file by 6,365,028 bytes.
   
-    Last step completed in 00:00:16.6647
+    Last step completed in 00:00:15.1995
 </buildStep>
 <buildStep step="GenerateHelpFormatTableOfContents">
 Generating website table of contents file...
-    Last step completed in 00:00:00.0030
+    Last step completed in 00:00:00.0040
 </buildStep>
 <buildStep step="GenerateFullTextIndex">
 Generating full-text index for the website...
 
 <plugIn name="Lightweight Website Style" behavior="After" priority="1000">
 Adding lightweight search and TOC elements to each topic...
-</plugIn>    Last step completed in 00:00:21.1051
+</plugIn>    Last step completed in 00:00:13.5384
 </buildStep>
 <buildStep step="CopyingWebsiteFiles">
 Copying website files to output folder...
@@ -1370,16 +1121,16 @@ Copied 700 files
 Copied 800 files
 Copied 900 files
 Copied 1000 files
-Copied 1029 files for the website content
-    Last step completed in 00:00:11.7212
+Copied 1021 files for the website content
+    Last step completed in 00:00:14.2514
 </buildStep>
 <buildStep step="CleanIntermediates">
 Removing intermediate files...
-    Last step completed in 00:00:03.6094
+    Last step completed in 00:00:03.7004
 </buildStep>
 <buildStep step="Completed">
 
-Build completed successfully at 3/7/2015 10:10:04 AM.  Total time: 00:02:44.5205
+Build completed successfully at 3/21/2015 11:44:58 AM.  Total time: 00:01:40.5731
 
 </buildStep>
 </shfbBuild>
