@@ -27,6 +27,7 @@ namespace MyKanbanUnitTests
             get
             {
                 MyKanban.Data.DatabaseType = Data.DbType.MySql;
+
                 Credential testCredential = new Credential("testuser", "password");
                 if (testCredential.Id == 0)
                 {
@@ -2028,8 +2029,21 @@ namespace MyKanbanUnitTests
         {
             Approver approver = new Approver(TestCredential);
             approver.TaskId = 12345;
-            Person mark = new People("Fred Flintstone", TestCredential)[0];
-            approver.PersonId = mark.Id;
+            People matches = new People("Fred Flintstone", TestCredential);
+            Person person;
+            if (matches.Count == 0)
+            {
+                person = new Person(TestCredential);
+                person.Name = "Fred Flintstone";
+                person.UserName = "fflintstone_" + Guid.NewGuid().ToString();
+                person.Update();
+            }
+            else
+            {
+                person = matches[0];
+            }
+
+            approver.PersonId = person.Id;
             approver.Update();
 
             // Verify saved to database
@@ -2580,6 +2594,105 @@ namespace MyKanbanUnitTests
             t1.Delete();
             t2.Delete();
             p1.Delete();
+
+        }
+
+        [TestMethod]
+        public void GetPersonByUserName()
+        {
+            Person fred = new Person("fflintstone", TestCredential);
+
+            Assert.IsTrue(fred.Id > 0 && fred.UserName.ToLower() == "fflintstone");
+        }
+
+        [TestMethod]
+        public void UpdateUserPassword()
+        {
+            Person p = new Person(5022, TestCredential);
+            p.Password = "megabase";
+            p.Update();
+        }
+
+
+        [TestMethod]
+        public void AddPropertiesForChecklist()
+        {
+            Dictionary<int, string> tasks = new Dictionary<int, string>();
+            tasks.Add(123, "abc");
+            tasks.Add(345, "def");
+            tasks.Add(678, "ghi");
+
+            Credential credential = TestCredential;
+
+            // Make sure project has an ID# by updating it
+            Project project = new Project(TestCredential);
+            project.Name = "Test Project for Teja";
+            project.Update();
+
+            // Iterate through items in dictionary, adding a task+property for each
+            foreach (var item in tasks)
+            {
+                // Create a new task under this project to represent the SP item
+                Task task = new Task(credential);
+                task.Name = "New Kanban task for " + item.Value;
+
+                // Add the new task to the project and save to database
+                project.Tasks.Add(task);
+                project.Tasks.Update();
+
+                // Create a new property to point back to SP item
+                Property QuestionID = new Property(credential);
+                QuestionID.Name = "CheckListTaskID";
+                QuestionID.Value = item.Value;
+
+                // Add the property to the new Kanban task
+                task.Properties.Add(QuestionID);
+
+                // Update the task to save both its data and the associated properties
+                task.Update();
+
+                // Verify properties saved
+                MyKanban.Task checkTask = new Task(task.Id, TestCredential);
+                Assert.IsTrue(checkTask.Id == task.Id &&
+                    checkTask.Properties.Count == 1 &&
+                    task.Properties.Count == 1 &&
+                    checkTask.Properties[0].Name == task.Properties[0].Name &&
+                    checkTask.Properties[0].Value.ToString() == item.Value.ToString());
+            }
+
+        }
+
+        [TestMethod]
+        public void LoginUsingToken()
+        {
+            Credential fred = new Credential("fflintstone", "password");
+
+            string token = fred.Token;
+
+            Credential fred2 = new Credential(token);
+
+            Assert.IsTrue(fred.Id == fred2.Id &&
+                fred.Name == fred2.Name);
+        }
+
+        [TestMethod]
+        public void GetBoardPermissionsForCurrentUser()
+        {
+            Boards boards = new Boards("Fenwick Labs", TestCredential);
+            Board board = new Board(boards[0].Id, TestCredential);
+
+            // Find which of TestCredential's boards is "Fenwick Labs"
+            int matchingIndex = -1;
+            List<BoardPermissions> tcBoards = TestCredential.Boards;
+            for (int i = 0; i < tcBoards.Count; i++)
+            {
+                if (tcBoards[i].Id == board.Id) matchingIndex = i;
+            }
+
+            Assert.IsTrue(tcBoards[matchingIndex].CanAdd == board.CanAdd &&
+                tcBoards[matchingIndex].CanDelete == board.CanDelete &&
+                tcBoards[matchingIndex].CanEdit == board.CanEdit &&
+                tcBoards[matchingIndex].CanRead == board.CanRead);
 
         }
 

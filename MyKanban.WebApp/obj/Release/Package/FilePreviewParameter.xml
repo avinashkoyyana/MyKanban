@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="gerow1" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Mark\\documents\\visual\ studio\ 2013\\Projects\\Test1\\MyKanban\.WebApp\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\Mark\\documents\\visual\ studio\ 2013\\Projects\\Test1\\MyKanban\.WebApp\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+</parameters>

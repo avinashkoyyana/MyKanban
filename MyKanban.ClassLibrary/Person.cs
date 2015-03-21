@@ -59,6 +59,9 @@ namespace MyKanban
         /// </summary>
         /// <param name="personId">ID# of person data to read from database</param>
         /// <param name="credential">Credentials used to create this object</param>
+        /// <example>
+        /// <code>Person fred = new Person(123, TestCredential);</code>
+        /// </example>
         public Person(long personId, Credential credential)
         {
             PersonIdConstructor(personId, credential);
@@ -70,6 +73,29 @@ namespace MyKanban
 
             _id = personId;
             LoadData();
+        }
+
+        /// <summary>
+        /// Find a person by their user name 
+        /// </summary>
+        /// <param name="userName">User name to look up</param>
+        /// <param name="credential">Credentials to use when finding this person</param>
+        /// <example>
+        /// <code>
+        /// Person fred = new Person("fflintstone", TestCredential);
+        /// </code>
+        /// </example>
+        public Person(string userName, Credential credential)
+        {
+            if (credential != null) _credential = credential;
+
+            DataSet dsPerson = Data.GetPersonByUserName(userName, credential.Id);
+            if (dsPerson != null && dsPerson.Tables.Count > 0 && dsPerson.Tables[0].Rows.Count > 0)
+            {
+                _id = 0;
+                long.TryParse(dsPerson.Tables[0].Rows[0]["id"].ToString(), out _id);
+                LoadData();
+            }
         }
 
         #endregion
@@ -260,6 +286,13 @@ namespace MyKanban
             {
                 return false;
             }
+        }
+
+        public override void Reload()
+        {
+            base.Reload();
+
+            if (_id > 0) PersonIdConstructor(_id, _credential);
         }
 
         /// <summary>

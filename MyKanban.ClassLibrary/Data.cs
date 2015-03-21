@@ -49,9 +49,21 @@ namespace MyKanban
 {
     public static class Data
     {
+        // Some sample MySql connection strings:
+        // -------------------------------------
+        // Local instance: Server=localhost;Database=mykanban;Uid=mykanban;Pwd=megabase;
+        // Azure/ClearDb:  Database=gerow1AldN41zoFi;Data Source=us-cdbr-azure-central-a.cloudapp.net;User Id=bd112805136cc0;Password=5d160891";
+        // -------------------------------------
+
         public static string MySqlConnectionString = "Server=localhost;Database=mykanban;Uid=mykanban;Pwd=megabase;";
 
-        public static string SqlServerConnectionString = "Data Source=sp2010dev5;Initial Catalog=mykanban;UID=mykanban;PWD=megabase";
+        // Some sample SQL Server connections strings:
+        // -------------------------------------------
+        // Local instance: Data Source=sp2010dev5;Initial Catalog=mykanban;UID=mykanban;PWD=megabase
+        // Azure:          Server=tcp:lnfk7armd0.database.windows.net,1433;Database=mykanban;User ID=mykanban@lnfk7armd0;Password=MyK@b@n2015;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+        // -------------------------------------------
+        //public static string SqlServerConnectionString = "Data Source=sp2010dev5;Initial Catalog=mykanban;UID=mykanban;PWD=megabase";
+        public static string SqlServerConnectionString = "Server=tcp:lnfk7armd0.database.windows.net,1433;Database=mykanban;User ID=mykanban@lnfk7armd0;Password=MyK@b@n2015;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
 
         public static string SharePointSiteUrl = "http://sp2010dev5/sites/DataProject/mykanban/";
 
@@ -59,11 +71,44 @@ namespace MyKanban
 
         public enum AuthorizationType { Read, Add, Update, Delete };
 
-        public enum DbType { MySql, SqlServer, SharePoint };
+        /// <summary>
+        /// Available connection types
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// MyKanban.Data.DatabaseType = Data.DbType.SqlServer;
+        /// </code>
+        /// </example>
+        public enum DbType 
+        { 
+            /// <summary>
+            /// Connect to MySQL database using MySql.Data drivers
+            /// </summary>
+            MySql, 
+
+            /// <summary>
+            /// Connect to SQL Server database using System.Data.SqlClient drivers
+            /// </summary>
+            SqlServer, 
+
+            /// <summary>
+            /// Connect to SharePoint 2010+ using CSOM API
+            /// </summary>
+            SharePoint 
+        };
 
         public enum SharePointOperation { Add, Delete, Get, Update };
 
         private static DbType _databaseType = DbType.MySql;
+
+        /// <summary>
+        /// Type of connection to use
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// MyKanban.Data.DatabaseType = Data.DbType.SqlServer;
+        /// </code>
+        /// </example>
         public static DbType DatabaseType
         {
             get { return _databaseType; }
@@ -955,6 +1000,7 @@ namespace MyKanban
         public static string GetJson(object obj)
         {
             JsonSerializerSettings settings = new JsonSerializerSettings();
+            settings.MaxDepth = 1;
             return JsonConvert.SerializeObject(obj, obj.GetType(), settings);
         }
 
@@ -990,11 +1036,34 @@ namespace MyKanban
             return ds;
         }
 
+        /// <summary>
+        /// Retrieve person table data by ID#
+        /// </summary>
+        /// <param name="id">ID# of person to look up</param>
+        /// <param name="userId">ID# of user making the request</param>
+        /// <returns>DataSet containing found data</returns>
         public static DataSet GetPersonById(long id, long userId)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("person_id", id);
             DataSet ds = GetDataViaStoredProcedure("sp_get_person", parameters);
+            return ds;
+        }
+
+        /// <summary>
+        /// Retrieve person table data
+        /// </summary>
+        /// <param name="personUserName">User name of person to return</param>
+        /// <param name="userId">ID# of user making the request</param>
+        /// <returns>DataSet containing found data</returns>
+        /// <example>
+        /// <code>Person fred = new Person("fflintstone", TestCredential);</code>
+        /// </example>
+        public static DataSet GetPersonByUserName(string personUserName, long userId)
+        {
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("p_user_name", personUserName);
+            DataSet ds = GetDataViaStoredProcedure("sp_get_person_by_user_name", parameters);
             return ds;
         }
 

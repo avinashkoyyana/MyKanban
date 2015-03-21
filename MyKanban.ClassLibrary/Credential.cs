@@ -58,60 +58,14 @@ namespace MyKanban
             _id = Data.Login(userName, password);
         }
 
+        public Credential(string token)
+        {
+            _id = long.Parse(EncDec.Decrypt(token, Data.encryptionKey));
+        }
+
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// User name as entered during authentication
-        /// </summary>
-        public string UserName
-        {
-            get 
-            {
-                if (_id > 0)
-                {
-                    _person = new Person(_id, this);
-                    return _person.UserName;
-                } 
-                else
-                {
-                    return "";
-                }
-            }
-        }
-
-        /// <summary>
-        /// Display name of this user
-        /// </summary>
-        public string Name
-        {
-            get
-            {
-                if (_id > 0)
-                {
-                    _person = new Person(_id, this);
-                    return _person.Name;
-                }
-                else
-                {
-                    return "";
-                }
-            }
-        }
-
-        private long _id = 0;
-
-        /// <summary>
-        /// ID# of this user
-        /// </summary>
-        public long Id
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
-
-        private Person _person;
 
         private List<BoardPermissions> _boards = null;
 
@@ -121,7 +75,7 @@ namespace MyKanban
         [JsonIgnore]
         public List<BoardPermissions> Boards
         {
-            get 
+            get
             {
                 if (_boards == null)
                 {
@@ -145,11 +99,82 @@ namespace MyKanban
                             boardPermissions.CanAdd = (bool)drBoard["can_add"];
                             boardPermissions.CanEdit = (bool)drBoard["can_edit"];
                             boardPermissions.CanDelete = (bool)drBoard["can_delete"];
+                            boardPermissions.Token = Token;
                             _boards.Add(boardPermissions);
                         }
                     }
                 }
-                return _boards; 
+
+                _boards = (from _board in _boards
+                         orderby _board.Name
+                         select _board).ToList<BoardPermissions>();
+
+                return _boards;
+            }
+        }
+
+        private long _id = 0;
+
+        /// <summary>
+        /// ID# of this user
+        /// </summary>
+        public long Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        /// <summary>
+        /// Display name of this user
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                if (_id > 0)
+                {
+                    _person = new Person(_id, this);
+                    return _person.Name;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
+
+        private Person _person;
+
+        private string _token = "";
+
+        /// <summary>
+        /// Token that can be used to represent this credential
+        /// </summary>
+        public string Token
+        {
+            get 
+            {
+                if (_id > 0) _token = EncDec.Encrypt(_id.ToString(), Data.encryptionKey);
+                return _token; 
+            }
+        }
+
+        /// <summary>
+        /// User name as entered during authentication
+        /// </summary>
+        public string UserName
+        {
+            get
+            {
+                if (_id > 0)
+                {
+                    _person = new Person(_id, this);
+                    return _person.UserName;
+                }
+                else
+                {
+                    return "";
+                }
             }
         }
 
@@ -190,6 +215,11 @@ namespace MyKanban
         /// <summary>
         /// Does user have permission to read data in this board
         /// </summary>
-        public bool CanRead = false;    
+        public bool CanRead = false;
+
+        /// <summary>
+        /// Place a copy of the user's token here to make available in JSON
+        /// </summary>
+        public string Token = "";
     }
 }

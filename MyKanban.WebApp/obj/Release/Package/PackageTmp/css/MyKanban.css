@@ -1,0 +1,231 @@
+﻿/* ----------------------------------------------------------------------------- /
+    Copyright (c) 2015 Mark E. Gerow
+
+    This file is part of MyKanban.
+
+    MyKanban is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    MyKanban is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with MyKanban.  If not, see <http://www.gnu.org/licenses/>.
+// -----------------------------------------------------------------------------*/
+body {
+    min-width: 520px;
+    min-width: 520px;
+    font-size: 9pt;
+    font-family: Tahoma;
+    margin: 10px;
+    padding: 10px;
+    background-color: #F5F5F5;
+}
+
+.column {
+    min-width: 175px;
+    max-width: 250px;
+    float: left;
+    padding-bottom: 100px;
+}
+
+.columnHeaderText {
+    font-family: Tahoma;
+    padding: 5px;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 8px;
+    margin: 5px;
+    margin-bottom: 25px !important;
+    margin-left: 0px;
+    white-space: nowrap;
+    border-radius: 10px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    box-shadow: 0 0 2px gray;
+    border: none;
+    opacity: .75;
+}
+
+.editButton {
+    font-size: .65em !important;
+    padding: 0 !important;
+    height: 18px !important;
+}
+
+.portlet {
+    margin: 0 1em 1em 0;
+    padding: 0.3em;
+}
+
+.portlet-header {
+    padding: 0.2em 0.3em;
+    margin-bottom: 0.5em;
+    position: relative;
+    font-size: 8pt;
+    font-family: Verdana;
+}
+
+.portlet-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin-top: -8px;
+}
+
+.portlet-content {
+    padding: 0.4em;
+    font-size: 8pt;
+    font-family: Verdana;
+}
+
+.portlet-content-notstarted {
+    background-color: lightgray;
+}
+
+.portlet-content-inprogress {
+    background-color: palegoldenrod;
+}
+
+.portlet-content-completed {
+    background-color: lightblue;
+}
+
+.portlet-content-approved {
+    background-color: palegreen;
+}
+
+.portlet-content-blocked {
+    background-color: lightpink;
+}
+
+.portlet-placeholder {
+    border: 1px dotted black;
+    margin: 0 1em 1em 0;
+    height: 50px;
+}
+
+h3 {
+    font-size: 10pt;
+    font-family: Verdana;
+    text-align: center;
+}
+
+.ui-dialog .ui-dialog-content .portlet-header {
+    padding: 0px;
+    margin: 0px;
+    background: #F9F9F9;
+    border: 1px solid #90d93f;
+    color: #222222;
+}
+
+/* more styles */
+.portlet {
+    margin: 0 1em 1em 0;
+    -ms-touch-action: none;
+    border-radius: 2px;
+    border: none;
+    box-shadow: 0 0 5px gray;
+    /*background-color: white;*/
+    padding: 0px;
+}
+
+.portlet-content {
+    /* background-color: white !important; */
+}
+
+/* This is the banner at top of each task */
+.portlet-header {
+    padding: .5em;
+    padding-right: 1.5em;
+    margin-bottom: 0.5em;
+    position: relative;
+    font-size: 10pt;
+    font-family: Tahoma;
+    background-image: none;
+    border: none;
+    border-radius: 2px;
+    font-weight: normal;
+}
+
+/* This is the body of the task */
+.portlet-content {
+    padding: 0.4em;
+    font-size: 10pt;
+    font-family: Tahoma;
+}
+
+.portlet-content-element {
+    margin-top: 10px;
+    /* white-space: nowrap; */
+}
+
+    .portlet-content-element span {
+        display: inline-block;
+    }
+
+.portlet-content-element {
+    border-bottom: 1px solid whitesmoke;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    margin-top: 5px;
+}
+
+.portlet-content-element-data {
+    font-weight: bold;
+    font-family: Tahoma;
+    /*background-color: white;*/
+    padding: 0px;
+    border: none;
+    margin: 0px;
+    max-width: none;
+}
+
+hr {
+    display: none;
+}
+
+.portlet-placeholder {
+    border: 1px dotted black;
+    margin: 0 1em 1em 0;
+    height: 50px;
+}
+
+.portlet-toggle {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    margin-top: -8px;
+}
+
+.ui-dialog {
+    z-index: 1000 !important;
+}
+
+.ui-dialog-titlebar {
+    font-size: 9pt;
+}
+
+td {
+    vertical-align: top;
+}
+
+/* Chosen-related CSS hacks */
+
+.chosen-container {
+    width: 350px !important;
+}
+
+.ui-dialog .ui-dialog-content {
+    overflow: visible !important;
+}
+
+.ui-dialog {
+    overflow: inherit !important;
+}

@@ -110,6 +110,14 @@ namespace MyKanban
 
         public void Clear(bool delete = false)
         {
+            if (delete)
+            {
+                foreach (Project project in _items)
+                {
+                    project.Delete();
+                }
+            }
+
             _items.Clear();
         }
 

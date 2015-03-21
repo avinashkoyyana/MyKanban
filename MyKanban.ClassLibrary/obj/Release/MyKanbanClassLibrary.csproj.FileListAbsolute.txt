@@ -6,3 +6,5 @@ C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanClassLibrary\b
 C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanClassLibrary\obj\Release\MyKanbanClassLibrary.dll
 C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanClassLibrary\obj\Release\MyKanbanClassLibrary.pdb
 C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanClassLibrary\obj\Release\MyKanbanClassLibrary.csprojResolveAssemblyReference.cache
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanClassLibrary\bin\Release\Microsoft.SharePoint.Client.dll
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanbanClassLibrary\bin\Release\Microsoft.SharePoint.Client.Runtime.dll

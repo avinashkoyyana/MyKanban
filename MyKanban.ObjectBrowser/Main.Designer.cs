@@ -372,6 +372,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.treeView1.ContextMenuStrip = this.contextMenuStrip1;
+            this.treeView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.treeView1.Location = new System.Drawing.Point(3, 0);
             this.treeView1.Name = "treeView1";
             this.treeView1.Size = new System.Drawing.Size(319, 621);
@@ -388,8 +389,10 @@
             this.collectionGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.collectionGridView.Location = new System.Drawing.Point(3, 3);
             this.collectionGridView.Name = "collectionGridView";
+            this.collectionGridView.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.collectionGridView.Size = new System.Drawing.Size(632, 618);
             this.collectionGridView.TabIndex = 10;
+            this.collectionGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.collectionGridView_DataError);
             // 
             // propertiesGridView
             // 
@@ -427,13 +430,14 @@
             this.propertiesGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.propertiesGridView.RowsDefaultCellStyle = dataGridViewCellStyle4;
-            this.propertiesGridView.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.propertiesGridView.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.propertiesGridView.RowTemplate.Height = 30;
             this.propertiesGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.propertiesGridView.Size = new System.Drawing.Size(401, 578);
             this.propertiesGridView.TabIndex = 9;
             this.propertiesGridView.TabStop = false;
             this.propertiesGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.propertiesGridView_CellValueChanged);
+            this.propertiesGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.propertiesGridView_DataError_1);
             // 
             // EditFlag
             // 

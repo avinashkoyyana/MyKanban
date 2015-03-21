@@ -168,7 +168,7 @@ namespace SampleOB
                     _isCollection = value; 
                     if (value)
                     {
-                        this.NodeFont = new System.Drawing.Font(DefaultFont, FontStyle.Italic);
+                        this.NodeFont = new System.Drawing.Font("Tahoma", 10, FontStyle.Italic);
                         System.Drawing.ColorConverter colorConverter = new System.Drawing.ColorConverter();
                         this.ForeColor = (System.Drawing.Color)colorConverter.ConvertFromString("Navy");
                     }
@@ -875,6 +875,10 @@ namespace SampleOB
                     currentObj = new Property(user);
                     break;
 
+                case "Sprints":
+                    currentObj = new Sprint(user);
+                    break;
+
                 case "Stakeholders":
                     currentObj = new Person(user);
                     break;
@@ -1154,6 +1158,22 @@ namespace SampleOB
                     selectedNode.MyKanbanObject = property;
                     break;
 
+                case "MyKanban.Sprint":
+
+                    Sprint sprint = ((Sprint)currentObj);
+                    sprint.Update(true);
+                    if (isNewChild)
+                    {
+                        MyKanban.Board parentBoard = new MyKanban.Board(parentId, user);
+                        parentBoard.Sprints.Add(sprint);
+                        parentBoard.Sprints.Update(true);
+                        collectionNode.MyKanbanCollectionObject = parentBoard.Sprints;
+                        collectionNode.Text = "Sprints (" + parentBoard.Sprints.Count.ToString() + ")";
+                        collectionNode.isDirty = true;
+                    }
+                    selectedNode.MyKanbanObject = sprint;
+                    break;
+
                 case "MyKanban.StatusCode":
 
                     StatusCode statusCode = ((StatusCode)currentObj);
@@ -1395,6 +1415,7 @@ namespace SampleOB
             // Prompt user to login 
             LoginForm loginForm = new LoginForm();
             loginForm.ShowDialog();
+
             if (loginForm.Credential != null && loginForm.Credential.Id > 0)
             {
                 // If user has entered a valid user name and password,
@@ -1593,6 +1614,8 @@ namespace SampleOB
                 // been populated, do so now
                 if (isCollection && !node.propertiesHaveBeenFetched)
                 {
+                    //readOnly = readOnly && !(obj.GetType().ToString() == "MyKanban.Sprints");
+                    readOnly = false;
                     PopulateCollection(node, property.Name, (IDataItem)obj, readOnly, propertyType, returnValue);
                 }
             }
@@ -1885,5 +1908,27 @@ namespace SampleOB
         }
 
         #endregion
+
+        /// <summary>
+        /// This event handler purposely left blank.  Added to prevent missing data from
+        /// causing gridview control from throwing exceptions
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void collectionGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // No Op
+        }
+
+        /// <summary>
+        /// This event handler purposely left blank.  Added to prevent missing data from
+        /// causing gridview control from throwing exceptions
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void propertiesGridView_DataError_1(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // No Op
+        }
     }
 }

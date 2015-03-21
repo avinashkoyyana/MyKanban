@@ -126,6 +126,26 @@ namespace MyKanban
             }
         }
 
+        private string _approvedBy = null;
+
+        [MyKanban.Description("List of individuals who will approve this task")]
+        public string ApprovedBy
+        {
+            get
+            {
+                if (_approvedBy == null || _isDirty)
+                {
+                    _approvedBy = "";
+                    foreach (Approver approver in Approvers.Items)
+                    {
+                        if (!string.IsNullOrEmpty(_approvedBy)) _approvedBy += ", ";
+                        _approvedBy += approver.Name;
+                    }
+                }
+                return _approvedBy;
+            }
+        }
+
         private string _assignedTo = null;
 
         /// <summary>
@@ -443,6 +463,7 @@ namespace MyKanban
                         _properties = new Properties(_credential);
                     }
                 }
+                _properties.Parent = this;
                 return _properties;
             }
         }
@@ -832,7 +853,7 @@ namespace MyKanban
                     tag.Update(force);
                 }
 
-                // Make sure any assogmees are updated
+                // Make sure any assignees are updated
                 foreach (Person assignee in Assignees.Items)
                 {
                     Data.AddAssigneeToTask(_id, assignee.Id, _credential.Id);
@@ -843,6 +864,14 @@ namespace MyKanban
                 {
                     approver.TaskId = _id;
                     approver.Update(force);
+                }
+
+                // Make sure any properties are updated
+                foreach (Property property in Properties.Items)
+                {
+                    property.Parent = this;
+                    property.ParentId = this.Id;
+                    property.Update(force);
                 }
 
                 // Reload the data for this board

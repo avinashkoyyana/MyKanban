@@ -212,13 +212,20 @@ namespace MyKanban
             }
         }
 
-        new public bool Update(bool force = false)
+        /// <summary>
+        /// Update all properties in a property collection
+        /// </summary>
+        /// <param name="force">If true, update all properties regardless of their current state</param>
+        /// <returns></returns>
+        override public bool Update(bool force = false)
         {
             try
             {
                 foreach (Property property in _items)
                 {
-                    if (_parentId != 0) property.ParentId = _parentId;
+                    if (_parent != null) _parentId = _parent.Id;
+                    property.ParentId = _parentId;
+                    property.Parent = _parent;
                     property.Update(true);
                 }
                 return true;

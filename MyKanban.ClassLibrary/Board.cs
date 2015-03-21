@@ -73,6 +73,9 @@ namespace MyKanban
             _tasks = null;
             _users = null;
             LoadData(true);
+
+            // Get permissions for current credentials
+            
         }
 
         #endregion
@@ -88,6 +91,66 @@ namespace MyKanban
             }
         }
 
+        /// <summary>
+        /// Can current user add tasks to this board
+        /// </summary>
+        public bool CanAdd
+        {
+            get 
+            {
+                for (int i = 0; i < Users.Count; i++)
+                {
+                    if (Users[i].PersonId == _credential.Id && Users[i].CanAdd) return true;
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Can current user delete tasks from this board
+        /// </summary>
+        public bool CanDelete
+        {
+            get
+            {
+                for (int i = 0; i < Users.Count; i++)
+                {
+                    if (Users[i].PersonId == _credential.Id && Users[i].CanDelete) return true;
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Can current user edit tasks in this board
+        /// </summary>
+        public bool CanEdit
+        {
+            get
+            {
+                for (int i = 0; i < Users.Count; i++)
+                {
+                    if (Users[i].PersonId == _credential.Id && Users[i].CanEdit) return true;
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Can current user read tasks from this board
+        /// </summary>
+        public bool CanRead
+        {
+            get
+            {
+                for (int i = 0; i < Users.Count; i++)
+                {
+                    if (Users[i].PersonId == _credential.Id && Users[i].CanRead) return true;
+                }
+                return false;
+            }
+        }
+        
         private Users _users = null;
 
         [MyKanban.Description("List of all users associated with this board")]

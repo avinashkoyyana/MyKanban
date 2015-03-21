@@ -50,6 +50,7 @@ namespace SampleOB
     {
         public Person User = new Person(Globals.Credential);
         public Credential Credential = new Credential();
+        public string Server = "Azure";
 
         public LoginForm()
         {
@@ -60,6 +61,16 @@ namespace SampleOB
         {
             if (!string.IsNullOrEmpty(txtUserName.Text))
             {
+                Server = ddlServer.SelectedItem.ToString();
+                if (this.Server == "Azure")
+                {
+                    MyKanban.Data.DatabaseType = Data.DbType.SqlServer;
+                }
+                else
+                {
+                    MyKanban.Data.DatabaseType = Data.DbType.MySql;
+                }
+
                 Globals.Credential = new Credential(txtUserName.Text, txtPassword.Text);
                 Credential = Globals.Credential;
                 if (Globals.Credential.Id != 0)
@@ -90,6 +101,7 @@ namespace SampleOB
                 User = new Person(Globals.UserId, Globals.Credential);
                 txtUserName.Text = User.UserName;
             }
+            ddlServer.SelectedIndex = 0;
             this.CenterToParent();
         }
     }

@@ -94,6 +94,14 @@ namespace MyKanban
 
         public void Clear(bool delete = false)
         {
+            if (delete)
+            {
+                foreach (Sprint sprint in _items)
+                {
+                    sprint.Delete();
+                }
+            }
+
             _items.Clear();
         }
 
