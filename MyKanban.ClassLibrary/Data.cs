@@ -51,23 +51,20 @@ namespace MyKanban
     {
         // Some sample MySql connection strings:
         // -------------------------------------
-        // Local instance: Server=localhost;Database=mykanban;Uid=mykanban;Pwd=megabase;
-        // Azure/ClearDb:  Database=gerow1AldN41zoFi;Data Source=us-cdbr-azure-central-a.cloudapp.net;User Id=bd112805136cc0;Password=5d160891";
+        // Local instance: Server=localhost;Database=database;Uid=uid;Pwd=password;
         // -------------------------------------
 
         public static string MySqlConnectionString = "Server=localhost;Database=mykanban;Uid=mykanban;Pwd=megabase;";
 
         // Some sample SQL Server connections strings:
         // -------------------------------------------
-        // Local instance: Data Source=sp2010dev5;Initial Catalog=mykanban;UID=mykanban;PWD=megabase
-        // Azure:          Server=tcp:lnfk7armd0.database.windows.net,1433;Database=mykanban;User ID=mykanban@lnfk7armd0;Password=MyK@b@n2015;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+        // Local instance: Data Source=server;Initial Catalog=databae;UID=uid;PWD=password
         // -------------------------------------------
-        //public static string SqlServerConnectionString = "Data Source=sp2010dev5;Initial Catalog=mykanban;UID=mykanban;PWD=megabase";
-        public static string SqlServerConnectionString = "Server=tcp:lnfk7armd0.database.windows.net,1433;Database=mykanban;User ID=mykanban@lnfk7armd0;Password=MyK@b@n2015;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+        public static string SqlServerConnectionString = "Server=server;Database=databae;User ID=uid;Password=password;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
 
-        public static string SharePointSiteUrl = "http://sp2010dev5/sites/DataProject/mykanban/";
+        public static string SharePointSiteUrl = "";
 
-        public static string encryptionKey = "{0318CEA5-768A-465B-85FB-82EB1937ED28}";
+        public static string encryptionKey = "key";
 
         public enum AuthorizationType { Read, Add, Update, Delete };
 
