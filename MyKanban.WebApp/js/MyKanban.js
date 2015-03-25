@@ -106,7 +106,7 @@ function getUserData(userName, pwd) {
         proxyPath = "http://localhost:50312/proxy.aspx?mode=";
         rootPath = 'http://localhost:50312/';
         dbType = 'MySql';
-        connectionString = encodeURI('Server=localhost;Database=mykanban;Uid=mykanban;Pwd=megabase;');
+        connectionString = encodeURI('Server=;Database=;Uid=;Pwd=;');
 
     } else if ($('#selServer').val() == 'Azure') {
 
@@ -115,14 +115,14 @@ function getUserData(userName, pwd) {
         proxyPath = "http://gerow1.azurewebsites.net/proxy.aspx?mode=";
         rootPath = 'http://gerow1.azurewebsites.net/';
         dbType = 'SqlServer';
-        connectionString = encodeURI('Server=tcp:lnfk7armd0.database.windows.net,1433;Database=mykanban;User ID=mykanban@lnfk7armd0;Password=MyK@b@n2015;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;');
+        connectionString = encodeURI('Server=;Database=;User ID=;Password=;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;');
 
     } else if ($('#selServer').val() == 'Work' && userName.toLowerCase() != 'testuser') {
 
         proxyPath = "https://mobile.fenwick.com/proxy.aspx?mode=";
         rootPath = "http://fw-8s50l02/MyKanban/";
         dbType = "MySql";
-        connectionString = encodeURI('Server=fw-8s50l02;Database=mykanban;Uid=mykanban;Pwd=megabase;');
+        connectionString = encodeURI('Server=;Database=;Uid=;Pwd=;');
 
     } else {
         
