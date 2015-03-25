@@ -119,7 +119,7 @@ function getUserData(userName, pwd) {
 
     } else if ($('#selServer').val() == 'Work' && userName.toLowerCase() != 'testuser') {
 
-        proxyPath = "https://mobile.fenwick.com/proxy.aspx?mode=";
+        proxyPath = "https://proxy.server.com/proxy.aspx?mode=";
         rootPath = "http://fw-8s50l02/MyKanban/";
         dbType = "MySql";
         connectionString = encodeURI('Server=;Database=;Uid=;Pwd=;');
