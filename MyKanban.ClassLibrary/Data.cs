@@ -49,22 +49,11 @@ namespace MyKanban
 {
     public static class Data
     {
-        // Some sample MySql connection strings:
-        // -------------------------------------
-        // Local instance: Server=localhost;Database=database;Uid=uid;Pwd=password;
-        // -------------------------------------
+        public static string MySqlConnectionString = "Server=localhost;Database=<database>;Uid=<userid>;Pwd=<password>;";
+        public static string SqlServerConnectionString = "Server=<server>;Database=<database>;User ID=<userid>;Password=<password>;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+        public static string SharePointSiteUrl = "http://<somedomain>/sites/<somesite>/<someweb>/";
 
-        public static string MySqlConnectionString = "Server=localhost;Database=mykanban;Uid=mykanban;Pwd=megabase;";
-
-        // Some sample SQL Server connections strings:
-        // -------------------------------------------
-        // Local instance: Data Source=server;Initial Catalog=databae;UID=uid;PWD=password
-        // -------------------------------------------
-        public static string SqlServerConnectionString = "Server=server;Database=databae;User ID=uid;Password=password;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
-
-        public static string SharePointSiteUrl = "";
-
-        public static string encryptionKey = "key";
+        public static string encryptionKey = "{0318CEA5-768A-465B-85FB-82EB1937ED28}";
 
         public enum AuthorizationType { Read, Add, Update, Delete };
 
@@ -443,7 +432,7 @@ namespace MyKanban
             double actHours,
             long parentTaskId,
             double subTaskEstHours,
-            double subTaskActHours, 
+            double subTaskActHours,
             int sequence,
             long userId
 )
@@ -451,40 +440,24 @@ namespace MyKanban
             DataSet ds;
             Dictionary<string, object> parameters = new Dictionary<string, object>();
 
-            if (DatabaseType != DbType.SharePoint)
-            {
-                parameters.Add("t_project_id", projectId);
-                parameters.Add("t_name", taskName.Length > 100 ? taskName.Substring(0, 100) : taskName);
-                parameters.Add("t_start_date", startDate);
-                parameters.Add("t_end_date", endDate);
-                parameters.Add("t_status_id", status);
-                parameters.Add("t_define_done", (!string.IsNullOrEmpty(defineDone)) ? defineDone : "");
-                parameters.Add("t_est_hours", estHours);
-                parameters.Add("t_act_hours", actHours);
-                parameters.Add("t_parent_task_id", parentTaskId);
-                parameters.Add("t_sub_task_est_hours", subTaskEstHours);
-                parameters.Add("t_sub_task_act_hours", subTaskEstHours);
-                parameters.Add("t_sequence", sequence);
-                parameters.Add("t_user_id", userId);
-                ds = GetDataViaStoredProcedure("sp_add_task", parameters);
-            }
-            else
-            {
-                parameters.Add("project_id", projectId);
-                parameters.Add("name", taskName.Length > 100 ? taskName.Substring(0, 100) : taskName);
-                parameters.Add("start_date", startDate);
-                parameters.Add("end_date", endDate);
-                parameters.Add("status_id", status);
-                parameters.Add("define_done", (!string.IsNullOrEmpty(defineDone)) ? defineDone : "");
-                parameters.Add("est_hours", estHours);
-                parameters.Add("act_hours", actHours);
-                parameters.Add("parent_task_id", parentTaskId);
-                parameters.Add("sub_task_est_hours", subTaskEstHours);
-                parameters.Add("sub_task_act_hours", subTaskEstHours);
-                parameters.Add("sequence", sequence);
-                parameters.Add("user_id", userId);
-                ds = ExecuteSharePointRequest("task", SharePointOperation.Add, parameters);
-            }
+            parameters.Add("t_project_id", projectId);
+            parameters.Add("t_name", taskName.Length > 100 ? taskName.Substring(0, 100) : taskName);
+            parameters.Add("t_start_date", startDate);
+            parameters.Add("t_end_date", endDate);
+            parameters.Add("t_status_id", status);
+            parameters.Add("t_define_done", (!string.IsNullOrEmpty(defineDone)) ? defineDone : "");
+            parameters.Add("t_est_hours", estHours);
+            parameters.Add("t_act_hours", actHours);
+            parameters.Add("t_parent_task_id", parentTaskId);
+            parameters.Add("t_sub_task_est_hours", subTaskEstHours);
+            parameters.Add("t_sub_task_act_hours", subTaskEstHours);
+            parameters.Add("t_sequence", sequence);
+            parameters.Add("t_user_id", userId);
+
+            ds = GetDataViaStoredProcedure("sp_add_task", parameters);
+
+            FillApproverAndAssigneeNames(ds, 0, 1, 2);
+
             return ds;
         }
 
@@ -788,6 +761,111 @@ namespace MyKanban
                 string caml = "<Where><Eq><FieldRef Name='ID' /><Value Type='Counter'>" + id.ToString() + "</Value></Eq></Where>";
                 ds = ExecuteSharePointRequest("board", SharePointOperation.Get, parameters, caml);
             }
+            return ds;
+        }
+
+        public static DataSet GetAllBoardData(long boardId, long sprintId, long projectId, long assigneeId, long approverId, string searchText, long userId)
+        {
+            DataSet ds;
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+
+            parameters.Add("b_board_id", boardId);
+            parameters.Add("b_sprint_id", sprintId);
+            parameters.Add("b_project_id", projectId);
+            parameters.Add("b_assignee_id", assigneeId);
+            parameters.Add("b_approver_id", approverId);
+            parameters.Add("b_search", searchText);
+            parameters.Add("b_user_id", userId);
+            ds = GetDataViaStoredProcedure("sp_get_all_board_data", parameters);
+
+            //select * from _board;
+            //select * from _sprint;
+            //select * from _board_person;
+            //select * from _project;
+            //select * from _task;
+            //select * from _task_assignee;
+            //select * from _task_approver;
+            //select * from _board_set_status;
+
+            ds.Tables[0].TableName = "board";
+            ds.Tables[1].TableName = "sprint";
+            ds.Tables[2].TableName = "board_person";
+            ds.Tables[3].TableName = "project";
+            ds.Tables[4].TableName = "task";
+            ds.Tables[5].TableName = "task_assignee";
+            ds.Tables[6].TableName = "task_approver";
+            ds.Tables[7].TableName = "board_set_status";
+
+            FillApproverAndAssigneeNames(ds, 4, 5, 6);
+
+            // Current user permissions for board
+            DataTable user = new DataTable("user");
+            user.Columns.Add("can_add", typeof(bool));
+            user.Columns.Add("can_delete", typeof(bool));
+            user.Columns.Add("can_edit", typeof(bool));
+            user.Columns.Add("can_read", typeof(bool));
+            DataRow[] drUser = ds.Tables["board_person"].Select("id=" + userId.ToString());
+            DataRow row = user.NewRow();
+            if (drUser.Length > 0)
+            {
+                row["can_add"] = bool.Parse(drUser[0]["can_add"].ToString());
+                row["can_delete"] = bool.Parse(drUser[0]["can_delete"].ToString());
+                row["can_edit"] = bool.Parse(drUser[0]["can_edit"].ToString());
+                row["can_read"] = bool.Parse(drUser[0]["can_read"].ToString());
+            }
+            user.Rows.Add(row);
+            ds.Tables.Add(user);
+
+            return ds;
+        }
+
+        private static DataSet FillApproverAndAssigneeNames(DataSet ds, int taskTableIndex, int assigneeTableIndex, int approverTableIndex)
+        {
+            // Fill in assignee names
+            DataTable task = ds.Tables[taskTableIndex];
+            task.Columns.Add("assigned_to");
+            task.Columns.Add("assigned_to_ids");
+            foreach (DataRow drTask in task.Rows)
+            {
+                string assigned_to = "";
+                string assigned_to_ids = "";
+                DataRow[] assignees = ds.Tables[assigneeTableIndex].Select("task_id=" + drTask["id"].ToString());
+                for (int i = 0; i < assignees.Length; i++)
+                {
+                    if (!string.IsNullOrEmpty(assigned_to))
+                    {
+                        assigned_to += ", ";
+                        assigned_to_ids += ";";
+                    }
+                    assigned_to += assignees[i]["name"].ToString();
+                    assigned_to_ids += assignees[i]["id"].ToString();
+                }
+                drTask["assigned_to"] = assigned_to;
+                drTask["assigned_to_ids"] = assigned_to_ids;
+            }
+
+            // Fill in approver names
+            task.Columns.Add("approved_by");
+            task.Columns.Add("approved_by_ids");
+            foreach (DataRow drTask in task.Rows)
+            {
+                string approved_by = "";
+                string approved_by_ids = "";
+                DataRow[] approvers = ds.Tables[approverTableIndex].Select("task_id=" + drTask["id"].ToString());
+                for (int i = 0; i < approvers.Length; i++)
+                {
+                    if (!string.IsNullOrEmpty(approved_by))
+                    {
+                        approved_by += ", ";
+                        approved_by_ids += ";";
+                    }
+                    approved_by += approvers[i]["name"].ToString();
+                    approved_by_ids += approvers[i]["id"].ToString();
+                }
+                drTask["approved_by"] = approved_by;
+                drTask["assigned_to_ids"] = approved_by_ids;
+            }
+
             return ds;
         }
 
@@ -1217,8 +1295,57 @@ namespace MyKanban
         public static DataSet GetTaskById(long id, long userId)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters.Add("task_id", id);
+            parameters.Add("t_task_id", id);
             DataSet ds = GetDataViaStoredProcedure("sp_get_task", parameters);
+
+            DataTable task = ds.Tables[0];
+            ds.Tables[1].TableName = "task_assignee";
+            ds.Tables[2].TableName = "task_approver";
+
+            // Fill in assignee names
+            task.Columns.Add("assigned_to");
+            task.Columns.Add("assigned_to_ids");
+            foreach (DataRow drTask in task.Rows)
+            {
+                string assigned_to = "";
+                string assigned_to_ids = "";
+                DataRow[] assignees = ds.Tables["task_assignee"].Select("task_id=" + drTask["id"].ToString());
+                for (int i = 0; i < assignees.Length; i++)
+                {
+                    if (!string.IsNullOrEmpty(assigned_to))
+                    {
+                        assigned_to += ", ";
+                        assigned_to_ids += ";";
+                    }
+                    assigned_to += assignees[i]["name"].ToString();
+                    assigned_to_ids += assignees[i]["id"].ToString();
+                }
+                drTask["assigned_to"] = assigned_to;
+                drTask["assigned_to_ids"] = assigned_to_ids;
+            }
+
+            // Fill in approver names
+            task.Columns.Add("approved_by");
+            task.Columns.Add("approved_by_ids");
+            foreach (DataRow drTask in task.Rows)
+            {
+                string approved_by = "";
+                string approved_by_ids = "";
+                DataRow[] approvers = ds.Tables["task_approver"].Select("task_id=" + drTask["id"].ToString());
+                for (int i = 0; i < approvers.Length; i++)
+                {
+                    if (!string.IsNullOrEmpty(approved_by))
+                    {
+                        approved_by += ", ";
+                        approved_by_ids += ";";
+                    }
+                    approved_by += approvers[i]["name"].ToString();
+                    approved_by_ids += approvers[i]["id"].ToString();
+                }
+                drTask["approved_by"] = approved_by;
+                drTask["assigned_to_ids"] = approved_by_ids;
+            }
+
             return ds;
         }
 
@@ -1684,7 +1811,7 @@ namespace MyKanban
             return ds;
         }
 
-        public static void UpdateTask(
+        public static DataSet UpdateTask(
             long projectId,
             long taskId,
             string taskName,
@@ -1717,7 +1844,11 @@ namespace MyKanban
             parameters.Add("t_sequence", sequence);
             parameters.Add("t_user_id", userId);
 
-            SetDataViaStoredProcedure("sp_update_task", parameters);
+            DataSet ds = GetDataViaStoredProcedure("sp_update_task", parameters);
+
+            FillApproverAndAssigneeNames(ds, 0, 1, 2);
+
+            return ds;
         }
     }
 }

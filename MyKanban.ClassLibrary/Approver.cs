@@ -54,7 +54,7 @@ namespace MyKanban
         /// Create a new approver object instance
         /// </summary>
         /// <param name="approverId">ID# of approver to read from database</param>
-        /// <param name="credential">Credentialo to use when creating this approver object</param>
+        /// <param name="credential">Credential to use when creating this approver object</param>
         public Approver(long approverId, Credential credential)
         {
             if (credential != null) _credential = credential;
@@ -66,19 +66,50 @@ namespace MyKanban
 
         #region Properties
 
+        private Person _person = null;
+
+        /// <summary>
+        /// Email of approver
+        /// </summary>
+        [MyKanban.Description("Email of task approver")]
+        [MyKanban.ReadOnly(true)]
+        public string Email
+        {
+            get
+            {
+                if (_person != null)
+                {
+                    return _person.Email;
+                }
+                else if (_personId > 0)
+                {
+                    _person = new Person(_personId, _credential);
+                    return _person.Email;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
+
         /// <summary>
         /// Name of approver
         /// </summary>
         [MyKanban.Description("Name of task approver")]
         [MyKanban.ReadOnly(true)]
-        public new string Name
+        public string Name
         {
             get 
             {
-                if (_personId > 0)
+                if (_person != null)
                 {
-                    Person approver = new Person(_personId, _credential);
-                    return approver.Name;
+                    return _person.Name;
+                }
+                else if (_personId > 0)
+                {
+                    _person = new Person(_personId, _credential);
+                    return _person.Name;
                 }
                 else
                 {
@@ -97,6 +128,31 @@ namespace MyKanban
         {
             get { return _personId; }
             set { _personId = value; }
+        }
+
+        /// <summary>
+        /// Phone of approver
+        /// </summary>
+        [MyKanban.Description("Phone of task approver")]
+        [MyKanban.ReadOnly(true)]
+        public string Phone
+        {
+            get
+            {
+                if (_person != null)
+                {
+                    return _person.Phone;
+                }
+                else if (_personId > 0)
+                {
+                    _person = new Person(_personId, _credential);
+                    return _person.Phone;
+                }
+                else
+                {
+                    return "";
+                }
+            }
         }
 
         /// <summary>

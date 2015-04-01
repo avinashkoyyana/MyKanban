@@ -255,9 +255,11 @@ namespace MyKanban
         /// ID# of board set this task belongs to
         /// </summary>
         [MyKanban.Description("ID# of board set this task belongs to")]
+        [MyKanban.ReadOnly(true)]
         public long BoardSetId
         {
             get { return _boardSetId; }
+            set { _boardSetId = value; }
         }
 
         private string _boardSetName = "";
@@ -266,9 +268,11 @@ namespace MyKanban
         /// Name of board set this task belongs to
         /// </summary>
         [MyKanban.Description("Name of board set this task belongs to")]
+        [MyKanban.ReadOnly(true)]
         public string BoardSetName
         {
             get { return _boardSetName; }
+            set { _boardSetName = value; }
         }
 
         private string _defineDone;

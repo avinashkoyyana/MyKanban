@@ -160,8 +160,11 @@ namespace MyKanban
             {
                 for (int i = 0; i < _items.Count; i++)
                 {
-                    _items[i].ParentId = this.ParentId;
-                    _items[i].Update();
+                    if (_items[i].IsDirty || force)
+                    {
+                        _items[i].ParentId = this.ParentId;
+                        _items[i].Update();
+                    }
                 }
                 return true; 
             }

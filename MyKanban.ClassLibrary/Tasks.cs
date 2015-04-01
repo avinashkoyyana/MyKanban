@@ -236,9 +236,13 @@ namespace MyKanban
             {
                 foreach (Task task in _items)
                 {
-                    if (_parentId != 0) task.ParentId = _parentId;
-                    task.ProjectId = _projectId;
-                    task.Update(true);
+                    if (_parent != null) _parentId = _parent.Id;
+                    if (_parentId != 0 && task.ParentId == 0) task.ParentId = _parentId;
+                    if (_projectId != 0 && task.ProjectId == 0) task.ProjectId = _projectId;
+                    if (force || task.IsDirty)
+                    {
+                        task.Update(force);
+                    }
                 }
                 return true;
             }

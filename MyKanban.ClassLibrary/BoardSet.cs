@@ -272,16 +272,23 @@ namespace MyKanban
                 // Save any constituent boards
                 foreach (Board board in _boards.Items)
                 {
-                    board.ParentId = _id;
-                    board.Update(true);
+                    if (board.Parent == null && board.ParentId == 0)
+                    {
+                        board.Parent = this;
+                        board.ParentId = _id;
+                    }
+                    board.Update(force);
                 }
 
                 // Save any constituent status codes
                 foreach (StatusCode statusCode in _statusCodes.Items)
                 {
-                    statusCode.Parent = this;
-                    statusCode.ParentId = _id;
-                    statusCode.Update(true);
+                    if (statusCode.Parent == null || statusCode.ParentId == 0)
+                    {
+                        statusCode.Parent = this;
+                        statusCode.ParentId = _id;
+                    }
+                    statusCode.Update(force);
                 }
 
                 // Reload the data for this board

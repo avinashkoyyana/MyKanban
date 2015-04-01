@@ -156,10 +156,10 @@ namespace MyKanban
                 foreach (Project project in _items)
                 {
                     // Update the underlying project
-                    project.Update(force);
+                    project.Update(force || project.IsDirty);
 
                     // There might be some instances where a project is
-                    // created independantly of a parent collection, in which
+                    // created independently of a parent collection, in which
                     // case we should use the parent Id of the project,
                     // instead of the project collection.
                     long pId = _parentId > 0 ? _parentId : project.ParentId;
