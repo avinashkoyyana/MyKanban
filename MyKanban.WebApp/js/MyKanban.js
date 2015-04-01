@@ -35,6 +35,7 @@ var token = '';         // User token returned by call to GetUserData.aspx
 var canAdd = false;     // Can current user add tasks to current board
 var canEdit = false;    // Can current user edit tasks on current board
 var canDelete = false;  // Can current user delete tasks from current board
+var statusId = 0        // Current task status id
 
 // Variable used to determine which server and database
 // should process request
@@ -64,12 +65,60 @@ var opts = {
     left: '50%' // Left position relative to parent
 };
 
-// jQuery startup routines - after all of page is loaded into browser
+// jQuery startup routine - after all of page is loaded into browser
 $(function () {
 
     // If cookie for user data exists, set default
     $('#txtUserName').val($.cookie("userName"));
     $('#txtPwd').val($.cookie("pwd"));
+
+    // Get list of available connections
+    $.ajax({
+        url: '/connections.txt',
+        dataType: "json",
+        type: 'GET',
+        success: function (data) {
+            displayLogin(data.connections);
+        },
+        error: function (e) {
+            alert(e.message);
+        }
+    });
+
+    // Set the change event handler for Server drop-down list
+    $("#selServer").change(function () {
+        var option = $('option:selected', this);
+        proxyPath = option.attr('proxyPath');
+        rootPath = option.attr('rootPath');
+        dbType = option.attr('dbType');
+        connectionString = option.attr('connectionString');
+    });
+});
+
+// Load available connections and display the login form
+function displayLogin(connections) {
+
+    $('#selServer').html('');
+    var selectedIdx = 0;
+    for (var i = 0; i < connections.length; i++) {
+        var selectedText = (connections[i].selected ? 'selected="selected" ' : '');
+        selectedIdx = (connections[i].selected ? i : selectedIdx)
+        var optionText =
+            '<option value="' + connections[i].value + '" '
+            + 'connectionString="' + connections[i].connection + '" '
+            + 'proxyPath="' + connections[i].proxyPath + '" '
+            + 'rootPath="' + connections[i].rootPath + '" '
+            + 'dbType="' + connections[i].dbType + '" '
+            + selectedText
+            + '>'
+            + connections[i].name + '</option>';
+        $('#selServer').append(optionText);
+    }
+    $('#selServer').val(connections[selectedIdx].value);
+    proxyPath = connections[selectedIdx].proxyPath;
+    rootPath = connections[selectedIdx].rootPath;
+    dbType = connections[selectedIdx].dbType;
+    connectionString = connections[selectedIdx].connection;
 
     // Prompt user to login
     $('#divLogin').dialog({
@@ -94,112 +143,6 @@ $(function () {
             }
         ]
     });
-});
-
-// Get list of boards this user has access to
-function getUserData(userName, pwd) {
-
-    // Determine which proxy to use based on login, this info will remain
-    // in affect for duration of this user session.
-    if ($('#selServer').val() == 'Local') {
-
-        proxyPath = "http://localhost:50312/proxy.aspx?mode=";
-        rootPath = 'http://localhost:50312/';
-        dbType = 'MySql';
-        connectionString = encodeURI('Server=;Database=;Uid=;Pwd=;');
-
-    } else if ($('#selServer').val() == 'Azure') {
-
-        // Azure cloud settings
-        // --------------------
-        proxyPath = "http://gerow1.azurewebsites.net/proxy.aspx?mode=";
-        rootPath = 'http://gerow1.azurewebsites.net/';
-        dbType = 'SqlServer';
-        connectionString = encodeURI('Server=;Database=;User ID=;Password=;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;');
-
-    } else if ($('#selServer').val() == 'Work' && userName.toLowerCase() != 'testuser') {
-
-        proxyPath = "https://proxy.server.com/proxy.aspx?mode=";
-        rootPath = "http://fw-8s50l02/MyKanban/";
-        dbType = "MySql";
-        connectionString = encodeURI('Server=;Database=;Uid=;Pwd=;');
-
-    } else {
-        
-        alert('Login denied.  If you believe you received this message in error, please contact your system administrator.');
-        window.location.reload();
-    }
-
-    $.ajax({
-        url: proxyPath + "GetUserData&userName=" + userName 
-            + "&pwd=" + pwd 
-            + '&rootPath=' + rootPath 
-            + '&dbType=' + dbType 
-            + '&connectionString=' + connectionString,
-        dataType: "jsonp",
-        type: 'GET',
-        crossDomain: true,
-        jsonpCallback: "getUserDataCallback",
-        success: function (data) {
-            // For some reason, the success method is getting called
-            // instead of callback3(), so in this case just pass
-            // control to callback3() explicitly.
-            //callback3(data);
-        },
-        error: function (e) {
-            alert(e.message);
-        }
-    });
-}
-
-// Populate the drop-down list of boards and display
-function getUserDataCallback(data) {
-
-    // Fill list of boards
-    $('#selAuthorizedBoards').html('<option value="0">[Select a Board]</option>');
-    for (var i = 0; i < data.length; i++) {
-        $('#selAuthorizedBoards').append('<option value=' + data[i].Id + '>' + data[i].Name + '</option>');
-    }
-
-    // Save user token
-    if (data.length > 0) token = encodeURIComponent(data[0].Token);
-
-    $('#divToolbox').dialog({
-        resizable: false,
-        autoResize: true,
-        height: 'auto',
-        width: 'auto',
-        dialogClass: 'dialog',
-        closeOnEscape: false,
-        modal: false,
-        open: function (event, ui) { $(".ui-dialog-titlebar-close").hide(); },
-        buttons: [
-            {
-                text: "Collapse",
-                click: function () {
-                    collapse();
-                }
-            },
-            {
-                text: "Expand",
-                click: function () {
-                    expand();
-                }
-            },
-            {
-                text: "New Task",
-                click: function () {
-                    addTask();
-                }
-            },
-            {
-                text: "Refresh",
-                click: function () {
-                    displayBoard(true);
-                }
-            }
-        ]
-    });
 }
 
 // Collapse all tasks down to just headings
@@ -208,14 +151,10 @@ function collapse() {
     $('.ui-icon-minusthick').toggleClass("ui-icon-minusthick ui-icon-plusthick");
 }
 
-// Expand all tasks to show more details
-function expand() {
-    $('.ui-icon-plusthick').parents(".portlet").find(".portlet-content").toggle();
-    $('.ui-icon-plusthick').toggleClass("ui-icon-minusthick ui-icon-plusthick");
-}
-
 // Get data for selected board
 function displayBoard(refresh) {
+
+    var timeStamp = new Date().getTime();
 
     // Show spinner while getting board
     var target = document.getElementById('divSpinner');
@@ -241,6 +180,7 @@ function displayBoard(refresh) {
             + '&rootPath=' + rootPath 
             + '&dbType=' + dbType 
             + '&connectionString=' + connectionString
+            + '&t=' + timeStamp
             + '&token=' + token,
         dataType: "jsonp",
         type: 'GET',
@@ -266,26 +206,27 @@ function displayBoardCallback(data) {
     $('#selStatus').html('');
 
     // Create columns for each status & populate status drop-down on edit form
-    for (var i = 0; i < data[0].Items.length; i++) {
-        $('#divBoard').append('<div id="divStatus_' + data[0].Items[i].Id + '" class="column"><h3 class="columnHeader" style="padding-bottom: 10px;"><span class="columnHeaderText" style="background-color: ' + data[0].Items[i].BackColor + '; color: ' + data[0].Items[i].ForeColor + ';">' + data[0].Items[i].ColumnHeading + '</span></h3></div>');
-        $('#selStatus').append('<option value="' + data[0].Items[i].Id + '">' + data[0].Items[i].Name + '</option>');
+    for (var i = 0; i < data.board_set_status.length; i++) {
+        $('#divBoard').append('<div id="divStatus_' + data.board_set_status[i].id + '" class="column"><h3 class="columnHeader" style="padding-bottom: 10px;"><span class="columnHeaderText" style="background-color: ' + data.board_set_status[i].back_color + '; color: ' + data.board_set_status[i].fore_color + ';">' + data.board_set_status[i].column_heading + '</span></h3></div>');
+        $('#selStatus').append('<option value="' + data.board_set_status[i].id + '">' + data.board_set_status[i].column_heading + '</option>');
     }
 
     // Fill filter list for sprints
     $('#selSprint').html('<option value="0" selected="selected">[All Sprints]</option>');
-    for (var i = 0; i < data[4].Items.length; i++) {
-        $('#selSprint').append('<option value="' + data[4].Items[i].Id + '">' + data[4].Items[i].Name + '</option>');
+    for (var i = 0; i < data.sprint.length; i++) {
+        $('#selSprint').append('<option value="' + data.sprint[i].id + '">' + data.sprint[i].name + '</option>');
     }
     $("#selSprint option[value='" + sprintId + "']").prop("selected", true);
 
+
     // Load tasks
-    for (var i = 0; i < data[1].length; i++) {
+    for (var i = 0; i < data.task.length; i++) {
 
-        var projectName = data[1][i].ProjectName;
+        var projectName = data.task[i].project_name;
 
-        var task = data[1][i];
+        var task = data.task[i];
 
-        $('#divStatus_' + task.Status).append(getPortlet(task));
+        $('#divStatus_' + task.status_id).append(getPortlet(task));
     }
 
     // Now fill in the assignees multi-select list
@@ -296,15 +237,15 @@ function displayBoardCallback(data) {
     $('#selAssignee').html('<option value="0" selected="selected">[All Assignees]</option>');
     $('#selApprover').html('<option value="0" selected="selected">[All Approvers]</option>');
 
-    for (var i = 0; i < data[2].Items.length; i++) {
+    for (var i = 0; i < data.board_person.length; i++) {
 
         // For add/edit form
-        $('#selAssignees').append('<option value="' + data[2].Items[i].PersonId + '">' + data[2].Items[i].Name + '</option>');
-        $('#selApprovers').append('<option value="' + data[2].Items[i].PersonId + '">' + data[2].Items[i].Name + '</option>');
+        $('#selAssignees').append('<option value="' + data.board_person[i].id + '">' + data.board_person[i].name + '</option>');
+        $('#selApprovers').append('<option value="' + data.board_person[i].id + '">' + data.board_person[i].name + '</option>');
 
         // For filter
-        $('#selAssignee').append('<option value="' + data[2].Items[i].PersonId + '">' + data[2].Items[i].Name + '</option>');
-        $('#selApprover').append('<option value="' + data[2].Items[i].PersonId + '">' + data[2].Items[i].Name + '</option>');
+        $('#selAssignee').append('<option value="' + data.board_person[i].id + '">' + data.board_person[i].name + '</option>');
+        $('#selApprover').append('<option value="' + data.board_person[i].id + '">' + data.board_person[i].name + '</option>');
     }
     $('#selAssignees').chosen();
     $('#selAssignees').trigger("chosen:updated");
@@ -329,8 +270,10 @@ function displayBoardCallback(data) {
 
         receive: function (event, ui) {
 
+            var timeStamp = new Date().getTime();
+
             var taskId = ui.item[0].id.split('_')[1];
-            var statusId = event.target.id.split('_')[1];
+            statusId = event.target.id.split('_')[1];
 
             // Update the status
             $.ajax({
@@ -339,9 +282,11 @@ function displayBoardCallback(data) {
                     + '&rootPath=' + rootPath 
                     + '&dbType=' + dbType 
                     + '&connectionString=' + connectionString
+                    + '&t=' + timeStamp
                     + '&token=' + token,
                 dataType: "jsonp",
                 type: 'GET',
+                async: false,
                 crossDomain: true,
                 jsonpCallback: "updateTaskStatusCallback",
                 success: function (data) {
@@ -357,30 +302,49 @@ function displayBoardCallback(data) {
         },
 
         stop: function (event, ui) {
+
+            var timeStamp = new Date().getTime();
+
+            // If we got here, then a status update occurred.  Need
+            // to insert some time here so that preceding update
+            // can complete before we start this one
+
             var divId = event.target.id;
             var idsInOrder = $("#" + divId).sortable("toArray");
             var serIdsInOrder = serializeIds(idsInOrder);
-            $.ajax({
-                url: proxyPath + "UpdateTaskSequence&boardId=" + boardId 
-                    + '&taskIds=' + serIdsInOrder 
-                    + '&rootPath=' + rootPath 
-                    + '&dbType=' + dbType 
-                    + '&connectionString=' + connectionString
-                    + '&token=' + token,
-                dataType: "jsonp",
-                type: 'GET',
-                crossDomain: true,
-                jsonpCallback: "updateTaskSequenceCallback",
-                success: function (data) {
-                    // For some reason, the success method is getting called
-                    updateTaskSequenceCallback(data);
-                },
-                error: function (e) {
-                    alert(e.message);
-                }
-            });
+            statusId = event.target.id.split('_')[1];
+
+            setTimeout(function () { processSequenceChange(serIdsInOrder, statusId, timeStamp) }, 1000);
+
         }
     });
+
+    function processSequenceChange(serIdsInOrder, statusId, timeStamp) {
+
+        $.ajax({
+            url: proxyPath + "UpdateTaskSequence&boardId=" + boardId 
+                + '&taskIds=' + serIdsInOrder 
+                + '&rootPath=' + rootPath 
+                + '&dbType=' + dbType 
+                + '&connectionString=' + connectionString
+                + '&statusId=' + statusId
+                + '&t=' + timeStamp
+                + '&token=' + token,
+            dataType: "jsonp",
+            type: 'GET',
+            async: false,
+            crossDomain: true,
+            jsonpCallback: "updateTaskSequenceCallback",
+            success: function (data) {
+                // For some reason, the success method is getting called
+                updateTaskSequenceCallback(data);
+            },
+            error: function (e) {
+                alert(e.message);
+            }
+        });
+
+    }
 
     function updateTaskSequenceCallback(data) {
         // NO OP
@@ -400,9 +364,9 @@ function displayBoardCallback(data) {
 
     // Set the fore/back color of the task to the new status colors
     function updateTaskStatusCallback(task) {
-        var header = document.getElementById('header_' + task.Id);
-        var content = document.getElementById('content_' + task.Id);
-        $(header).replaceWith('<div class="portlet-header" id="header_' + task.Id + '" style="background-color: ' + task.BackColor + '; color: ' + task.ForeColor + ';">' + task.Name + ' (' + task.Id + ')</div>');
+        var header = document.getElementById('header_' + task.task[0].id);
+        var content = document.getElementById('content_' + task.task[0].id);
+        $(header).replaceWith('<div class="portlet-header" id="header_' + task.task[0].id + '" style="background-color: ' + task.task[0].back_color + '; color: ' + task.task[0].fore_color + ';">' + task.task[0].name + ' (' + task.task[0].id + ')</div>');
         $("body").css("cursor", "default");
 
         restorePlusMinusIcon(task);
@@ -411,6 +375,7 @@ function displayBoardCallback(data) {
     // TODO: Figure out why below doesn't prevent portlets from being dropped on header row
     $(".columnHeader").disableSelection();
 
+    // Add +/- for expand/collapse functionality
     $(".portlet")
       .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
       .find(".portlet-header")
@@ -427,9 +392,9 @@ function displayBoardCallback(data) {
     $('#selTaskProjects').html('');
     $('#selProject').html('');
     $('#selProject').html('<option value="0" selected="selected">[All Projects]</option>');
-    for (var i = 0; i < data[3].length; i++) {
-        $('#selProject').append('<option value="' + data[3][i].Id + '">' + data[3][i].Name + '</option>');
-        $('#selTaskProjects').append('<option value="' + data[3][i].Id + '">' + data[3][i].Name + '</option>');
+    for (var i = 0; i < data.project.length; i++) {
+        $('#selProject').append('<option value="' + data.project[i].id + '">' + data.project[i].name + '</option>');
+        $('#selTaskProjects').append('<option value="' + data.project[i].id + '">' + data.project[i].name + '</option>');
     }
     $("#selProject option[value='" + projectId + "']").prop("selected", true);
 
@@ -437,9 +402,9 @@ function displayBoardCallback(data) {
     $('.editButton').button({ icons: { primary: "ui-icon-pencil" }, text: false });
 
     // Save user permissions for current board
-    canAdd = data[5].CanAdd;
-    canDelete = data[5].CanDelete;
-    canEdit = data[5].CanEdit;
+    canAdd = data.user[0].can_add;
+    canDelete = data.user[0].can_delete;
+    canEdit = data.user[0].can_edit;
 
     // Disable add button if user does not have add permissions
     if (!canAdd) {
@@ -453,203 +418,6 @@ function displayBoardCallback(data) {
 
     spinner.stop();
 
-}
-
-// Edit the selected task
-function editTask(taskId) {
-
-    // Get task data
-    $.ajax({
-        url: proxyPath + "GetTaskData&taskId=" + taskId 
-            + '&rootPath=' + rootPath 
-            + '&dbType=' + dbType 
-            + '&connectionString=' + connectionString
-            + '&token=' + token,
-        dataType: "jsonp",
-        type: 'GET',
-        crossDomain: true,
-        jsonpCallback: "editTaskCallback",
-        success: function (task) {
-            // For some reason, the success method is getting called
-            // instead of callback2(), so in this case just pass
-            // control to callback2() explicitly.
-            //callback4(data);
-        },
-        error: function (e) {
-            alert(e.message);
-        }
-    });
-}
-
-// Populate edit dialog with JSON data returned by call to
-// GetTaskData.aspx (via proxy)
-function editTaskCallback(task) {
-
-    // Set field values
-    $('#txtProject').html(task.ProjectName);
-    $('#selTaskProjects').hide();
-    $('#txtName').val(task.Name);
-    $('#txtDefineDone').val(task.DefineDone.replace(/\\n/g, "\n"));
-    $('#txtEstHours').val(task.EstHours);
-    $('#txtEstHours').spinner();
-    $('#txtActHours').val(task.ActHours);
-    $('#txtActHours').spinner();
-    $('#txtStartDate').val(formatDate(task.StartDate));
-    $("#txtStartDate").datepicker();
-    $('#txtEndDate').val(formatDate(task.EndDate));
-    $("#txtEndDate").datepicker();
-    $('#selStatus').val(task.Status);
-
-    // TODO: Set value(s) for assignees
-    $('#selAssignees').val('').trigger('chosen:updated');
-    for (var i = 0; i < task.Assignees.Items.length; i++) {
-        $("#selAssignees option[value='" + task.Assignees.Items[i].Id + "']").prop("selected", true);
-    }
-    $('#selAssignees').trigger('chosen:updated');
-
-    // TODO: Set value(s) for approvers
-    //debugger;
-    $('#selApprovers').val('').trigger('chosen:updated');
-    for (var i = 0; i < task.Approvers.Items.length; i++) {
-        $("#selApprovers option[value='" + task.Approvers.Items[i].PersonId + "']").prop("selected", true);
-    }
-    $('#selApprovers').trigger('chosen:updated');
-
-    // Set the ID# being edited
-    $('#divEditTask').attr('taskId', task.Id);
-
-    $('#divEditTask').dialog({
-        resizable: false,
-        autoResize: true,
-        height: 'auto',
-        width: 'auto',
-        dialogClass: 'dialog',
-        closeOnEscape: true,
-        modal: true,
-        title: 'Edit Task #' + task.Id,
-        open: function () {
-
-            // Disable delete button if user does not have permission to delete
-            if (!canDelete) {
-                $(".ui-dialog-buttonpane button:contains('Delete')").button("disable");
-            } else {
-                $(".ui-dialog-buttonpane button:contains('Delete')").button("enable");
-            }
-
-            // Disable edit button if user does not have permission to edit
-            if (!canEdit) {
-                $(".ui-dialog-buttonpane button:contains('Save')").button("disable");
-            } else {
-                $(".ui-dialog-buttonpane button:contains('Save')").button("enable");
-            }
-        },
-        buttons: [
-            {
-                text: "Delete", click: function () {
-                    if (confirm("Are you sure you want to permanently delete this task?")) {
-                        var taskId = $('#divEditTask').attr('taskId');
-                        $.ajax({
-                            url: proxyPath + "DeleteTask&taskId=" + taskId 
-                                + '&rootPath=' + rootPath 
-                                + '&dbType=' + dbType 
-                                + '&connectionString=' + connectionString
-                                + '&token=' + token,
-                            dataType: "jsonp",
-                            type: 'POST',
-                            crossDomain: true,
-                            jsonpCallback: "deleteTaskCallback",
-                            success: function (data) {
-                                // Deleted
-                            },
-                            error: function (e) {
-                                alert(e.message);
-                            }
-                        });
-
-                        $(this).dialog('close');
-                    }
-                }
-            },
-            {
-                text: "Save", click: function () {
-
-                    var timeStamp = new Date().getTime();
-
-                    var assignees = '';
-                    $('#selAssignees :selected').each(function (i, selected) {
-                        if (assignees.length > 0) assignees += ';';
-                        assignees += $(selected).val();
-                    });
-
-                    var approvers = '';
-                    $('#selApprovers :selected').each(function (i, selected) {
-                        if (approvers.length > 0) approvers += ';';
-                        approvers += $(selected).val();
-                    });
-
-                    var taskId = $('#divEditTask').attr('taskId');
-                    var name = specialEncoding($('#txtName').val());
-                    var defineDone = specialEncoding($('#txtDefineDone').val().replace(/\n/g, "\\n"));
-                    var startDate = $('#txtStartDate').val();
-                    var endDate = $('#txtEndDate').val();
-                    var estHours = $('#txtEstHours').val();
-                    var actHours = $('#txtActHours').val();
-                    var statusId = $('#selStatus').val();
-
-                    $.ajax({
-                        url: proxyPath + "UpdateTask&taskId=" + taskId
-                            + '&projectId=0'
-                            + '&name=' + name
-                            + '&defineDone=' + defineDone
-                            + '&assignees=' + assignees
-                            + '&approvers=' + approvers
-                            + '&startDate=' + startDate
-                            + '&endDate=' + endDate
-                            + '&estHours=' + estHours
-                            + '&actHours=' + actHours
-                            + '&statusId=' + statusId
-                            + '&rootPath=' + rootPath 
-                            + '&dbType=' + dbType 
-                            + '&connectionString=' + connectionString 
-                            + '&t=' + timeStamp 
-                            + '&token=' + token,
-                        dataType: "jsonp",
-                        type: 'POST',
-                        crossDomain: true,
-                        jsonpCallback: "saveTaskCallback",
-                        success: function (data) {
-                            // Saved
-                        },
-                        error: function (e) {
-                            alert(e.message);
-                        }
-                    });
-
-                    $(this).dialog("close");
-                }
-            },
-            {
-                text: "Cancel", click: function () {
-                    $(this).dialog('close');
-                }
-            }
-        ],
-    });
-
-}
-
-// Rolled my own routine to handle some common characters that 
-// present issues for ASP.NET
-function specialEncoding(s) {
-    return s.replace(/&/g, "~")
-        .replace(/#/g, "`").replace(/\+/g, "^")
-        .replace(/</g, '[').replace(/>/g, ']');
-}
-
-// After task has been deleted from MyKanban database, also
-// need to hide it on the board
-function deleteTaskCallback(data) {
-    $('#task_' + data.TaskId).hide();
 }
 
 // Display the edit dialog with empty fields so user can
@@ -756,76 +524,212 @@ function addTask() {
 
 }
 
-// If task edited and saved, update the task portlet to reflect any changes
-function saveTaskCallback(task) {
-    var prevStatus = $('#task_' + task.Id)[0].parentElement.id.split('_')[1];
-    if (prevStatus != task.Status) {
-        $('#task_' + task.Id).remove();
-        $('#divStatus_' + task.Status).append(getPortlet(task));
-    } else {
-        $('#task_' + task.Id).replaceWith(getPortlet(task));
-    }
-
-    // When the portlet is redrawn, need to format the edit button again,
-    // otherwise it will revert to simple text without icon
-    $('#task_' + task.Id + ' .editButton').button({ icons: { primary: "ui-icon-pencil" }, text: false });
-
-    // When portlet is redrawn, the +/- icon in the upper right
-    // corner disappears, so need to add that back as well
-    restorePlusMinusIcon(task);
-}
-
 // If task added and saved, update the task portlet to reflect any changes
 function addTaskCallback(task) {
-    $('#divStatus_' + task.Status).append(getPortlet(task));
+    $('#divStatus_' + task.task[0].status_id).append(getPortlet(task.task[0]));
 
-    $('#task_' + task.Id + ' .editButton').button({ icons: { primary: "ui-icon-pencil" }, text: false });
+    $('#task_' + task.task[0].id + ' .editButton').button({ icons: { primary: "ui-icon-pencil" }, text: false });
 
-    restorePlusMinusIcon(task);
+    restorePlusMinusIcon(task.task[0]);
 }
 
-// Add back that pesky +/- icon
-function restorePlusMinusIcon(task) {
-    // Set the +/- icons on the portlet just moved
-    $("#task_" + task.Id)
-      .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
-      .find(".portlet-header")
-        .addClass("ui-widget-header ui-corner-all")
-        .prepend("<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
+// After task has been deleted from MyKanban database, also
+// need to hide it on the board
+function deleteTaskCallback(data) {
+    $('#task_' + data.TaskId).hide();
+}
 
-    $("#task_" + task.Id + " .portlet-toggle").click(function () {
-        var icon = $(this);
-        icon.toggleClass("ui-icon-minusthick ui-icon-plusthick");
-        icon.closest(".portlet").find(".portlet-content").toggle();
+// Edit the selected task
+function editTask(taskId) {
+
+    var timeStamp = new Date().getTime();
+
+    // Get task data
+    $.ajax({
+        url: proxyPath + "GetTaskData&taskId=" + taskId
+            + '&rootPath=' + rootPath
+            + '&dbType=' + dbType
+            + '&connectionString=' + connectionString
+            + '&t=' + timeStamp
+            + '&token=' + token,
+        dataType: "jsonp",
+        type: 'GET',
+        crossDomain: true,
+        jsonpCallback: "editTaskCallback",
+        success: function (task) {
+            // For some reason, the success method is getting called
+            // instead of callback2(), so in this case just pass
+            // control to callback2() explicitly.
+            //callback4(data);
+        },
+        error: function (e) {
+            alert(e.message);
+        }
     });
 }
 
-// Display a single task (aka "portlet" in jQuery sortable lingo)
-function getPortlet(task) {
-    //if (task.Id == 7283) debugger;
-    var portletHtml = '<div class="portlet" id="task_'
-            + task.Id + '" style="xpadding: 0px;"><div class="portlet-header" id="header_' + task.Id + '" style="background-color: ' + task.BackColor + '; color: ' + task.ForeColor + ';">'
-            + task.Name + ' ('
-            + task.Id + ')</div><div id="content_'
-            + task.Id + '" class="portlet-content">'
+// Populate edit dialog with JSON data returned by call to
+// GetTaskData.aspx (via proxy)
+function editTaskCallback(task) {
 
-            // Body of task goes here:
-            + '<table cellpadding="3" cellpadding="3" width="100%" style="padding-bottom: 10px;">'
-            + '<tr><td>Project:</td><td>' + task.ProjectName + '</td></tr>'
-            + '<tr><td>Est Hours:</td><td>' + task.EstHours + '</td></tr>'
-            + '<tr><td>Assignees:</td><td>' + task.AssignedTo + '</td></tr>'
-            + '<tr><td>Approvers:</td><td>' + (task.ApprovedBy != undefined ? task.ApprovedBy : '?') + '</td></tr>';
+    // Set field values
+    $('#txtProject').html(task.task[0].project_name);
+    $('#selTaskProjects').hide();
+    $('#txtName').val(task.task[0].name);
+    $('#txtDefineDone').val(task.task[0].define_done.replace(/\\n/g, "\n"));
+    $('#txtEstHours').val(task.task[0].est_hours);
+    $('#txtEstHours').spinner();
+    $('#txtActHours').val(task.task[0].act_hours);
+    $('#txtActHours').spinner();
+    $('#txtStartDate').val(formatDate(task.task[0].start_date));
+    $("#txtStartDate").datepicker();
+    $('#txtEndDate').val(formatDate(task.task[0].end_date));
+    $("#txtEndDate").datepicker();
+    $('#selStatus').val(task.task[0].status_id);
 
-    if (task.DefineDone != null && task.DefineDone != undefined && task.DefineDone != '') {
-        portletHtml += '<tr><td colspan="2">Define Done:</td></tr>'
-        + '<tr><td colspan="2" style="border: solid silver 1px; background-color: #F8F8F4; padding: 8px;">' + task.DefineDone.replace(/\\n/g, "<br/>") + '</td></tr>'
+    // Set value(s) for assignees
+    $('#selAssignees').val('').trigger('chosen:updated');
+    for (var i = 0; i < task.task_assignee.length; i++) {
+        $("#selAssignees option[value='" + task.task_assignee[i].id + "']").prop("selected", true);
     }
+    $('#selAssignees').trigger('chosen:updated');
 
-    portletHtml += '</table>'
-            + '<div style="width: 100%; text-align: right;"><a href=\'javascript:editTask(' + task.Id + ');\' class="editButton">Edit</a></div>'
-            + '</div></div>';
+    // Set value(s) for approvers
+    $('#selApprovers').val('').trigger('chosen:updated');
+    for (var i = 0; i < task.task_approver.length; i++) {
+        $("#selApprovers option[value='" + task.task_approver[i].id + "']").prop("selected", true);
+    }
+    $('#selApprovers').trigger('chosen:updated');
 
-    return portletHtml;
+    // Set the ID# being edited
+    $('#divEditTask').attr('taskId', task.task[0].id);
+
+    $('#divEditTask').dialog({
+        resizable: false,
+        autoResize: true,
+        height: 'auto',
+        width: 'auto',
+        dialogClass: 'dialog',
+        closeOnEscape: true,
+        modal: true,
+        title: 'Edit Task (' + task.task[0].id + ')',
+        open: function () {
+
+            // Disable delete button if user does not have permission to delete
+            if (!canDelete) {
+                $(".ui-dialog-buttonpane button:contains('Delete')").button("disable");
+            } else {
+                $(".ui-dialog-buttonpane button:contains('Delete')").button("enable");
+            }
+
+            // Disable edit button if user does not have permission to edit
+            if (!canEdit) {
+                $(".ui-dialog-buttonpane button:contains('Save')").button("disable");
+            } else {
+                $(".ui-dialog-buttonpane button:contains('Save')").button("enable");
+            }
+        },
+        buttons: [
+            {
+                text: "Delete", click: function () {
+                    if (confirm("Are you sure you want to permanently delete this task?")) {
+                        var timeStamp = new Date().getTime();
+                        var taskId = $('#divEditTask').attr('taskId');
+                        $.ajax({
+                            url: proxyPath + "DeleteTask&taskId=" + taskId
+                                + '&rootPath=' + rootPath
+                                + '&dbType=' + dbType
+                                + '&connectionString=' + connectionString
+                                + '&t=' + timeStamp
+                                + '&token=' + token,
+                            dataType: "jsonp",
+                            type: 'POST',
+                            crossDomain: true,
+                            jsonpCallback: "deleteTaskCallback",
+                            success: function (data) {
+                                // Deleted
+                            },
+                            error: function (e) {
+                                alert(e.message);
+                            }
+                        });
+
+                        $(this).dialog('close');
+                    }
+                }
+            },
+            {
+                text: "Save", click: function () {
+
+                    var timeStamp = new Date().getTime();
+
+                    var assignees = '';
+                    $('#selAssignees :selected').each(function (i, selected) {
+                        if (assignees.length > 0) assignees += ';';
+                        assignees += $(selected).val();
+                    });
+
+                    var approvers = '';
+                    $('#selApprovers :selected').each(function (i, selected) {
+                        if (approvers.length > 0) approvers += ';';
+                        approvers += $(selected).val();
+                    });
+
+                    var taskId = $('#divEditTask').attr('taskId');
+                    var name = specialEncoding($('#txtName').val());
+                    var defineDone = specialEncoding($('#txtDefineDone').val().replace(/\n/g, "\\n"));
+                    var startDate = $('#txtStartDate').val();
+                    var endDate = $('#txtEndDate').val();
+                    var estHours = $('#txtEstHours').val();
+                    var actHours = $('#txtActHours').val();
+                    var statusId = $('#selStatus').val();
+
+                    $.ajax({
+                        url: proxyPath + "UpdateTask&taskId=" + taskId
+                            + '&projectId=0'
+                            + '&name=' + name
+                            + '&defineDone=' + defineDone
+                            + '&assignees=' + assignees
+                            + '&approvers=' + approvers
+                            + '&startDate=' + startDate
+                            + '&endDate=' + endDate
+                            + '&estHours=' + estHours
+                            + '&actHours=' + actHours
+                            + '&statusId=' + statusId
+                            + '&rootPath=' + rootPath
+                            + '&dbType=' + dbType
+                            + '&connectionString=' + connectionString
+                            + '&t=' + timeStamp
+                            + '&token=' + token,
+                        dataType: "jsonp",
+                        type: 'POST',
+                        crossDomain: true,
+                        jsonpCallback: "saveTaskCallback",
+                        success: function (data) {
+                            // Saved
+                        },
+                        error: function (e) {
+                            alert(e.message);
+                        }
+                    });
+
+                    $(this).dialog("close");
+                }
+            },
+            {
+                text: "Cancel", click: function () {
+                    $(this).dialog('close');
+                }
+            }
+        ],
+    });
+
+}
+
+// Expand all tasks to show more details
+function expand() {
+    $('.ui-icon-plusthick').parents(".portlet").find(".portlet-content").toggle();
+    $('.ui-icon-plusthick').toggleClass("ui-icon-minusthick ui-icon-plusthick");
 }
 
 // In future, may do something more creative with these filters,
@@ -861,3 +765,154 @@ function getParameterByName(name) {
         results = regex.exec(location.search);
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
+
+// Display a single task (aka "portlet" in jQuery sortable lingo)
+function getPortlet(task) {
+
+    var portletHtml = '<div class="portlet" id="task_'
+            + task.id + '" style="xpadding: 0px;"><div class="portlet-header" id="header_' + task.id + '" style="background-color: ' + task.back_color + '; color: ' + task.fore_color + ';">'
+            + task.name + ' ('
+            + task.id + ')</div><div id="content_'
+            + task.id + '" class="portlet-content">'
+
+            // Body of task goes here:
+            + '<table cellpadding="3" cellpadding="3" width="100%" style="padding-bottom: 10px;">'
+            + '<tr><td>Project:</td><td>' + task.project_name + '</td></tr>'
+            + '<tr><td>Est Hours:</td><td>' + task.est_hours + '</td></tr>'
+            + '<tr><td>Assignees:</td><td>' + task.assigned_to + '</td></tr>'
+            + '<tr><td>Approvers:</td><td>' + (task.approved_by != undefined ? task.approved_by : '?') + '</td></tr>';
+
+    if (task.define_done != null && task.define_done != undefined && task.define_done != '') {
+        portletHtml += '<tr><td colspan="2">Define Done:</td></tr>'
+        + '<tr><td colspan="2" style="border: solid silver 1px; background-color: #F8F8F4; padding: 8px;">' + task.define_done.replace(/\\n/g, "<br/>") + '</td></tr>'
+    }
+
+    portletHtml += '</table>'
+            + '<div style="width: 100%; text-align: right;"><a href=\'javascript:editTask(' + task.id + ');\' class="editButton">Edit</a></div>'
+            + '</div></div>';
+
+    return portletHtml;
+}
+
+// Get list of boards this user has access to
+function getUserData(userName, pwd) {
+
+    var timeStamp = new Date().getTime();
+
+    $.ajax({
+        url: proxyPath + "GetUserData&userName=" + userName
+            + "&pwd=" + pwd
+            + '&rootPath=' + rootPath
+            + '&dbType=' + dbType
+            + '&t=' + timeStamp
+            + '&connectionString=' + connectionString,
+        dataType: "jsonp",
+        type: 'GET',
+        crossDomain: true,
+        jsonpCallback: "getUserDataCallback",
+        success: function (data) {
+            // For some reason, the success method is getting called
+            // instead of callback3(), so in this case just pass
+            // control to callback3() explicitly.
+            //callback3(data);
+        },
+        error: function (e) {
+            alert(e.message);
+        }
+    });
+}
+
+// Populate the drop-down list of boards and display
+function getUserDataCallback(data) {
+
+    // Fill list of boards
+    $('#selAuthorizedBoards').html('<option value="0">[Select a Board]</option>');
+    for (var i = 0; i < data.length; i++) {
+        $('#selAuthorizedBoards').append('<option value=' + data[i].Id + '>' + data[i].Name + '</option>');
+    }
+
+    // Save user token
+    if (data.length > 0) token = encodeURIComponent(data[0].Token);
+
+    $('#divToolbox').dialog({
+        resizable: false,
+        autoResize: true,
+        height: 'auto',
+        width: 'auto',
+        dialogClass: 'dialog',
+        closeOnEscape: false,
+        modal: false,
+        open: function (event, ui) { $(".ui-dialog-titlebar-close").hide(); },
+        buttons: [
+            {
+                text: "Collapse",
+                click: function () {
+                    collapse();
+                }
+            },
+            {
+                text: "Expand",
+                click: function () {
+                    expand();
+                }
+            },
+            {
+                text: "New Task",
+                click: function () {
+                    addTask();
+                }
+            },
+            {
+                text: "Refresh",
+                click: function () {
+                    displayBoard(true);
+                }
+            }
+        ]
+    });
+}
+
+// Add back that pesky +/- icon
+function restorePlusMinusIcon(task) {
+    // Set the +/- icons on the portlet just moved
+    $("#task_" + task.Id)
+      .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+      .find(".portlet-header")
+        .addClass("ui-widget-header ui-corner-all")
+        .prepend("<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
+
+    $("#task_" + task.Id + " .portlet-toggle").click(function () {
+        var icon = $(this);
+        icon.toggleClass("ui-icon-minusthick ui-icon-plusthick");
+        icon.closest(".portlet").find(".portlet-content").toggle();
+    });
+}
+
+// If task edited and saved, update the task portlet to reflect any changes
+function saveTaskCallback(task) {
+
+    var prevStatus = $('#task_' + task.task[0].id)[0].parentElement.id.split('_')[1];
+    if (prevStatus != task.task[0].status_id) {
+        $('#task_' + task.task[0].id).remove();
+        $('#divStatus_' + task.task[0].status_id).append(getPortlet(task.task[0]));
+    } else {
+        $('#task_' + task.task[0].id).replaceWith(getPortlet(task.task[0]));
+    }
+
+    // When the portlet is redrawn, need to format the edit button again,
+    // otherwise it will revert to simple text without icon
+    $('#task_' + task.task[0].id + ' .editButton').button({ icons: { primary: "ui-icon-pencil" }, text: false });
+
+    // When portlet is redrawn, the +/- icon in the upper right
+    // corner disappears, so need to add that back as well
+    restorePlusMinusIcon(task);
+}
+
+// Rolled my own routine to handle some common characters that 
+// present issues for ASP.NET
+function specialEncoding(s) {
+    return s.replace(/&/g, "~")
+        .replace(/#/g, "`").replace(/\+/g, "^")
+        .replace(/</g, '[').replace(/>/g, ']');
+}
+

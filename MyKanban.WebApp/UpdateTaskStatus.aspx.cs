@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using MyKanban;
+using System.Data;
 
 /* ----------------------------------------------------------------------------- /
 // File:        UpdateTaskStatus.aspx.cs
@@ -50,9 +51,30 @@ public partial class UpdateTaskStatus : System.Web.UI.Page
 
             Task task = new Task(taskId, new Credential(token));
             task.Status = statusId;
-            task.Update();
 
-            Response.Write(callback + "(" + task.JSON() + ");");
+            DataSet dsTask = MyKanban.Data.UpdateTask(
+                task.ProjectId,
+                task.Id,
+                task.Name,
+                task.StartDate,
+                task.EndDate,
+                task.Status,
+                task.DefineDone,
+                task.EstHours,
+                task.ActHours,
+                0,
+                0,
+                0,
+                task.Sequence,
+                task.Credential.Id);
+
+            dsTask = MyKanban.Data.GetTaskById(task.Id, task.Credential.Id);
+            dsTask.Tables[0].TableName = "task";
+            dsTask.Tables[1].TableName = "task_assignee";
+            dsTask.Tables[2].TableName = "task_approver";
+
+            Response.Write(callback + "(" + MyKanban.Data.GetJson(dsTask) + ");");
+
         }
         catch (Exception ex)
         {

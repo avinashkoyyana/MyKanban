@@ -21,3 +21,4 @@ C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanban.WebApp\bin\My
 C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanban.WebApp\bin\Newtonsoft.Json.xml
 C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanban.WebApp\obj\Debug\MyKanban.WebApp.dll
 C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanban.WebApp\obj\Debug\MyKanban.WebApp.pdb
+C:\Users\Mark\documents\visual studio 2013\Projects\Test1\MyKanban.WebApp\obj\Debug\MyKanban.WebApp.csprojResolveAssemblyReference.cache

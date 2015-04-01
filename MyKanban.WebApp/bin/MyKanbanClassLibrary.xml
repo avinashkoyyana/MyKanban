@@ -165,7 +165,7 @@
             Create a new approver object instance
             </summary>
             <param name="approverId">ID# of approver to read from database</param>
-            <param name="credential">Credentialo to use when creating this approver object</param>
+            <param name="credential">Credential to use when creating this approver object</param>
         </member>
         <member name="M:MyKanban.Approver.Delete">
             <summary>
@@ -192,6 +192,11 @@
             <param name="force">If true, data will be saved even if no data has changed since being loaded into object from the database.</param>
             <returns></returns>
         </member>
+        <member name="P:MyKanban.Approver.Email">
+            <summary>
+            Email of approver
+            </summary>
+        </member>
         <member name="P:MyKanban.Approver.Name">
             <summary>
             Name of approver
@@ -200,6 +205,11 @@
         <member name="P:MyKanban.Approver.PersonId">
             <summary>
             ID# of task approver
+            </summary>
+        </member>
+        <member name="P:MyKanban.Approver.Phone">
+            <summary>
+            Phone of approver
             </summary>
         </member>
         <member name="P:MyKanban.Approver.TaskId">

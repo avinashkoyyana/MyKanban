@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using MyKanban;
+using System.Data;
 
 /* ----------------------------------------------------------------------------- /
 // File:        UpdateTask.aspx.cs
@@ -102,14 +103,61 @@ public partial class UpdateTask : System.Web.UI.Page
             task.ActHours = actHours;
             task.Status = statusId;
 
+            // If a project # passed in, this means that this is a new
+            // task, so add it to the parent project's task collection
+            if (projectId > 0)
+            {
+                task.ProjectId = projectId;
+            }
+
+            // To improve performance, use low-level routine. 
+            DataSet dsTask = new DataSet();
+            if (task.Id > 0)
+            {
+                dsTask = MyKanban.Data.UpdateTask(
+                    task.ProjectId,
+                    taskId,
+                    name,
+                    startDate,
+                    endDate,
+                    statusId,
+                    defineDone,
+                    estHours,
+                    actHours,
+                    0,
+                    0,
+                    0,
+                    task.Sequence,
+                    task.Credential.Id);
+            }
+            else
+            {
+                dsTask = MyKanban.Data.AddTask(
+                    projectId,
+                    name,
+                    startDate,
+                    endDate,
+                    statusId,
+                    defineDone,
+                    estHours,
+                    actHours,
+                    0,
+                    0,
+                    0,
+                    999,
+                    task.Credential.Id
+                    );
+
+                taskId = long.Parse(dsTask.Tables[0].Rows[0]["id"].ToString());
+            }
+
             // Update task assignees
             task.Assignees.Clear(true);
             for (int i = 0; i < assignees.Length; i++)
             {
                 if (!string.IsNullOrEmpty(assignees[i]))
                 {
-                    Person assignee = new Person(long.Parse(assignees[i]), task.Credential);
-                    task.Assignees.Add(assignee);
+                    MyKanban.Data.AddAssigneeToTask(taskId, long.Parse(assignees[i]), task.Credential.Id);
                 }
             }
 
@@ -119,26 +167,16 @@ public partial class UpdateTask : System.Web.UI.Page
             {
                 if (!string.IsNullOrEmpty(approvers[i]))
                 {
-                    Approver approver = new Approver(task.Credential);
-                    approver.PersonId = long.Parse(approvers[i]);
-                    approver.Update(true);
-                    task.Approvers.Add(approver);
-                    task.Approvers.Update(true);
+                    MyKanban.Data.AddApproverToTask(taskId, long.Parse(approvers[i]), task.Credential.Id);
                 }
             }
 
-            // Save updates (if task # is 0, will be added)
-            task.Update();
+            dsTask = MyKanban.Data.GetTaskById(taskId, task.Credential.Id);
+            dsTask.Tables[0].TableName = "task";
+            dsTask.Tables[1].TableName = "task_assignee";
+            dsTask.Tables[2].TableName = "task_approver";
 
-            // If a project # passed in, this means that this is a new
-            // task, so add it to the parent project's task collection
-            if (projectId > 0)
-            {
-                project.Tasks.Add(task);
-                project.Tasks.Update();
-            }
-
-            Response.Write(callback + "(" + task.JSON() + ");");
+            Response.Write(callback + "(" + MyKanban.Data.GetJson(dsTask) + ");");
         }
         catch (Exception ex)
         {

@@ -46,13 +46,6 @@ public partial class proxy : System.Web.UI.Page
         string dbType = Request.QueryString["dbType"];
         string connectionString = Request.QueryString["connectionString"];
 
-        if (string.IsNullOrEmpty(rootPath) || string.IsNullOrEmpty(dbType))
-        {
-            rootPath = "http://fw-8s50l02/MyKanban/";
-            dbType = "MySql";
-            connectionString = "Server=fw-8s50l02;Database=mykanban;Uid=mykanban;Pwd=megabase;";
-        }
-
         string resp = "";
         WebRequest wReq = WebRequest.Create("http://dummy");    // So initialization won't fail needs to be some Url
         WebResponse wResp;
@@ -168,6 +161,7 @@ public partial class proxy : System.Web.UI.Page
                                     + "&estHours=" + estHours
                                     + "&actHours=" + actHours
                                     + "&statusId=" + statusId
+                                    + "&t=" + t 
                                     + "&token=" + token;
 
                 wReq = WebRequest.Create(rootPath + url + "&dbType=" + dbType + "&connectionString=" + connectionString + "&callback=" + callback + "&t=" + t);
@@ -176,11 +170,13 @@ public partial class proxy : System.Web.UI.Page
             case "updatetasksequence":
                 boardId = Request.QueryString["boardId"];
                 string serIdsInOrder = Request.QueryString["taskIds"];
+                statusId = Request.QueryString["statusId"];
                 wReq = WebRequest.Create(rootPath + "UpdateTaskSequence.aspx?boardId=" + boardId 
                     + "&taskIds=" + serIdsInOrder 
                     + "&dbType=" + dbType 
                     + "&connectionString=" + connectionString 
-                    + "&callback=" + callback 
+                    + "&callback=" + callback
+                    + "&statusId=" + statusId 
                     + "&t=" + t
                     + "&token=" + token);
                 break;
@@ -201,14 +197,23 @@ public partial class proxy : System.Web.UI.Page
                 break;
         }
 
-        // Call the page and get the resulting JSON data
-        wReq.Credentials = System.Net.CredentialCache.DefaultCredentials;
-        wResp = wReq.GetResponse();
-        sr = new StreamReader(wResp.GetResponseStream());
-        resp = sr.ReadToEnd();
-        sr.Close();
+        // Call the page and get the resulting JSON data.  If path to page
+        // providing JSON is local to this proxy, just redirect, as should
+        // be a bit faster.
+        if (Request.Url.ToString().ToLower().StartsWith(rootPath.ToLower()))
+        {
+            Response.Redirect(wReq.RequestUri.ToString().Replace(rootPath.ToLower(), ""));
+        }
+        else
+        {
+            wReq.Credentials = System.Net.CredentialCache.DefaultCredentials;
+            wResp = wReq.GetResponse();
+            sr = new StreamReader(wResp.GetResponseStream());
+            resp = sr.ReadToEnd();
+            sr.Close();
 
-        // Return the result
-        Response.Write(resp);
+            // Return the result
+            Response.Write(resp);
+        }
     }
 }

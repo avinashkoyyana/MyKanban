@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using MyKanban;
+using System.Data;
 
 /* ----------------------------------------------------------------------------- /
 // File:        GetTaskData.aspx.cs
@@ -48,9 +49,25 @@ public partial class GetTaskData : System.Web.UI.Page
 
             MyKanbanWeb.SetDbConnection(dbType, connectionString);
 
-            task = new MyKanban.Task(taskId, new Credential(token));
+            DataSet dsTask = MyKanban.Data.GetTaskById(taskId, new Credential(token).Id);
 
-            Response.Write(callback + "(" + task.JSON() + ");");
+            // If 0 rows returned for task, set some default values
+            if (dsTask.Tables[0].Rows.Count == 0)
+            {
+                DataRow drTask = dsTask.Tables[0].NewRow();
+                drTask["id"] = 0;
+                drTask["project_id"] = 0;
+                drTask["start_date"] = "1900-01-01";
+                drTask["end_date"] = "1900-01-01";
+                drTask["est_hours"] = 8;
+                drTask["act_hours"] = 0;
+                dsTask.Tables[0].Rows.Add(drTask);
+            }
+
+            dsTask.Tables[0].TableName = "task";
+            dsTask.Tables[1].TableName = "task_assignee";
+            dsTask.Tables[2].TableName = "task_approver";
+            Response.Write(callback + "(" + MyKanban.Data.GetJson(dsTask) + ");");
         }
         catch { }
     }

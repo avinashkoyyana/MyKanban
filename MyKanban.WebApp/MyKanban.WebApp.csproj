@@ -101,6 +101,7 @@
     <Content Include="images\StatusAnnotations_Complete_and_ok_32xMD_color.png" />
     <Content Include="js\MyKanban.js" />
     <Content Include="packages.config" />
+    <Content Include="connections.txt" />
     <None Include="Properties\PublishProfiles\gerow1.pubxml" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="Web.Debug.config">

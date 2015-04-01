@@ -35,6 +35,7 @@ var token = '';         // User token returned by call to GetUserData.aspx
 var canAdd = false;     // Can current user add tasks to current board
 var canEdit = false;    // Can current user edit tasks on current board
 var canDelete = false;  // Can current user delete tasks from current board
+var statusId = 0        // Current task status id
 
 // Variable used to determine which server and database
 // should process request
@@ -99,17 +100,21 @@ $(function () {
 // Get list of boards this user has access to
 function getUserData(userName, pwd) {
 
+    var timeStamp = new Date().getTime();
+
     // Determine which proxy to use based on login, this info will remain
     // in affect for duration of this user session.
     if ($('#selServer').val() == 'Local') {
 
-        // TODO: add code here for server "Fenwick"
         proxyPath = "http://localhost:50312/proxy.aspx?mode=";
         rootPath = 'http://localhost:50312/';
-        dbType = 'SqlServer';
-        connectionString = encodeURI('Server=tcp:lnfk7armd0.database.windows.net,1433;Database=mykanban;User ID=mykanban@lnfk7armd0;Password=MyK@b@n2015;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;');
+        dbType = 'MySql';
+        connectionString = encodeURI('Server=localhost;Database=mykanban;Uid=mykanban;Pwd=megabase;');
+        //connectionString = encodeURI('Server=mykanban.ctcu3iejefqp.us-west-2.rds.amazonaws.com;Database=mykanban;Uid=mykanban;Pwd=MyK2nb2n2015;');
+        //dbType = 'SqlServer';
+        //connectionString = encodeURI('Server=tcp:lnfk7armd0.database.windows.net,1433;Database=mykanban;User ID=mykanban@lnfk7armd0;Password=MyK@b@n2015;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;');
 
-    } else {
+    } else if ($('#selServer').val() == 'Azure') {
 
         // Azure cloud settings
         // --------------------
@@ -118,13 +123,25 @@ function getUserData(userName, pwd) {
         dbType = 'SqlServer';
         connectionString = encodeURI('Server=tcp:lnfk7armd0.database.windows.net,1433;Database=mykanban;User ID=mykanban@lnfk7armd0;Password=MyK@b@n2015;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;');
 
+    } else if ($('#selServer').val() == 'Work' && userName.toLowerCase() != 'testuser') {
+
+        proxyPath = "https://mobile.fenwick.com/proxy.aspx?mode=";
+        rootPath = "http://fw-8s50l02/MyKanban/";
+        dbType = "MySql";
+        connectionString = encodeURI('Server=fw-8s50l02;Database=mykanban;Uid=mykanban;Pwd=megabase;');
+
+    } else {
+        
+        alert('Login denied.  If you believe you received this message in error, please contact your system administrator.');
+        window.location.reload();
     }
 
     $.ajax({
         url: proxyPath + "GetUserData&userName=" + userName 
             + "&pwd=" + pwd 
             + '&rootPath=' + rootPath 
-            + '&dbType=' + dbType 
+            + '&dbType=' + dbType
+            + '&t=' + timeStamp
             + '&connectionString=' + connectionString,
         dataType: "jsonp",
         type: 'GET',
@@ -207,6 +224,8 @@ function expand() {
 // Get data for selected board
 function displayBoard(refresh) {
 
+    var timeStamp = new Date().getTime();
+
     // Show spinner while getting board
     var target = document.getElementById('divSpinner');
     spinner = new Spinner(opts).spin(target);
@@ -231,6 +250,7 @@ function displayBoard(refresh) {
             + '&rootPath=' + rootPath 
             + '&dbType=' + dbType 
             + '&connectionString=' + connectionString
+            + '&t=' + timeStamp
             + '&token=' + token,
         dataType: "jsonp",
         type: 'GET',
@@ -256,45 +276,84 @@ function displayBoardCallback(data) {
     $('#selStatus').html('');
 
     // Create columns for each status & populate status drop-down on edit form
-    for (var i = 0; i < data[0].Items.length; i++) {
-        $('#divBoard').append('<div id="divStatus_' + data[0].Items[i].Id + '" class="column"><h3 class="columnHeader" style="padding-bottom: 10px;"><span class="columnHeaderText" style="background-color: ' + data[0].Items[i].BackColor + '; color: ' + data[0].Items[i].ForeColor + ';">' + data[0].Items[i].ColumnHeading + '</span></h3></div>');
-        $('#selStatus').append('<option value="' + data[0].Items[i].Id + '">' + data[0].Items[i].Name + '</option>');
+    //for (var i = 0; i < data[0].Items.length; i++) {
+    //    $('#divBoard').append('<div id="divStatus_' + data[0].Items[i].Id + '" class="column"><h3 class="columnHeader" style="padding-bottom: 10px;"><span class="columnHeaderText" style="background-color: ' + data[0].Items[i].BackColor + '; color: ' + data[0].Items[i].ForeColor + ';">' + data[0].Items[i].ColumnHeading + '</span></h3></div>');
+    //    $('#selStatus').append('<option value="' + data[0].Items[i].Id + '">' + data[0].Items[i].Name + '</option>');
+    //}
+    for (var i = 0; i < data.board_set_status.length; i++) {
+        $('#divBoard').append('<div id="divStatus_' + data.board_set_status[i].id + '" class="column"><h3 class="columnHeader" style="padding-bottom: 10px;"><span class="columnHeaderText" style="background-color: ' + data.board_set_status[i].back_color + '; color: ' + data.board_set_status[i].fore_color + ';">' + data.board_set_status[i].column_heading + '</span></h3></div>');
+        $('#selStatus').append('<option value="' + data.board_set_status[i].id + '">' + data.board_set_status[i].column_heading + '</option>');
     }
 
     // Fill filter list for sprints
+    //$('#selSprint').html('<option value="0" selected="selected">[All Sprints]</option>');
+    //for (var i = 0; i < data[4].Items.length; i++) {
+    //    $('#selSprint').append('<option value="' + data[4].Items[i].Id + '">' + data[4].Items[i].Name + '</option>');
+    //}
+    //$("#selSprint option[value='" + sprintId + "']").prop("selected", true);
     $('#selSprint').html('<option value="0" selected="selected">[All Sprints]</option>');
-    for (var i = 0; i < data[4].Items.length; i++) {
-        $('#selSprint').append('<option value="' + data[4].Items[i].Id + '">' + data[4].Items[i].Name + '</option>');
+    for (var i = 0; i < data.sprint.length; i++) {
+        $('#selSprint').append('<option value="' + data.sprint[i].id + '">' + data.sprint[i].name + '</option>');
     }
     $("#selSprint option[value='" + sprintId + "']").prop("selected", true);
 
+
     // Load tasks
-    for (var i = 0; i < data[1].length; i++) {
+    //for (var i = 0; i < data[1].length; i++) {
 
-        var projectName = data[1][i].ProjectName;
+    //    var projectName = data[1][i].ProjectName;
 
-        var task = data[1][i];
+    //    var task = data[1][i];
 
-        $('#divStatus_' + task.Status).append(getPortlet(task));
+    //    $('#divStatus_' + task.Status).append(getPortlet(task));
+    //}
+    for (var i = 0; i < data.task.length; i++) {
+
+        var projectName = data.task[i].project_name;
+
+        var task = data.task[i];
+
+        $('#divStatus_' + task.status_id).append(getPortlet(task));
     }
 
     // Now fill in the assignees multi-select list
     // in the edit task dialog with list of available
     // users, also fill filter drop-down
+    //$('#selAssignees').html('');
+    //$('#selApprovers').html('');
+    //$('#selAssignee').html('<option value="0" selected="selected">[All Assignees]</option>');
+    //$('#selApprover').html('<option value="0" selected="selected">[All Approvers]</option>');
+
+    //for (var i = 0; i < data[2].Items.length; i++) {
+
+    //    // For add/edit form
+    //    $('#selAssignees').append('<option value="' + data[2].Items[i].PersonId + '">' + data[2].Items[i].Name + '</option>');
+    //    $('#selApprovers').append('<option value="' + data[2].Items[i].PersonId + '">' + data[2].Items[i].Name + '</option>');
+
+    //    // For filter
+    //    $('#selAssignee').append('<option value="' + data[2].Items[i].PersonId + '">' + data[2].Items[i].Name + '</option>');
+    //    $('#selApprover').append('<option value="' + data[2].Items[i].PersonId + '">' + data[2].Items[i].Name + '</option>');
+    //}
+    //$('#selAssignees').chosen();
+    //$('#selAssignees').trigger("chosen:updated");
+    //$('#selApprovers').chosen();
+    //$('#selApprovers').trigger("chosen:updated");
+    //$("#selAssignee option[value='" + assigneeId + "']").prop("selected", true);
+    //$("#selApprover option[value='" + approverId + "']").prop("selected", true);
     $('#selAssignees').html('');
     $('#selApprovers').html('');
     $('#selAssignee').html('<option value="0" selected="selected">[All Assignees]</option>');
     $('#selApprover').html('<option value="0" selected="selected">[All Approvers]</option>');
 
-    for (var i = 0; i < data[2].Items.length; i++) {
+    for (var i = 0; i < data.board_person.length; i++) {
 
         // For add/edit form
-        $('#selAssignees').append('<option value="' + data[2].Items[i].PersonId + '">' + data[2].Items[i].Name + '</option>');
-        $('#selApprovers').append('<option value="' + data[2].Items[i].PersonId + '">' + data[2].Items[i].Name + '</option>');
+        $('#selAssignees').append('<option value="' + data.board_person[i].id + '">' + data.board_person[i].name + '</option>');
+        $('#selApprovers').append('<option value="' + data.board_person[i].id + '">' + data.board_person[i].name + '</option>');
 
         // For filter
-        $('#selAssignee').append('<option value="' + data[2].Items[i].PersonId + '">' + data[2].Items[i].Name + '</option>');
-        $('#selApprover').append('<option value="' + data[2].Items[i].PersonId + '">' + data[2].Items[i].Name + '</option>');
+        $('#selAssignee').append('<option value="' + data.board_person[i].id + '">' + data.board_person[i].name + '</option>');
+        $('#selApprover').append('<option value="' + data.board_person[i].id + '">' + data.board_person[i].name + '</option>');
     }
     $('#selAssignees').chosen();
     $('#selAssignees').trigger("chosen:updated");
@@ -319,8 +378,10 @@ function displayBoardCallback(data) {
 
         receive: function (event, ui) {
 
+            var timeStamp = new Date().getTime();
+
             var taskId = ui.item[0].id.split('_')[1];
-            var statusId = event.target.id.split('_')[1];
+            statusId = event.target.id.split('_')[1];
 
             // Update the status
             $.ajax({
@@ -329,9 +390,11 @@ function displayBoardCallback(data) {
                     + '&rootPath=' + rootPath 
                     + '&dbType=' + dbType 
                     + '&connectionString=' + connectionString
+                    + '&t=' + timeStamp
                     + '&token=' + token,
                 dataType: "jsonp",
                 type: 'GET',
+                async: false,
                 crossDomain: true,
                 jsonpCallback: "updateTaskStatusCallback",
                 success: function (data) {
@@ -347,30 +410,71 @@ function displayBoardCallback(data) {
         },
 
         stop: function (event, ui) {
+
+            var timeStamp = new Date().getTime();
+
+            // If we got here, then a status update occurred.  Need
+            // to insert some time here so that preceeding update
+            // can complete before we start this one
+
             var divId = event.target.id;
             var idsInOrder = $("#" + divId).sortable("toArray");
             var serIdsInOrder = serializeIds(idsInOrder);
-            $.ajax({
-                url: proxyPath + "UpdateTaskSequence&boardId=" + boardId 
-                    + '&taskIds=' + serIdsInOrder 
-                    + '&rootPath=' + rootPath 
-                    + '&dbType=' + dbType 
-                    + '&connectionString=' + connectionString
-                    + '&token=' + token,
-                dataType: "jsonp",
-                type: 'GET',
-                crossDomain: true,
-                jsonpCallback: "updateTaskSequenceCallback",
-                success: function (data) {
-                    // For some reason, the success method is getting called
-                    updateTaskSequenceCallback(data);
-                },
-                error: function (e) {
-                    alert(e.message);
-                }
-            });
+            statusId = event.target.id.split('_')[1];
+
+            setTimeout(function () { processSequenceChange(serIdsInOrder, statusId, timeStamp) }, 1000);
+
+            //$.ajax({
+            //    url: proxyPath + "UpdateTaskSequence&boardId=" + boardId 
+            //        + '&taskIds=' + serIdsInOrder 
+            //        + '&rootPath=' + rootPath 
+            //        + '&dbType=' + dbType 
+            //        + '&connectionString=' + connectionString
+            //        + '&statusId=' + statusId
+            //        + '&t=' + timeStamp
+            //        + '&token=' + token,
+            //    dataType: "jsonp",
+            //    type: 'GET',
+            //    async: false,
+            //    crossDomain: true,
+            //    jsonpCallback: "updateTaskSequenceCallback",
+            //    success: function (data) {
+            //        // For some reason, the success method is getting called
+            //        updateTaskSequenceCallback(data);
+            //    },
+            //    error: function (e) {
+            //        alert(e.message);
+            //    }
+            //});
         }
     });
+
+    function processSequenceChange(serIdsInOrder, statusId, timeStamp) {
+
+        $.ajax({
+            url: proxyPath + "UpdateTaskSequence&boardId=" + boardId 
+                + '&taskIds=' + serIdsInOrder 
+                + '&rootPath=' + rootPath 
+                + '&dbType=' + dbType 
+                + '&connectionString=' + connectionString
+                + '&statusId=' + statusId
+                + '&t=' + timeStamp
+                + '&token=' + token,
+            dataType: "jsonp",
+            type: 'GET',
+            async: false,
+            crossDomain: true,
+            jsonpCallback: "updateTaskSequenceCallback",
+            success: function (data) {
+                // For some reason, the success method is getting called
+                updateTaskSequenceCallback(data);
+            },
+            error: function (e) {
+                alert(e.message);
+            }
+        });
+
+    }
 
     function updateTaskSequenceCallback(data) {
         // NO OP
@@ -390,9 +494,9 @@ function displayBoardCallback(data) {
 
     // Set the fore/back color of the task to the new status colors
     function updateTaskStatusCallback(task) {
-        var header = document.getElementById('header_' + task.Id);
-        var content = document.getElementById('content_' + task.Id);
-        $(header).replaceWith('<div class="portlet-header" id="header_' + task.Id + '" style="background-color: ' + task.BackColor + '; color: ' + task.ForeColor + ';">' + task.Name + ' (' + task.Id + ')</div>');
+        var header = document.getElementById('header_' + task.task[0].id);
+        var content = document.getElementById('content_' + task.task[0].id);
+        $(header).replaceWith('<div class="portlet-header" id="header_' + task.task[0].id + '" style="background-color: ' + task.task[0].back_color + '; color: ' + task.task[0].fore_color + ';">' + task.task[0].name + ' (' + task.task[0].id + ')</div>');
         $("body").css("cursor", "default");
 
         restorePlusMinusIcon(task);
@@ -401,6 +505,7 @@ function displayBoardCallback(data) {
     // TODO: Figure out why below doesn't prevent portlets from being dropped on header row
     $(".columnHeader").disableSelection();
 
+    // Add +/- for expand/collapse functionality
     $(".portlet")
       .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
       .find(".portlet-header")
@@ -414,12 +519,20 @@ function displayBoardCallback(data) {
     });
 
     // Load project list for Add version of edit form, and for filter dialog
+    //$('#selTaskProjects').html('');
+    //$('#selProject').html('');
+    //$('#selProject').html('<option value="0" selected="selected">[All Projects]</option>');
+    //for (var i = 0; i < data[3].length; i++) {
+    //    $('#selProject').append('<option value="' + data[3][i].Id + '">' + data[3][i].Name + '</option>');
+    //    $('#selTaskProjects').append('<option value="' + data[3][i].Id + '">' + data[3][i].Name + '</option>');
+    //}
+    //$("#selProject option[value='" + projectId + "']").prop("selected", true);
     $('#selTaskProjects').html('');
     $('#selProject').html('');
     $('#selProject').html('<option value="0" selected="selected">[All Projects]</option>');
-    for (var i = 0; i < data[3].length; i++) {
-        $('#selProject').append('<option value="' + data[3][i].Id + '">' + data[3][i].Name + '</option>');
-        $('#selTaskProjects').append('<option value="' + data[3][i].Id + '">' + data[3][i].Name + '</option>');
+    for (var i = 0; i < data.project.length; i++) {
+        $('#selProject').append('<option value="' + data.project[i].id + '">' + data.project[i].name + '</option>');
+        $('#selTaskProjects').append('<option value="' + data.project[i].id + '">' + data.project[i].name + '</option>');
     }
     $("#selProject option[value='" + projectId + "']").prop("selected", true);
 
@@ -427,9 +540,12 @@ function displayBoardCallback(data) {
     $('.editButton').button({ icons: { primary: "ui-icon-pencil" }, text: false });
 
     // Save user permissions for current board
-    canAdd = data[5].CanAdd;
-    canDelete = data[5].CanDelete;
-    canEdit = data[5].CanEdit;
+    //canAdd = data[5].CanAdd;
+    //canDelete = data[5].CanDelete;
+    //canEdit = data[5].CanEdit;
+    canAdd = data.user[0].can_add;
+    canDelete = data.user[0].can_delete;
+    canEdit = data.user[0].can_edit;
 
     // Disable add button if user does not have add permissions
     if (!canAdd) {
@@ -448,12 +564,15 @@ function displayBoardCallback(data) {
 // Edit the selected task
 function editTask(taskId) {
 
+    var timeStamp = new Date().getTime();
+
     // Get task data
     $.ajax({
         url: proxyPath + "GetTaskData&taskId=" + taskId 
             + '&rootPath=' + rootPath 
             + '&dbType=' + dbType 
             + '&connectionString=' + connectionString
+            + '&t=' + timeStamp
             + '&token=' + token,
         dataType: "jsonp",
         type: 'GET',
@@ -476,37 +595,60 @@ function editTask(taskId) {
 function editTaskCallback(task) {
 
     // Set field values
-    $('#txtProject').html(task.ProjectName);
+    //$('#txtProject').html(task.ProjectName);
+    //$('#selTaskProjects').hide();
+    //$('#txtName').val(task.Name);
+    //$('#txtDefineDone').val(task.DefineDone.replace(/\\n/g, "\n"));
+    //$('#txtEstHours').val(task.EstHours);
+    //$('#txtEstHours').spinner();
+    //$('#txtActHours').val(task.ActHours);
+    //$('#txtActHours').spinner();
+    //$('#txtStartDate').val(formatDate(task.StartDate));
+    //$("#txtStartDate").datepicker();
+    //$('#txtEndDate').val(formatDate(task.EndDate));
+    //$("#txtEndDate").datepicker();
+    //$('#selStatus').val(task.Status);
+
+    $('#txtProject').html(task.task[0].project_name);
     $('#selTaskProjects').hide();
-    $('#txtName').val(task.Name);
-    $('#txtDefineDone').val(task.DefineDone.replace(/\\n/g, "\n"));
-    $('#txtEstHours').val(task.EstHours);
+    $('#txtName').val(task.task[0].name);
+    $('#txtDefineDone').val(task.task[0].define_done.replace(/\\n/g, "\n"));
+    $('#txtEstHours').val(task.task[0].est_hours);
     $('#txtEstHours').spinner();
-    $('#txtActHours').val(task.ActHours);
+    $('#txtActHours').val(task.task[0].act_hours);
     $('#txtActHours').spinner();
-    $('#txtStartDate').val(formatDate(task.StartDate));
+    $('#txtStartDate').val(formatDate(task.task[0].start_date));
     $("#txtStartDate").datepicker();
-    $('#txtEndDate').val(formatDate(task.EndDate));
+    $('#txtEndDate').val(formatDate(task.task[0].end_date));
     $("#txtEndDate").datepicker();
-    $('#selStatus').val(task.Status);
+    $('#selStatus').val(task.task[0].status_id);
 
     // TODO: Set value(s) for assignees
+    //$('#selAssignees').val('').trigger('chosen:updated');
+    //for (var i = 0; i < task.Assignees.Items.length; i++) {
+    //    $("#selAssignees option[value='" + task.Assignees.Items[i].Id + "']").prop("selected", true);
+    //}
+    //$('#selAssignees').trigger('chosen:updated');
     $('#selAssignees').val('').trigger('chosen:updated');
-    for (var i = 0; i < task.Assignees.Items.length; i++) {
-        $("#selAssignees option[value='" + task.Assignees.Items[i].Id + "']").prop("selected", true);
+    for (var i = 0; i < task.task_assignee.length; i++) {
+        $("#selAssignees option[value='" + task.task_assignee[i].id + "']").prop("selected", true);
     }
     $('#selAssignees').trigger('chosen:updated');
 
     // TODO: Set value(s) for approvers
-    //debugger;
+    //$('#selApprovers').val('').trigger('chosen:updated');
+    //for (var i = 0; i < task.Approvers.Items.length; i++) {
+    //    $("#selApprovers option[value='" + task.Approvers.Items[i].PersonId + "']").prop("selected", true);
+    //}
+    //$('#selApprovers').trigger('chosen:updated');
     $('#selApprovers').val('').trigger('chosen:updated');
-    for (var i = 0; i < task.Approvers.Items.length; i++) {
-        $("#selApprovers option[value='" + task.Approvers.Items[i].PersonId + "']").prop("selected", true);
+    for (var i = 0; i < task.task_approver.length; i++) {
+        $("#selApprovers option[value='" + task.task_approver[i].id + "']").prop("selected", true);
     }
     $('#selApprovers').trigger('chosen:updated');
 
     // Set the ID# being edited
-    $('#divEditTask').attr('taskId', task.Id);
+    $('#divEditTask').attr('taskId', task.task[0].id);
 
     $('#divEditTask').dialog({
         resizable: false,
@@ -516,7 +658,7 @@ function editTaskCallback(task) {
         dialogClass: 'dialog',
         closeOnEscape: true,
         modal: true,
-        title: 'Edit Task #' + task.Id,
+        title: 'Edit Task (' + task.task[0].id + ')',
         open: function () {
 
             // Disable delete button if user does not have permission to delete
@@ -537,12 +679,14 @@ function editTaskCallback(task) {
             {
                 text: "Delete", click: function () {
                     if (confirm("Are you sure you want to permanently delete this task?")) {
+                        var timeStamp = new Date().getTime();
                         var taskId = $('#divEditTask').attr('taskId');
                         $.ajax({
                             url: proxyPath + "DeleteTask&taskId=" + taskId 
                                 + '&rootPath=' + rootPath 
                                 + '&dbType=' + dbType 
                                 + '&connectionString=' + connectionString
+                                + '&t=' + timeStamp
                                 + '&token=' + token,
                             dataType: "jsonp",
                             type: 'POST',
@@ -748,17 +892,26 @@ function addTask() {
 
 // If task edited and saved, update the task portlet to reflect any changes
 function saveTaskCallback(task) {
-    var prevStatus = $('#task_' + task.Id)[0].parentElement.id.split('_')[1];
-    if (prevStatus != task.Status) {
-        $('#task_' + task.Id).remove();
-        $('#divStatus_' + task.Status).append(getPortlet(task));
+    //var prevStatus = $('#task_' + task.Id)[0].parentElement.id.split('_')[1];
+    //if (prevStatus != task.Status) {
+    //    $('#task_' + task.Id).remove();
+    //    $('#divStatus_' + task.Status).append(getPortlet(task));
+    //} else {
+    //    $('#task_' + task.Id).replaceWith(getPortlet(task));
+    //}
+    debugger;
+    var prevStatus = $('#task_' + task.task[0].id)[0].parentElement.id.split('_')[1];
+    if (prevStatus != task.task[0].status_id) {
+        $('#task_' + task.task[0].id).remove();
+        $('#divStatus_' + task.task[0].status_id).append(getPortlet(task.task[0]));
     } else {
-        $('#task_' + task.Id).replaceWith(getPortlet(task));
+        $('#task_' + task.task[0].id).replaceWith(getPortlet(task.task[0]));
     }
 
     // When the portlet is redrawn, need to format the edit button again,
     // otherwise it will revert to simple text without icon
-    $('#task_' + task.Id + ' .editButton').button({ icons: { primary: "ui-icon-pencil" }, text: false });
+   // $('#task_' + task.Id + ' .editButton').button({ icons: { primary: "ui-icon-pencil" }, text: false });
+    $('#task_' + task.task[0].id + ' .editButton').button({ icons: { primary: "ui-icon-pencil" }, text: false });
 
     // When portlet is redrawn, the +/- icon in the upper right
     // corner disappears, so need to add that back as well
@@ -766,12 +919,14 @@ function saveTaskCallback(task) {
 }
 
 // If task added and saved, update the task portlet to reflect any changes
+// TODO: need add task to return all data for task just added in same format at sp_get_task
 function addTaskCallback(task) {
-    $('#divStatus_' + task.Status).append(getPortlet(task));
+    //debugger;
+    $('#divStatus_' + task.task[0].status_id).append(getPortlet(task.task[0]));
 
-    $('#task_' + task.Id + ' .editButton').button({ icons: { primary: "ui-icon-pencil" }, text: false });
+    $('#task_' + task.task[0].id + ' .editButton').button({ icons: { primary: "ui-icon-pencil" }, text: false });
 
-    restorePlusMinusIcon(task);
+    restorePlusMinusIcon(task.task[0]);
 }
 
 // Add back that pesky +/- icon
@@ -791,28 +946,54 @@ function restorePlusMinusIcon(task) {
 }
 
 // Display a single task (aka "portlet" in jQuery sortable lingo)
+//function getPortlet(task) {
+
+//    var portletHtml = '<div class="portlet" id="task_'
+//            + task.Id + '" style="xpadding: 0px;"><div class="portlet-header" id="header_' + task.Id + '" style="background-color: ' + task.BackColor + '; color: ' + task.ForeColor + ';">'
+//            + task.Name + ' ('
+//            + task.Id + ')</div><div id="content_'
+//            + task.Id + '" class="portlet-content">'
+
+//            // Body of task goes here:
+//            + '<table cellpadding="3" cellpadding="3" width="100%" style="padding-bottom: 10px;">'
+//            + '<tr><td>Project:</td><td>' + task.ProjectName + '</td></tr>'
+//            + '<tr><td>Est Hours:</td><td>' + task.EstHours + '</td></tr>'
+//            + '<tr><td>Assignees:</td><td>' + task.AssignedTo + '</td></tr>'
+//            + '<tr><td>Approvers:</td><td>' + (task.ApprovedBy != undefined ? task.ApprovedBy : '?') + '</td></tr>';
+
+//    if (task.DefineDone != null && task.DefineDone != undefined && task.DefineDone != '') {
+//        portletHtml += '<tr><td colspan="2">Define Done:</td></tr>'
+//        + '<tr><td colspan="2" style="border: solid silver 1px; background-color: #F8F8F4; padding: 8px;">' + task.DefineDone.replace(/\\n/g, "<br/>") + '</td></tr>'
+//    }
+
+//    portletHtml += '</table>'
+//            + '<div style="width: 100%; text-align: right;"><a href=\'javascript:editTask(' + task.Id + ');\' class="editButton">Edit</a></div>'
+//            + '</div></div>';
+
+//    return portletHtml;
+//}
 function getPortlet(task) {
-    //if (task.Id == 7283) debugger;
+
     var portletHtml = '<div class="portlet" id="task_'
-            + task.Id + '" style="xpadding: 0px;"><div class="portlet-header" id="header_' + task.Id + '" style="background-color: ' + task.BackColor + '; color: ' + task.ForeColor + ';">'
-            + task.Name + ' ('
-            + task.Id + ')</div><div id="content_'
-            + task.Id + '" class="portlet-content">'
+            + task.id + '" style="xpadding: 0px;"><div class="portlet-header" id="header_' + task.id + '" style="background-color: ' + task.back_color + '; color: ' + task.fore_color + ';">'
+            + task.name + ' ('
+            + task.id + ')</div><div id="content_'
+            + task.id + '" class="portlet-content">'
 
             // Body of task goes here:
             + '<table cellpadding="3" cellpadding="3" width="100%" style="padding-bottom: 10px;">'
-            + '<tr><td>Project:</td><td>' + task.ProjectName + '</td></tr>'
-            + '<tr><td>Est Hours:</td><td>' + task.EstHours + '</td></tr>'
-            + '<tr><td>Assignees:</td><td>' + task.AssignedTo + '</td></tr>'
-            + '<tr><td>Approvers:</td><td>' + (task.ApprovedBy != undefined ? task.ApprovedBy : '?') + '</td></tr>';
+            + '<tr><td>Project:</td><td>' + task.project_name + '</td></tr>'
+            + '<tr><td>Est Hours:</td><td>' + task.est_hours + '</td></tr>'
+            + '<tr><td>Assignees:</td><td>' + task.assigned_to + '</td></tr>'
+            + '<tr><td>Approvers:</td><td>' + (task.approved_by != undefined ? task.approved_by : '?') + '</td></tr>';
 
-    if (task.DefineDone != null && task.DefineDone != undefined && task.DefineDone != '') {
+    if (task.define_done != null && task.define_done != undefined && task.define_done != '') {
         portletHtml += '<tr><td colspan="2">Define Done:</td></tr>'
-        + '<tr><td colspan="2" style="border: solid silver 1px; background-color: #F8F8F4; padding: 8px;">' + task.DefineDone.replace(/\\n/g, "<br/>") + '</td></tr>'
+        + '<tr><td colspan="2" style="border: solid silver 1px; background-color: #F8F8F4; padding: 8px;">' + task.define_done.replace(/\\n/g, "<br/>") + '</td></tr>'
     }
 
     portletHtml += '</table>'
-            + '<div style="width: 100%; text-align: right;"><a href=\'javascript:editTask(' + task.Id + ');\' class="editButton">Edit</a></div>'
+            + '<div style="width: 100%; text-align: right;"><a href=\'javascript:editTask(' + task.id + ');\' class="editButton">Edit</a></div>'
             + '</div></div>';
 
     return portletHtml;

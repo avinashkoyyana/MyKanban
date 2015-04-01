@@ -73,12 +73,6 @@
                 For demonstration purposes, please select "Azure" as the server, then "TESTUSER" as the user name, and "password" as the password (case sensitive).
                 This will connect you to the Azure instance of the web application and database (SQL Server in this case).<br />
                 <br />
-                <i style="color: red; font-size: smaller;">Please note: The performance I've gotten from Azure is not good.  Issue seems to be in the database not website.  This
-                    is most likely because I'm using the lowest level of Azure servers to minimize my cost.
-                    When connected to an in-house database server performance is almost instantaneous.  So please don't be
-                    too concerned about performance.
-                </i>
-                <br />
                 <br />
             </div>
             <table>
@@ -87,8 +81,8 @@
                     <td>
                         <select id="selServer">
                             <option value="Azure" selected="selected">Azure</option>
+                            <option value="AWS">AWS</option>
                             <option value="Local">Local</option>
-                            <option value="Work">Work</option>
                         </select></td>
                 </tr>
                 <tr>

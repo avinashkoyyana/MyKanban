@@ -44,6 +44,7 @@ public partial class UpdateTaskSequence : System.Web.UI.Page
             string dbType = Request.QueryString["dbType"];
             string connectionString = Request.QueryString["connectionString"];
             string token = Request.QueryString.AllKeys.Contains("token") ? Request.QueryString["token"] : "";
+            long statusId = long.Parse(Request.QueryString["statusId"]);
 
             MyKanbanWeb.SetDbConnection(dbType, connectionString);
 
@@ -58,7 +59,22 @@ public partial class UpdateTaskSequence : System.Web.UI.Page
                         long taskId = long.Parse(taskIds[i]);
                         MyKanban.Task task = new Task(taskId, new Credential(token));
                         task.Sequence = i;
-                        task.Update();
+
+                        MyKanban.Data.UpdateTask(
+                            task.ProjectId,
+                            task.Id,
+                            task.Name,
+                            task.StartDate,
+                            task.EndDate,
+                            statusId,
+                            task.DefineDone,
+                            task.EstHours,
+                            task.ActHours,
+                            task.ParentTaskId,
+                            task.SubTaskEstHours,
+                            task.SubTaskActHours,
+                            task.Sequence,
+                            task.Credential.Id);
                     }
                     catch 
                     {

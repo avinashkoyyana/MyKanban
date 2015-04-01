@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 using System.Collections;
 
 using MyKanban;
+using System.Data;
+using Newtonsoft.Json;
 
 /* ----------------------------------------------------------------------------- /
 // File:        GetBoardData.aspx.cs
@@ -69,93 +71,20 @@ public partial class GetBoardData : System.Web.UI.Page
 
             MyKanbanWeb.SetDbConnection(dbType, connectionString);
 
-            Board board;
-            board = new Board(boardId, new Credential(token));
+            Board board = new Board(new Credential(token));
 
-            List<Task> tasks = board.Tasks.Items;
+            DataSet dsBoard = Data.GetAllBoardData(
+                boardId,
+                sprintId,
+                projectId,
+                assigneeId,
+                approverId,
+                filterText,
+                new Credential(token).Id);
 
-            // Sprint filter
-            if (sprintId != 0)
-            {
-                Sprint sprint = new Sprint(sprintId, board.Credential);
-                tasks = (from task in tasks
-                    where task.StartDate <= sprint.EndDate && task.EndDate >= sprint.StartDate
-                    orderby task.Sequence
-                        select task).ToList<Task>();
-            }
+            Response.Write(callback + "(" + Data.GetJson(dsBoard) + ");");
+            return;
 
-            // Project filter
-            if (projectId != 0)
-            {
-                tasks = (from task in tasks
-                         where task.ProjectId == projectId
-                         orderby task.Sequence
-                         select task).ToList<Task>();
-            }
-
-            // Assignee filter
-            if (assigneeId != 0)
-            {
-                for (int i = tasks.Count - 1; i >= 0; i--)
-                {
-                    bool hasAssignee = false;
-                    for (int j = 0; j < tasks[i].Assignees.Count; j++)
-                    {
-                        hasAssignee = (tasks[i].Assignees[j].Id == assigneeId);
-                        if (hasAssignee) break;
-                    }
-                    if (!hasAssignee) tasks.Remove(tasks[i]);
-                }
-            }
-
-            // Approver filter
-            if (approverId != 0)
-            {
-                for (int i = tasks.Count - 1; i >= 0; i--)
-                {
-                    bool hasApprover = false;
-                    for (int j = 0; j < tasks[i].Approvers.Count; j++)
-                    {
-                        hasApprover = (tasks[i].Approvers[j].PersonId == approverId);
-                        if (hasApprover) break;
-                    }
-                    if (!hasApprover) tasks.Remove(tasks[i]);
-                }
-            }
-
-            // Text filter
-            if (!string.IsNullOrEmpty(filterText))
-            {
-                tasks = (from task in tasks
-                         where task.Name.ToLower().Contains(filterText.ToLower()) || task.DefineDone.ToLower().Contains(filterText.ToLower())
-                         orderby task.Sequence
-                         select task).ToList<Task>();
-            }
-
-            BoardSet boardSet = new BoardSet(board.BoardSetId, board.Credential);
-
-            json = "[";
-
-            json += boardSet.StatusCodes.JSON();
-            
-            json += ", " + GetTasksJson(tasks, boardSet.StatusCodes.Items);
-            
-            json += ", " + board.Users.JSON();
-
-            json += ", " + GetProjectsJson(board.Projects.Items);
-
-            json += ", " + board.Sprints.JSON();
-
-            json += ", {";
-            json += "\"CanAdd\" : " + board.CanAdd.ToString().ToLower();
-            json += ", \"CanDelete\" : " + board.CanDelete.ToString().ToLower();
-            json += ", \"CanEdit\" : " + board.CanEdit.ToString().ToLower();
-            json += ", \"CanRead\" : " + board.CanRead.ToString().ToLower();
-            json += "}";
-                
-            json += "]";
-
-            Response.Write(callback + "(" + json + ");");
         }
         catch { }
     }

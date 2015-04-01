@@ -62,6 +62,7 @@ body {
 .portlet {
     margin: 0 1em 1em 0;
     padding: 0.3em;
+    background-color: white !important;
 }
 
 .portlet-header {
@@ -83,6 +84,7 @@ body {
     padding: 0.4em;
     font-size: 8pt;
     font-family: Verdana;
+    background-color: white !important;
 }
 
 .portlet-content-notstarted {
