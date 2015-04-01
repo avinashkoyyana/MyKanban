@@ -1,30 +1,13 @@
 ﻿{
     "connections": [
         {
-            "name": "AWS (MySql)",
-            "value": "AWS",
-            "proxyPath": "https://mobile.fenwick.com/proxy.aspx?mode=",
-            "rootPath": "http://fw-8s50l02/MyKanban/",
-            "dbType": "MySql",
-            "connection": "Server=mykanban.ctcu3iejefqp.us-west-2.rds.amazonaws.com;Database=mykanban;Uid=mykanban;Pwd=MyK2nb2n2015;",
-            "selected": false
-        },
-        {
-            "name": "Azure (SQL Server)",
-            "value": "Azure",
-            "proxyPath": "http://gerow1.azurewebsites.net/proxy.aspx?mode=",
-            "rootPath": "http://gerow1.azurewebsites.net/",
-            "dbType": "SqlServer",
-            "connection": "Server=tcp:lnfk7armd0.database.windows.net,1433;Database=mykanban;User ID=mykanban@lnfk7armd0;Password=MyK@b@n2015;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;",
-            "selected": true
-        },
         { 
             "name": "Local (MySql)",
             "value": "Local",
-            "proxyPath": "http://localhost:50312/proxy.aspx?mode=",
-            "rootPath": "http://localhost:50312/",
+            "proxyPath": "http://localhost?mode=",
+            "rootPath": "http://localhost/",
             "dbType": "MySql",
-            "connection": "Server=localhost;Database=mykanban;Uid=mykanban;Pwd=megabase;",
+            "connection": "Server=localhost;Database=<database>;Uid=<userid>;Pwd=<password>;",
             "selected": false
         }
     ]
