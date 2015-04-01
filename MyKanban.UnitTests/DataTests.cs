@@ -28,6 +28,9 @@ namespace MyKanbanUnitTests
             {
                 MyKanban.Data.DatabaseType = Data.DbType.MySql;
 
+                //Local
+                MyKanban.Data.MySqlConnectionString = "Server=localhost;Database=mykanban;Uid=<userid>;Pwd=<password>;";
+
                 Credential testCredential = new Credential("testuser", "password");
                 if (testCredential.Id == 0)
                 {
@@ -1646,8 +1649,11 @@ namespace MyKanbanUnitTests
 
             Project project0 = new Project(TestCredential);
             project0.Name = "A new project - " + Guid.NewGuid().ToString();
+            board.Projects.Add(project0);
+            board.Projects.Update();
 
             boardSet.Boards.Add(board);
+            boardSet.Boards.Update();
             boardSet.Update();
 
             board.Projects.Add(project0);
@@ -2067,12 +2073,12 @@ namespace MyKanbanUnitTests
         {
             // Create a new approver
             Approver approver = new Approver(TestCredential);
-            approver.TaskId = 12345;
+            approver.TaskId = 45678;
             approver.PersonId = TestCredential.Id;
             approver.Update();
 
             // Get collection of approvers for task 12345
-            Approvers approvers = new Approvers(12345, TestCredential);
+            Approvers approvers = new Approvers(approver.TaskId, TestCredential);
 
             // Verify collection includes expected approvers
             Assert.IsTrue(approvers.Count == 1 &&
@@ -2135,7 +2141,7 @@ namespace MyKanbanUnitTests
         public void GetBaseList()
         {
             // Get all project objects
-            Projects projects = new Projects("", TestCredential);
+            Projects projects = (new Boards("MyKanban 1.0", TestCredential)).Items[0].Projects;
 
             // Verify that data in base list is identical to
             // corresponding properties in project object
@@ -2665,7 +2671,7 @@ namespace MyKanbanUnitTests
         [TestMethod]
         public void LoginUsingToken()
         {
-            Credential fred = new Credential("fflintstone", "password");
+            Credential fred = new Credential("testuser", "password");
 
             string token = fred.Token;
 
@@ -2678,8 +2684,20 @@ namespace MyKanbanUnitTests
         [TestMethod]
         public void GetBoardPermissionsForCurrentUser()
         {
+
             Boards boards = new Boards("Fenwick Labs", TestCredential);
-            Board board = new Board(boards[0].Id, TestCredential);
+            Board board;
+            if (boards.Count == 0)
+            {
+                Board fwlBoard = new Board(TestCredential);
+                fwlBoard.Name = "Fenwick Labs";
+                fwlBoard.Update();
+                board = fwlBoard;
+            }
+            else
+            {
+                board = new Board(boards[0].Id, TestCredential);
+            }
 
             // Find which of TestCredential's boards is "Fenwick Labs"
             int matchingIndex = -1;
@@ -2694,6 +2712,18 @@ namespace MyKanbanUnitTests
                 tcBoards[matchingIndex].CanEdit == board.CanEdit &&
                 tcBoards[matchingIndex].CanRead == board.CanRead);
 
+        }
+
+        [TestMethod]
+        public void GetAllBoardData()
+        {
+            //Data.DatabaseType = Data.DbType.MySql;
+            //Data.MySqlConnectionString = "Server=mykanban.ctcu3iejefqp.us-west-2.rds.amazonaws.com;Database=mykanban;Uid=mykanban;Pwd=MyK2nb2n2015;";
+            DataSet ds = Data.GetAllBoardData(975, 512, 0, 0, 0, "", 0);
+
+            //Board board = new Board(975, TestCredential, true);
+
+            //int i = board.Tasks.Count;
         }
 
     #endregion
