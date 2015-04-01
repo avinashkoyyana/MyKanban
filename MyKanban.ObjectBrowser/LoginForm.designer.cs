@@ -104,15 +104,18 @@
             // 
             // ddlServer
             // 
+            this.ddlServer.DisplayMember = "Name";
             this.ddlServer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlServer.FormattingEnabled = true;
             this.ddlServer.Items.AddRange(new object[] {
-            "Azure",
-            "Fenwick"});
+            "Azure (SQL Server)",
+            "AWS (MySql)",
+            "Local"});
             this.ddlServer.Location = new System.Drawing.Point(83, 68);
             this.ddlServer.Name = "ddlServer";
             this.ddlServer.Size = new System.Drawing.Size(121, 21);
             this.ddlServer.TabIndex = 1;
+            this.ddlServer.ValueMember = "Value";
             // 
             // label4
             // 

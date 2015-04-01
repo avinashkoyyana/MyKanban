@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using MyKanban;
+using Newtonsoft.Json;
+using System.IO;
 
 /* ----------------------------------------------------------------------------
     Copyright (c) 2015 Mark E. Gerow
@@ -50,7 +52,10 @@ namespace SampleOB
     {
         public Person User = new Person(Globals.Credential);
         public Credential Credential = new Credential();
-        public string Server = "Azure";
+        public string Server = "";
+        DataSet dsConnections = new DataSet();
+        string dbType = "";
+        string connectionString = "";
 
         public LoginForm()
         {
@@ -62,13 +67,20 @@ namespace SampleOB
             if (!string.IsNullOrEmpty(txtUserName.Text))
             {
                 Server = ddlServer.SelectedItem.ToString();
-                if (this.Server == "Azure")
+
+                DataRow[] selectedConnection = dsConnections.Tables[0].Select("Name='" + Server + "'");
+                dbType = selectedConnection[0]["DbType"].ToString();
+                connectionString = selectedConnection[0]["ConnectionString"].ToString();
+
+                if (dbType == "MySql")
                 {
-                    MyKanban.Data.DatabaseType = Data.DbType.SqlServer;
+                    MyKanban.Data.DatabaseType = Data.DbType.MySql;
+                    MyKanban.Data.MySqlConnectionString = connectionString;
                 }
                 else
                 {
-                    MyKanban.Data.DatabaseType = Data.DbType.MySql;
+                    MyKanban.Data.DatabaseType = Data.DbType.SqlServer;
+                    MyKanban.Data.SqlServerConnectionString = connectionString;
                 }
 
                 Globals.Credential = new Credential(txtUserName.Text, txtPassword.Text);
@@ -96,6 +108,16 @@ namespace SampleOB
 
         private void Login_Load(object sender, EventArgs e)
         {
+            string xml = SampleOB.Properties.Resources.Connections;
+            StringReader sr = new StringReader(xml);
+            dsConnections.ReadXml(sr);
+
+            ddlServer.Items.Clear();
+            foreach (DataRow drConnection in dsConnections.Tables[0].Rows)
+            {
+                ddlServer.Items.Add(drConnection["Name"].ToString());
+            }
+
             if (Globals.UserId != 0)
             {
                 User = new Person(Globals.UserId, Globals.Credential);
@@ -103,6 +125,13 @@ namespace SampleOB
             }
             ddlServer.SelectedIndex = 0;
             this.CenterToParent();
+        }
+
+        public class Connection
+        {
+            public string Name = "";
+            public string dbType = "";
+            public string connectionString = "";
         }
     }
 }

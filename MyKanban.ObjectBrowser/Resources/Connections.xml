@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Connections>
+  <Connection>
+    <Name>AWS (MySql)</Name>
+    <DbType>MySql</DbType>
+    <ConnectionString>Server=mykanban.ctcu3iejefqp.us-west-2.rds.amazonaws.com;Database=mykanban;Uid=mykanban;Pwd=MyK2nb2n2015;</ConnectionString>
+  </Connection>
+  <Connection>
+    <Name>Azure (SQL Server)</Name>
+    <DbType>SqlServer</DbType>
+    <ConnectionString>Server=tcp:lnfk7armd0.database.windows.net,1433;Database=mykanban;User ID=mykanban@lnfk7armd0;Password=MyK@b@n2015;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;</ConnectionString>
+  </Connection>
+  <Connection>
+    <Name>Local (MySql)</Name>
+    <DbType>MySql</DbType>
+    <ConnectionString>Server=localhost;Database=mykanban;Uid=mykanban;Pwd=megabase;</ConnectionString>
+  </Connection>
+</Connections>
