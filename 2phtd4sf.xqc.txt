@@ -1,0 +1,101 @@
+﻿Merge branch 'master' of https://github.com/megerow/MyKanban
+
+Conflicts:
+	MyKanban.ClassLibrary/Data.cs
+	MyKanban.WebApp/js/MyKanban.js
+#
+# It looks like you may be committing a merge.
+# If this is not correct, please remove the file
+#	.git/MERGE_HEAD
+# and try again.
+
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch and 'origin/master' have diverged,
+# and have 1 and 3 different commits each, respectively.
+#   (use "git pull" to merge the remote branch into yours)
+#
+# All conflicts fixed but you are still merging.
+#
+# Changes to be committed:
+#	renamed:    Database/MyKanban_schema.sql -> Database/MySql_Schema.sql
+#	new file:   MyKanban.ClassLibrary/App.config
+#	new file:   MyKanban.ClassLibrary/Approver.cs
+#	new file:   MyKanban.ClassLibrary/Approvers.cs
+#	new file:   MyKanban.ClassLibrary/Attributes.cs
+#	new file:   MyKanban.ClassLibrary/Base.cs
+#	new file:   MyKanban.ClassLibrary/BaseItem.cs
+#	new file:   MyKanban.ClassLibrary/BaseList.cs
+#	new file:   MyKanban.ClassLibrary/Board.cs
+#	new file:   MyKanban.ClassLibrary/BoardSet.cs
+#	new file:   MyKanban.ClassLibrary/BoardSets.cs
+#	new file:   MyKanban.ClassLibrary/Boards.cs
+#	new file:   MyKanban.ClassLibrary/Comment.cs
+#	new file:   MyKanban.ClassLibrary/Comments.cs
+#	new file:   MyKanban.ClassLibrary/Credential.cs
+#	new file:   MyKanban.ClassLibrary/Data.cs
+#	new file:   MyKanban.ClassLibrary/EncryptDecript.cs
+#	new file:   MyKanban.ClassLibrary/ExampleCode/ClearSky.Common.Data.cs
+#	new file:   MyKanban.ClassLibrary/ExampleCode/FWFile.cs
+#	new file:   MyKanban.ClassLibrary/ExampleCode/FWFileCollection.cs
+#	new file:   MyKanban.ClassLibrary/ExampleCode/FWFolderCollection.cs
+#	new file:   MyKanban.ClassLibrary/ExampleCode/FWFolderInfo.cs
+#	new file:   MyKanban.ClassLibrary/IDataItem.cs
+#	new file:   MyKanban.ClassLibrary/IDataList.cs
+#	new file:   MyKanban.ClassLibrary/MyKanbanClassLibrary.csproj
+#	new file:   MyKanban.ClassLibrary/MyKanbanClassLibrary.csproj.vspscc
+#	new file:   MyKanban.ClassLibrary/People.cs
+#	new file:   MyKanban.ClassLibrary/Person.cs
+#	new file:   MyKanban.ClassLibrary/Project.cs
+#	new file:   MyKanban.ClassLibrary/Projects.cs
+#	new file:   MyKanban.ClassLibrary/Properties.cs
+#	new file:   MyKanban.ClassLibrary/Properties/AssemblyInfo.cs
+#	new file:   MyKanban.ClassLibrary/Property.cs
+#	new file:   MyKanban.ClassLibrary/QuickBoard.cs
+#	new file:   MyKanban.ClassLibrary/Sprint.cs
+#	new file:   MyKanban.ClassLibrary/Sprints.cs
+#	new file:   MyKanban.ClassLibrary/StatusCode.cs
+#	new file:   MyKanban.ClassLibrary/StatusCodes.cs
+#	new file:   MyKanban.ClassLibrary/Tag.cs
+#	new file:   MyKanban.ClassLibrary/Tags.cs
+#	new file:   MyKanban.ClassLibrary/Task.cs
+#	new file:   MyKanban.ClassLibrary/Tasks.cs
+#	new file:   MyKanban.ClassLibrary/User.cs
+#	new file:   MyKanban.ClassLibrary/Users.cs
+#	new file:   MyKanban.ClassLibrary/bin/Debug/Microsoft.SharePoint.Client.Runtime.dll
+#	new file:   MyKanban.ClassLibrary/bin/Debug/Microsoft.SharePoint.Client.dll
+#	new file:   MyKanban.ClassLibrary/bin/Debug/MyKanbanClassLibrary.XML
+#	new file:   MyKanban.ClassLibrary/bin/Debug/MyKanbanClassLibrary.dll
+#	new file:   MyKanban.ClassLibrary/bin/Debug/MyKanbanClassLibrary.dll.config
+#	new file:   MyKanban.ClassLibrary/bin/Debug/MyKanbanClassLibrary.pdb
+#	new file:   MyKanban.ClassLibrary/bin/Debug/Newtonsoft.Json.dll
+#	new file:   MyKanban.ClassLibrary/bin/Debug/Newtonsoft.Json.xml
+#	new file:   MyKanban.ClassLibrary/bin/Release/Microsoft.SharePoint.Client.Runtime.dll
+#	new file:   MyKanban.ClassLibrary/bin/Release/Microsoft.SharePoint.Client.dll
+#	new file:   MyKanban.ClassLibrary/bin/Release/MyKanbanClassLibrary.dll
+#	new file:   MyKanban.ClassLibrary/bin/Release/MyKanbanClassLibrary.dll.config
+#	new file:   MyKanban.ClassLibrary/bin/Release/MyKanbanClassLibrary.pdb
+#	new file:   MyKanban.ClassLibrary/bin/Release/Newtonsoft.Json.dll
+#	new file:   MyKanban.ClassLibrary/bin/Release/Newtonsoft.Json.xml
+#	new file:   MyKanban.ClassLibrary/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+#	new file:   MyKanban.ClassLibrary/obj/Debug/MyKanbanClassLibrary.csproj.FileListAbsolute.txt
+#	new file:   MyKanban.ClassLibrary/obj/Debug/MyKanbanClassLibrary.csprojResolveAssemblyReference.cache
+#	new file:   MyKanban.ClassLibrary/obj/Debug/MyKanbanClassLibrary.dll
+#	new file:   MyKanban.ClassLibrary/obj/Debug/MyKanbanClassLibrary.pdb
+#	new file:   MyKanban.ClassLibrary/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+#	new file:   MyKanban.ClassLibrary/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+#	new file:   MyKanban.ClassLibrary/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+#	new file:   MyKanban.ClassLibrary/obj/Release/DesignTimeResolveAssemblyReferencesInput.cache
+#	new file:   MyKanban.ClassLibrary/obj/Release/MyKanbanClassLibrary.csproj.FileListAbsolute.txt
+#	new file:   MyKanban.ClassLibrary/obj/Release/MyKanbanClassLibrary.csprojResolveAssemblyReference.cache
+#	new file:   MyKanban.ClassLibrary/obj/Release/MyKanbanClassLibrary.dll
+#	new file:   MyKanban.ClassLibrary/obj/Release/MyKanbanClassLibrary.pdb
+#	new file:   MyKanban.ClassLibrary/obj/Release/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+#	new file:   MyKanban.ClassLibrary/obj/Release/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+#	new file:   MyKanban.ClassLibrary/obj/Release/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+#	new file:   MyKanban.ClassLibrary/packages.config
+#	modified:   MyKanban.WebApp/js/MyKanban.js
+#
+

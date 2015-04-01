@@ -1,0 +1,1 @@
+﻿[{"name":"AWS (MySql)","value":"AWS","dbType":"MySql","connection":"Server=<server>;Password=<password>;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;"}]

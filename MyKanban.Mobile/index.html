@@ -1,0 +1,1021 @@
+﻿<!DOCTYPE html>
+
+<!-- -------------------------------------------------------------------
+// File:    index.html
+// Purpose: Render MyKanban.Mobile Cordova application
+// Date:    3/31/2015
+// By:      Mark E. Gerow
+// ---------------------------------------------------------------------
+// Mods:
+------------------------------------------------------------------------
+    Copyright (c) 2015 Mark E. Gerow
+
+    This file is part of MyKanban.
+
+    MyKanban is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    MyKanban is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with MyKanban.  If not, see <http://www.gnu.org/licenses/>.
+// ----------------------------------------------------------------- -->
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>MyKanban Mobile</title>
+
+    <!-- MyKanban.Mobile references -->
+    <link href="css/index.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/mykanban.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
+
+    <script src="scripts/jquery-1.11.2.min.js"></script>
+    <script src="scripts/jquery.mobile-1.4.5.js"></script>
+
+    <!-- Support for cookies -->
+    <script type="text/javascript" src="scripts/jquery.cookie.js"></script>
+
+    <style>
+        h3 {
+            font-size: 14pt;
+            margin: 5px;
+            padding: 0px;
+            color: GrayText;
+        }
+
+        .filterSelect {
+             width: 180px;
+             font-size: smaller;
+        }
+
+        ​.ui-page .ui-content .ui-listview .ui-li-desc {
+            white-space: normal !important;
+        }
+
+        ul li h2 {
+            white-space: normal !important;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        /*.task_edit td {
+                vertical-align: top;
+            }*/
+        .custom-collapsible-not-started {
+            background-color: lightgray !important;
+            color: black !important;
+            font-weight: lighter;
+        }
+
+            .custom-collapsible-not-started h3 a {
+                background: lightgray !important;
+                color: black !important;
+                font-weight: lighter;
+            }
+
+        .custom-collapsible-in-progress {
+            background-color: lightyellow !important;
+            font-weight: lighter;
+        }
+
+            .custom-collapsible-in-progress h3 a {
+                background: lightyellow !important;
+                font-weight: lighter;
+            }
+
+        .custom-collapsible-completed {
+            background-color: lightblue !important;
+            color: black !important;
+            font-weight: lighter;
+        }
+
+            .custom-collapsible-completed h3 a {
+                background: lightblue !important;
+                color: black !important;
+                font-weight: lighter;
+            }
+
+        .custom-collapsible-approved {
+            background-color: #80CC80 !important;
+            color: black !important;
+            font-weight: lighter;
+        }
+
+            .custom-collapsible-approved h3 a {
+                background: #80CC80 !important;
+                color: black !important;
+                font-weight: lighter;
+            }
+
+        .custom-collapsible-blocked {
+            background-color: orange !important;
+            color: black !important;
+            font-weight: lighter;
+        }
+
+            .custom-collapsible-blocked h3 a {
+                background: orange !important;
+                color: black !important;
+                font-weight: lighter;
+            }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- LOGIN PAGE -->
+    <div data-role="page" id="login">
+
+        <div data-role="header">
+            <h1>MyKanban Mobile</h1>
+        </div><!-- /header -->
+
+        <div data-role="content">
+                <div style="font-size:larger; padding-bottom: 10px;">
+                    Welcome to the MyKanban mobile application.  Please enter your user name and password below.  If you don't yet have an account, or have forgotten your user name or password please contact the system administrator.
+                </div>
+                <div>
+                    <table cellpadding="1">
+                        <tr>
+                            <td>Server:</td>
+                            <td><select id="selServer">
+                                    <option value="Azure">Azure (SQL Server)</option>
+                                    <option value="AWS" selected="selected">AWS (MySql)</option>
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">User Name:</td>
+                            <td><input id="userName" /></td>
+                        </tr>
+                        <tr>
+                            <td>Password:</td>
+                            <td><input type="password" id="pwd" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div><a href="javascript:getUserData();" data-role="button" data-inline="false" data-icon="home">Login</a></div>
+            </div><!-- /content -->
+    </div>
+
+    <!-- BOARDS PAGE -->
+    <div data-role="page" id="home">
+
+        <div data-role="header">
+            <h1>MyKanban Mobile</h1>
+        </div><!-- /header -->
+    
+        <div data-role="content">
+            <div style="font-size:larger; padding-bottom: 10px;">Please select one of your boards from the list below.  A list of tasks for that board will then be displayed where you can add, edit or delete tasks as needed.
+            </div>
+            <div data-role="fieldcontain">
+                <select name="selBoards" id="selBoards" onchange="openBoard($('#selBoards'), '', true);"></select>
+            </div>
+        </div><!-- /content -->
+
+        <div data-role="footer" data-position="fixed" class="ui-bar">
+            <div align="center" valign="middle" style="padding-bottom: 8px; padding-right: 30px;"><button id="btnLogout" type="button" onclick="logout();" data-mini="true" data-inline="true">Logout</button></div>
+        </div>
+    </div><!-- /page -->
+
+    <!-- FILTER PAGE -->
+    <div data-role="page" id="filter">
+
+        <div data-role="header">
+            <h1>MyKanban Mobile</h1>
+        </div><!-- /header -->
+
+        <div data-role="content">
+        <table cellpadding="3" cellspacing="3">
+            <tr>
+                <td>Sprint:</td>
+                <td>
+                    <select id="selSprint" class="filterSelect">
+                        <option>[All Sprints]</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Project:</td>
+                <td>
+                    <select id="selProject" class="filterSelect">
+                        <option>[All Projects]</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: middle;">Assignees:</td>
+                <td>
+                    <select id="selAssignee" class="filterSelect">
+                        <option>[All Assignees]</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: middle;">Approvers:</td>
+                <td>
+                    <select id="selApprover" class="filterSelect">
+                        <option>[All Approvers]</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="white-space: nowrap;">Search for:</td>
+                <td valign="middle">
+                    <table style="width: 180px;" cellpadding="3">
+                        <tr>
+                            <td>
+                                <input id="txtSearch" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        </div>
+
+        <div data-role="footer" data-position="fixed" class="ui-bar">
+            <div align="center" valign="middle" style="padding-bottom: 8px; padding-right: 30px;"><button id="ctnFilter" type="button" onclick="openBoard($('#selBoards'), '');" data-mini="true" data-inline="true">Filter</button></div>
+        </div>
+    </div>
+
+    <!-- TASK LIST PAGE -->
+    <div data-role="page" id="tasklist">
+
+        <div data-role="header" data-icon="grid">
+            <h1>MyKanban Mobile</h1>
+        </div><!-- /header -->
+
+        <div data-role="content" id="divBoard">
+            <h3 id="pTasks">Tasks</h3>
+            <div data-role="fieldcontain">
+                <ul data-role="listview" id="ulBoard"></ul>
+            </div>
+            <div data-role="controlgroup" data-mini="true" data-type="horizontal" style="text-align: center;">
+                <a href="#home" data-role="button" data-inline="false" data-icon="home" data-mini="true" style="font-size: smaller;">&nbsp;Boards</a>
+                <a id="cmdAdd" href="javascript:openTask(0);" data-role="button" data-inline="false" data-icon="plus" data-mini="true" style="font-size: smaller;">&nbsp;Add</a>
+                <a href="javascript:filterTask();" data-role="button" data-inline="false" data-icon="search" data-mini="true" style="font-size: smaller;">&nbsp;Filter</a>
+                <a href="javascript:openBoard($('#selBoards'), '');" data-role="button" data-inline="false" data-icon="refresh" data-mini="true" style="font-size: smaller;">&nbsp;Refresh</a>
+            </div>
+        </div><!-- /content -->
+
+    </div><!-- /page -->
+
+    <!-- TASK EDIT PAGE -->
+    <div data-role="page" id="task">
+
+        <div data-role="header">
+            <h1>MyKanban Mobile</h1>
+        </div><!-- /header -->
+
+        <div data-role="content">
+            <div data-role="fieldcontain">
+                <table class="task_edit">
+                    <tr>
+                        <td>Project:</td>
+                        <td>
+                            <span id="spanProject"></span>
+                            <div id="divTaskProjects"><select id="selTaskProjects"></select></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Name:</td>
+                        <td><input id="txtName" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            Define Done:
+                            <textarea id="txtDefineDone"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="white-space: nowrap;">Est Hours:</td>
+                        <td><input id="txtEstHours" type="number" /></td>
+                    </tr>
+                    <tr style="display:none;">
+                        <td>Act Hours:</td>
+                        <td><input id="txtActHours" type="number" /></td>
+                    </tr>
+                    <tr>
+                        <td style="white-space: nowrap;">Start Date:</td>
+                        <td><input id="txtStartDate" type="date" /></td>
+                    </tr>
+                    <tr>
+                        <td style="white-space: nowrap;">End Date:</td>
+                        <td><input id="txtEndDate" type="date" /></td>
+                    </tr>
+                    <tr>
+                        <td valign="middle">Assignees:</td>
+                        <td valign="middle" id="tdAssignees">
+                            <span id="spanAssignees"></span>
+                            <div id="divSelAssignees"><select id="selAssignees"></select></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="middle">Approvers:</td>
+                        <td valign="middle" id="tdApprover">
+                            <span id="spanApprovers"></span>
+                            <div id="divSelApprovers"><select id="selApprovers"></select></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Status:</td>
+                        <td><select id="selStatus" /></td>
+                    </tr>
+                </table>
+            </div>
+            <div data-role="controlgroup" data-type="horizontal" data-mini="true" style="text-align: center;">
+                <a id="cmdSave" href="javascript:saveTask();" data-role="button" data-icon="star" style="font-size: smaller;">&nbsp;Save</a>
+                <a id="cmdDelete" href="javascript:deleteTask();" data-role="button" data-icon="delete" style="font-size: smaller;">&nbsp;Delete</a>
+                <a href="#tasklist" data-role="button" data-icon="back" style="font-size: smaller;">&nbsp;Cancel</a>
+            </div>
+        </div><!-- /content -->
+    </div><!-- /page -->
+
+    <!-- Cordova reference, this is added to your app when it's built. -->
+    <script src="cordova.js"></script>
+    <script src="scripts/platformOverrides.js"></script>
+    <script src="scripts/index.js"></script>
+
+    <script>
+        // Global variables
+        var boardId = 0;        // Current board id
+        var sprintId = 0;       // Sprint filter value
+        var projectId = 0;      // Project filter value
+        var assigneeId = 0;     // Assignee filter value
+        var approverId = 0;     // Approver filter value
+        var filterText = '';    // Text filter value
+        var token = '';         // User token returned by call to GetUserData.aspx
+        var canAdd = false;     // Can current user add tasks to current board
+        var canEdit = false;    // Can current user edit tasks on current board
+        var canDelete = false;  // Can current user delete tasks from current board
+
+        // Variable used to determine which server and database
+        // should process request
+        var proxyPath = '';         // Path to MyKanban proxy
+        var rootPath = '';          // Path to MyKanban web server serving data
+        var dbType = '';            // Either "MySql" or "SqlServer"
+        var connectionString = '';  // Database connection string
+
+        var userName = "";
+        var pwd = "";
+        var taskListHtml = "";
+        var token = '';
+
+        // Standard event for jQuery Mobile config changes
+        $(document).on("mobileinit", function () {
+            // No op
+        });
+
+        // jQuery initialization
+        $(function () {
+
+            // If local storage data for user exists, set defaults
+            $('#userName').val(window.localStorage.getItem('userName'));
+            $('#pwd').val(pwd = window.localStorage.getItem('pwd'));
+            taskListHtml = $('#tasklist').html();
+
+            // Get list of available connections
+            $.ajax({
+                url: 'connections.txt',
+                dataType: "json",
+                type: 'GET',
+                success: function (data) {
+                    setConnections(data.connections);
+                },
+                error: function (e) {
+                    alert(e.message);
+                }
+            });
+
+            // Set the change event handler for Server drop-down list
+            $("#selServer").change(function () {
+                var option = $('option:selected', this);
+                proxyPath = option.attr('proxyPath');
+                rootPath = option.attr('rootPath');
+                dbType = option.attr('dbType');
+                connectionString = option.attr('connectionString');
+            });
+
+        });
+
+        // Load available connections and display the login form
+        function setConnections(connections) {
+            $('#selServer').html('');
+            var selectedIdx = 0;
+            for (var i = 0; i < connections.length; i++) {
+                var selectedText = (connections[i].selected ? 'selected="selected" ' : '');
+                selectedIdx = (connections[i].selected ? i : selectedIdx)
+                var optionText =
+                    '<option value="' + connections[i].value + '" '
+                    + 'connectionString="' + connections[i].connection + '" '
+                    + 'proxyPath="' + connections[i].proxyPath + '" '
+                    + 'rootPath="' + connections[i].rootPath + '" '
+                    + 'dbType="' + connections[i].dbType + '" '
+                    + selectedText
+                    + '>'
+                    + connections[i].name + '</option>';
+                $('#selServer').append(optionText);
+            }
+            $('#selServer').val(connections[selectedIdx].value);
+            proxyPath = connections[selectedIdx].proxyPath;
+            rootPath = connections[selectedIdx].rootPath;
+            dbType = connections[selectedIdx].dbType;
+            connectionString = connections[selectedIdx].connection;
+
+            $('#selServer').selectmenu();
+            $('#selServer').selectmenu('refresh');
+        }
+
+        // Return Date object with today's date
+        function currentDate() {
+            var d = new Date();
+
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+
+            var currDate = d.getFullYear() + '-' +
+                (month < 10 ? '0' : '') + month + '-' +
+                (day < 10 ? '0' : '') + day;
+
+            return currDate;
+        }
+
+        // Handle delete button click event
+        function deleteTask() {
+            if (confirm('Permanently delete this task?')) {
+
+                var timeStamp = new Date().getTime();
+
+                $.ajax({
+                    url: proxyPath + "deletetask&taskId=" + taskId
+                        + '&rootPath=' + rootPath
+                        + '&dbType=' + dbType
+                        + '&connectionString=' + connectionString
+                        + '&t=' + timeStamp
+                        + '&token=' + token,
+                    dataType: "jsonp",
+                    type: 'GET',
+                    crossDomain: true,
+                    jsonpCallback: "deleteTaskCallback",
+                    success: function (data) {
+                        // Deleted
+                    },
+                    error: function (e) {
+                        alert(e.message);
+                    }
+                });
+            }
+        }
+
+        // After delete, redraw task list
+        function deleteTaskCallback(data) {
+            openBoard($('#selBoards'), '');
+        }
+
+        // Handle click on filter button
+        function filterTask() {
+            $.mobile.changePage('#filter');
+        }
+
+        // Process board data
+        var isFirstTimeBoardIsLoaded = true;
+        function getBoardDataCallback(data) {
+
+            // Load project list for Add version of edit form
+            $('#selTaskProjects').html('');
+            $('#selTaskProjects').append('<option value="0" selected="selected">[Select a Project]</option>');
+            for (var i = 0; i < data.project.length; i++) {
+                $('#selTaskProjects').append('<option value="' + data.project[i].id + '">' + data.project[i].name + '</option>');
+            }
+            $("#selTaskProjects option[value='" + projectId + "']").prop("selected", true);
+
+            // Load project filter list
+            $('#selProject').html('');
+            $('#selProject').html('<option value="0" selected="selected">[All Projects]</option>');
+            for (var i = 0; i < data.project.length; i++) {
+                $('#selProject').append('<option value="' + data.project[i].id + '">' + data.project[i].name + '</option>');
+            }
+            $("#selProject option[value='" + projectId + "']").prop("selected", true);
+
+            // Load assignee and approver filter lists
+            $('#selAssignee').html('<option value="0" selected="selected">[All Assignees]</option>');
+            $('#selApprover').html('<option value="0" selected="selected">[All Approvers]</option>');
+            for (var i = 0; i < data.board_person.length; i++) {
+
+                // For filter
+                $('#selAssignee').append('<option value="' + data.board_person[i].id + '">' + data.board_person[i].name + '</option>');
+                $('#selApprover').append('<option value="' + data.board_person[i].id + '">' + data.board_person[i].name + '</option>');
+            }
+            $("#selAssignee option[value='" + assigneeId + "']").prop("selected", true);
+            $("#selApprover option[value='" + approverId + "']").prop("selected", true);
+
+            // Fill filter list for sprints
+            $('#selSprint').html('<option value="0" selected="selected">[All Sprints]</option>');
+            for (var i = 0; i < data.sprint.length; i++) {
+                $('#selSprint').append('<option value="' + data.sprint[i].id + '">' + data.sprint[i].name + '</option>');
+            }
+            $("#selSprint option[value='" + sprintId + "']").prop("selected", true);
+
+            // If more than 300 tasks, take user to filter page
+            if (isFirstTimeBoardIsLoaded && data.task.length > 300) {
+                isFirstTimeBoardIsLoaded = false;
+                filterTask();
+                return;
+            }
+
+            // Clear out status ddl on edit form and add
+            // in options for each status in selected board
+            $('#selStatus').html('');
+
+            // Create sections for each status, also populate status
+            // ddl on edit form
+            $('#ulBoard').html('');
+            for (var i = 0; i < data.board_set_status.length; i++) {
+                $('head').append('<style>.status_' + data.board_set_status[i].id + ' h3 a { background-color: ' + data.board_set_status[i].back_color + ' !important; color: ' + data.board_set_status[i].fore_color + ' !important; font-weight: lighter; opacity: 0.75;}</style>');
+                $('#hdrStatus_' + data.board_set_status[i].id).remove();
+                $('#divStatus_' + data.board_set_status[i].id).remove();
+                $('#ulStatus_' + data.board_set_status[i].id).remove();
+                $('#ulBoard').append(
+                    '<div data-role="collapsible" data-collapsed="true" data-inset="true" class="status_' + data.board_set_status[i].id + ' taskGroup">'
+                    + '<h3><span id="hdrStatus_' + data.board_set_status[i].id + '">' + data.board_set_status[i].column_heading + '</span></h3>'
+                        + '<div id="divStatus_' + data.board_set_status[i].id + '">'
+                            + '<ol id="ulStatus_' + data.board_set_status[i].id + '" class="taskItems" taskCount="0"></ol>'
+                        + '</div>'
+                    + '</div>'
+                    ).collapsible();
+                eval('var count_' + data.board_set_status[i].id + ' = 0;');
+
+                // Populate drop down on edit form with status options
+                $('#selStatus').append('<option value="' + data.board_set_status[i].id + '">' + data.board_set_status[i].column_heading + '</option>');
+            }
+
+            // Add tasks to each status list view
+            for (var i = 0; i < data.task.length; i++) {
+
+                var projectName = data.task[i].project_name;
+
+                var task = data.task[i];
+
+                $('#ulStatus_' + task.status_id).append('<li><a href="javascript:openTask(' + task.id + ');">' + task.name + '</a></li>');
+                eval('count_' + task.status_id + ' = count_' + task.status_id + ' + 1;');
+            }
+
+            // Update status headings with # of tasks
+            for (var i = 0; i < data.board_set_status.length; i++) {
+                var n = eval('count_' + data.board_set_status[i].id);
+                $('#hdrStatus_' + data.board_set_status[i].id).append(' (' + n + ')');
+            }
+
+            // Load assignees and approvers lists
+            $('#selAssignees').html('');
+            $('#selApprovers').html('');
+            $('#selAssignees').append('<option value="0" selected="selected">[Select an Assignee]</option>');
+            $('#selApprovers').append('<option value="0" selected="selected">[Select an Approver]</option>');
+            for (var i = 0; i < data.board_person.length; i++) {
+                $('#selAssignees').append('<option value="' + data.board_person[i].id + '">' + data.board_person[i].name + '</option>');
+                $('#selApprovers').append('<option value="' + data.board_person[i].id + '">' + data.board_person[i].name + '</option>');
+            }
+            $("#selAssignees option[value='" + projectId + "']").prop("selected", true);
+            $("#selApprovers option[value='" + projectId + "']").prop("selected", true);
+
+            // Make list collapsible
+            $('.taskGroup').collapsible();
+
+            // Refreshing listviews is critical, or we won't see
+            // new version of board
+            $('#ulBoard').listview();
+            $('#ulBoard').listview('refresh');
+
+            $('.taskItems').listview();
+            $('.taskItems').listview('refresh');
+
+            // Save user permissions for current board
+            canAdd = data.user[0].can_add;
+            canDelete = data.user[0].can_delete;
+            canEdit = data.user[0].can_edit;
+
+            // Hide add button if user does not have add permissions
+            try {
+                if (!canAdd) {
+                    $("#cmdAdd").hide();
+                } else {
+                    $("#cmdAdd").show();
+                }
+            } catch (e) { }
+
+            // Have problem w/jQuery Mobile where first load
+            // of board doesn't display the first status code
+            // section, so using this to force an extra refresh
+            // on the very first load.  Once root cause has been
+            // identified, and issue resolved, this code can
+            // be removed.
+            if (isFirstTimeBoardIsLoaded) {
+                isFirstTimeBoardIsLoaded = false;
+                setTimeout(function () { openBoard($('#selBoards'), '') }, 1000);
+            } else {
+
+                $.mobile.loading('hide');
+                $.mobile.changePage('#tasklist');
+            }
+        }
+
+        // Process data returned for selected task
+        var projectId = 0;
+        var taskId = 0;
+        var assigneeList = "";
+        var approverList = "";
+        function getTaskDataCallback(task) {
+
+            projectId = task.task[0].project_id;
+            taskId = task.task[0].id;
+            $('#spanProject').text(task.task[0].project_name);
+            $('#txtName').val(task.task[0].name);
+
+            if (task.task[0].define_done != null) {
+                $('#txtDefineDone').val(task.task[0].define_done.replace(/\\n/g, "\n"));
+            } else {
+                $('#txtDefineDone').val('');
+            }
+            $('#txtEstHours').val(task.task[0].est_hours);
+            $('#txtActHours').val(task.task[0].act_hours);
+
+            var startDate = task.task[0].start_date.split('T')[0];
+            if (startDate == '1900-01-01') startDate = currentDate();
+            $('#txtStartDate').val(startDate);
+
+            var endDate = task.task[0].end_date.split('T')[0];
+            if (endDate == '1900-01-01') endDate = currentDate();
+            $('#txtEndDate').val(endDate);
+
+            // For new task, user can select the project from
+            // a drop-down list, for existing tasks the
+            // project is read-only
+            if (taskId == 0 || task.task[0].project_id == 0) {
+                $('#divTaskProjects').show();
+                $("#selTaskProjects option[value='0']").prop("selected", true);
+                $('#selTaskProjects').selectmenu();
+                $('#selTaskProjects').selectmenu('refresh');
+                $('#spanProject').hide();
+            } else {
+                $('#divTaskProjects').hide();
+                $('#spanProject').show();
+            }
+
+            // For new task or tasks that haven't had an assignee set, user can set the assignee, 
+            // otherwise assignee(s) is read only
+            if (taskId == 0 || task.task_assignee.length == 0) {
+                if (task.task_assignee.length > 0) {
+                    $('#selAssignees').val(task.task_assignee[0].id);
+                    $("#selAssignees option[value='" + task.task_assignee[0].id + "']").prop("selected", true);
+                }
+                $('#selAssignees').show();
+                $('#selAssignees').selectmenu();
+                $('#selAssignees').selectmenu('refresh');
+                $('#divSelAssignees').show();
+                $('#spanAssignees').hide();
+            } else {
+                assigneeList = "";
+                var assignees = '<table cellpadding="3">';
+                if (task.task_assignee.length == 0) {
+                    assignees += '<tr><td style="color: red;"><i>Not Assigned</i></td></tr>';
+                } else {
+                    for (var i = 0; i < task.task_assignee.length; i++) {
+                        assignees += '<tr>';
+                        assignees += '<td valign="top">' + task.task_assignee[i].name + '&nbsp;</td>';
+                        if (task.task_assignee[i].phone != '') {
+                            assignees += '<td valign="top"><a href="javascript:window.open(\'tel:' + task.task_assignee[i].phone + '\',\'_system\');"><img src="css/images/icons-png/phone-black.png" /></a>&nbsp;</td>';
+                        }
+                        if (task.task_assignee[i].email != '') {
+                            assignees += '<td valign="top"><a href="javascript:window.open(\'mailto:' + task.task_assignee[i].email + '\',\'_system\');"><img src="css/images/icons-png/mail-black.png" /></a></td>';
+                        }
+                        assignees += '</tr>';
+                        if (assigneeList != '') assigneeList += ';';
+                        assigneeList += task.task_assignee[i].id;
+                    }
+                }
+                assignees += '</table>';
+                $('#spanAssignees').html(assignees);
+                $('#spanAssignees').show();
+                $('#divSelAssignees').hide();
+            }
+
+            // Same treatment for approver as for assignee field
+            if (taskId == 0 || task.task_approver.length == 0) {
+                if (task.task_approver.length > 0) {
+                    $('#selApprovers').val(task.task_approver[0].id);
+                    $("#selApprovers option[value='" + task.task_approver[0].id + "']").prop("selected", true);
+                }
+                $('#selApprovers').show();
+                $('#selApprovers').selectmenu();
+                $('#selApprovers').selectmenu('refresh');
+                $('#divSelApprovers').show();
+                $('#spanApprovers').hide();
+            } else {
+                approverList = "";
+                var approvers = '<table cellpadding="3">';
+                if (task.task_approver.length == 0) {
+                    approvers += '<tr><td style="color: red;"><i>Not Assigned</i></td></tr>';
+                } else {
+                    for (var i = 0; i < task.task_approver.length; i++) {
+                        approvers += '<tr>';
+                        approvers += '<td valign="top">' + task.task_approver[i].name + '&nbsp;</td>';
+                        if (task.task_approver[i].phone != '') {
+                            approvers += '<td valign="top"><a href="javascript:window.open(\'tel:' + task.task_approver[i].phone + '\',\'_system\');"><img src="css/images/icons-png/phone-black.png" /></a>&nbsp;</td>';
+                        }
+                        if (task.task_approver[i].email != '') {
+                            approvers += '<td valign="top"><a href="javascript:window.open(\'mailto:' + task.task_approver[i].email + '\',\'_system\');"><img src="css/images/icons-png/mail-black.png" /></a></td>';
+                        }
+                        approvers += '</tr>';
+                        if (approverList != '') approverList += ';';
+                        approverList += task.task_approver[i].id;
+                    }
+                }
+                approvers += '</table>';
+                $('#spanApprovers').html(approvers);
+                $('#spanApprovers').show();
+                $('#divSelApprovers').hide();
+            }
+
+            // Set selected value for status drop-down.  If
+            // this is a new task, or status is for some reason
+            // not in the list of available status codes,
+            // set status to first choice in drop-down list
+            $('#selStatus').val(task.task[0].status_id);
+            $("#selStatus option[value='" + task.task[0].status_id + "']").prop("selected", true);
+            if ($('#selStatus').val() == null) $('#selStatus').val($("#selStatus")[0][0].value);
+            $('#selStatus').selectmenu();
+            $('#selStatus').selectmenu('refresh');
+
+            // Hide delete button if user does not have permission
+            if (!canDelete) {
+                $('#cmdDelete').hide();
+            } else {
+                $('#cmdDelete').show();
+            }
+
+            // Hide save button if user does not have permission
+            if (!canEdit) {
+                $('#cmdSave').hide();
+            } else {
+                $('#cmdSave').show();
+            }
+
+            $.mobile.loading('hide');
+            $.mobile.changePage('#task');
+        }
+
+        // Login with user-provided name and password, get list 
+        // of boards user authorized to view
+        function getUserData() {
+
+            $.mobile.loading("show", {
+                text: "",
+                textVisible: true,
+                theme: "z",
+                html: ""
+            });
+
+            var userName = $('#userName').val();
+            var pwd = $('#pwd').val();
+
+            // Save user name & pwd for next visit
+            window.localStorage.setItem('userName', userName);
+            window.localStorage.setItem('pwd', pwd);
+
+            // Create timestamp to avoid cached-page errors
+            var timeStamp = new Date().getTime();
+
+            $.ajax({
+                url: proxyPath + "getuserdata&userName=" + userName
+                    + "&pwd=" + pwd
+                    + '&rootPath=' + rootPath
+                    + '&dbType=' + dbType
+                    + '&t=' + timeStamp
+                    + '&connectionString=' + connectionString,
+                dataType: "jsonp",
+                type: 'GET',
+                crossDomain: true,
+                jsonpCallback: "getUserDataCallback",
+                success: function (boards) {
+                    //getUserDataCallback(user);
+                },
+                error: function (e) {
+                    alert("Error retrieving data")
+                }
+            });
+        }
+
+        // Process returned user data
+        function getUserDataCallback(boards) {
+
+            $('#selBoards').html('');
+            $('#selBoards').append('<option id="selBoardsOpt0">[Select a Board]</option>');
+            for (var i = 0; i < boards.length; i++) {
+                $('#selBoards').append('<option value="' + boards[i].Id + '">' + boards[i].Name + '</option>');
+            }
+
+            // Save user token
+            if (boards.length > 0) token = encodeURIComponent(boards[0].Token);
+
+            $.mobile.loading('hide');
+            $.mobile.changePage('#home');
+        }
+
+        // Open board selected by user
+        function openBoard(board, msg, clearFilter) {
+
+            if (msg == null) msg = 'Retrieving Kanban Board';
+
+            if (clearFilter == true) {
+                sprintId = $('#selSprint').val(0);
+                $('#selSprint').selectmenu();
+                $('#selSprint').selectmenu('refresh');
+
+                projectId = $('#selProject').val(0);
+                $('#selProject').selectmenu();
+                $('#selProject').selectmenu('refresh');
+
+                assigneeId = $('#selAssignee').val(0);
+                $('#selAssignee').selectmenu();
+                $('#selAssignee').selectmenu('refresh');
+
+                approverId = $('#selApprover').val(0);
+                $('#selApprover').selectmenu();
+                $('#selApprover').selectmenu('refresh');
+
+                filterText = $('#txtSearch').val('');
+
+                isFirstTimeBoardIsLoaded = true;
+            }
+
+            $.mobile.loading("show", {
+                text: msg,
+                textVisible: true,
+                theme: "z",
+                html: ""
+            });
+
+            $('#pTasks').html('<h3 style="width:100%;text-align:center;">' + $('#selBoards option:selected').text() + '</h3>');
+            $('#selBoardsOpt0').remove();
+
+            sprintId = $('#selSprint').val();
+            projectId = $('#selProject').val();
+            assigneeId = $('#selAssignee').val();
+            approverId = $('#selApprover').val();
+            filterText = $('#txtSearch').val();
+            var timeStamp = new Date().getTime();
+
+            var boardId = $('#selBoards').val();
+            $.ajax({
+                url: proxyPath + "getboarddata&boardId=" + boardId
+                    + "&sprintId=" + sprintId
+                    + '&projectId=' + projectId
+                    + '&assigneeId=' + assigneeId
+                    + '&approverId=' + approverId
+                    + '&filterText=' + filterText
+                    + '&rootPath=' + rootPath
+                    + '&dbType=' + dbType
+                    + '&connectionString=' + connectionString
+                    + '&t=' + timeStamp
+                    + '&token=' + token,
+                dataType: "jsonp",
+                type: 'GET',
+                crossDomain: true,
+                jsonpCallback: "getBoardDataCallback",
+                success: function (data) {
+                    // For some reason, the success method is getting called
+                    // instead of callback(), so in this case just pass
+                    // control to callback() explicitly.
+                    //callback(data);
+                },
+                error: function (e) {
+                    alert(e.message);
+                }
+            });
+        }
+
+        // Clear user name and password
+        function logout() {
+
+            userName = '';
+            pwd = '';
+            $.mobile.changePage('#login');
+
+        }
+
+        // Display the task edit form
+        function openTask(taskId) {
+
+            $.mobile.loading("show", {
+                textVisible: true,
+                theme: "z",
+                html: ""
+            });
+
+            var timeStamp = new Date().getTime();
+
+            $.ajax({
+                url: proxyPath + "gettaskdata&taskId=" + taskId
+                    + '&rootPath=' + rootPath
+                    + '&dbType=' + dbType
+                    + '&connectionString=' + connectionString
+                    + '&t=' + timeStamp
+                    + '&token=' + token,
+                dataType: "jsonp",
+                type: 'GET',
+                crossDomain: true,
+                jsonpCallback: "getTaskDataCallback",
+                success: function (task) {
+                    // No op
+                },
+                error: function (e) {
+                    alert("Error retrieving data")
+                }
+            });
+        }
+
+        // Handle save button click event
+        function saveTask() {
+
+            // In some cases status drop-down value may be null,
+            // in which case use the first status value in the list;
+            var timeStamp = new Date().getTime();
+            var statusId = $('#selStatus').val();
+            if (statusId == null) statusId = $('#selStatus')[0][0].value;
+
+            var name = specialEncoding($('#txtName').val());
+            var defineDone = specialEncoding($('#txtDefineDone').val().replace(/\n/g, "\\n"));
+            var startDate = $('#txtStartDate').val();
+            var endDate = $('#txtEndDate').val();
+            var estHours = $('#txtEstHours').val();
+            var actHours = $('#txtActHours').val();
+
+            if (taskId == 0 || $('#selTaskProjects').val() != 0) {
+                projectId = $('#selTaskProjects').val();
+            }
+
+            if (taskId == 0 || $('#selAssignees').val() != 0) {
+                assigneeList = $('#selAssignees').val();
+            }
+
+            if (taskId == 0 || $('#selApprovers').val() != 0) {
+                approverList = $('#selApprovers').val();
+            }
+
+            $.ajax({
+                url: proxyPath + "updatetask"
+                    + "&taskId=" + taskId
+                    + '&projectId=' + projectId
+                    + '&name=' + name
+                    + '&defineDone=' + defineDone
+                    + '&assignees=' + assigneeList
+                    + '&approvers=' + approverList
+                    + '&startDate=' + startDate
+                    + '&endDate=' + endDate
+                    + '&estHours=' + estHours
+                    + '&actHours=' + actHours
+                    + '&statusId=' + statusId
+                    + '&rootPath=' + rootPath
+                    + '&dbType=' + dbType
+                    + '&connectionString=' + connectionString
+                    + '&t=' + timeStamp
+                    + '&token=' + token,
+                dataType: "jsonp",
+                type: 'POST',
+                crossDomain: true,
+                jsonpCallback: "saveTaskCallback",
+                success: function (data) {
+                    // Saved
+                },
+                error: function (e) {
+                    alert(e.message);
+                }
+            });
+        }
+
+        // After save, redraw the task list
+        function saveTaskCallback(data) {
+            openBoard($('#selBoards'), '');
+        }
+
+        // Rolled my own routine to handle some common characters that 
+        // present issues for ASP.NET
+        function specialEncoding(s) {
+            return s.replace(/&/g, "~")
+                .replace(/#/g, "`").replace(/\+/g, "^")
+                .replace(/</g, '[').replace(/>/g, ']');
+        }
+
+    </script>
+</body>
+</html>
